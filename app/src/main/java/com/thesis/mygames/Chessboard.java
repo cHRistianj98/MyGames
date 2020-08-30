@@ -169,7 +169,7 @@ public class Chessboard {
         else if (i < 56) result = i % 2 == 0;
         else if (i < 64) result = i % 2 != 0;
 
-        return result ? R.color.black : R.color.white;
+        return result ? R.drawable.black_square : R.drawable.white_square;
     }
 
     public static String getSquareName(int i) {

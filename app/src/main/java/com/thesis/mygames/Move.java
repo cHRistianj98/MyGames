@@ -29,7 +29,7 @@ public class Move {
         Square endSquare = Chessboard.getSquares(Chessboard.getSquareId(endSquareName));
 
         if(!piece.possibleFieldsToMoveCheck().contains(endSquare)) {
-            throw new IllegalArgumentException("This square is illegal for this piece!");
+            throw new IllegalArgumentException("This whiteSquare is illegal for this piece!");
         }
 
         Move move = new Move(context, piece);
@@ -62,7 +62,7 @@ public class Move {
     private void showPossibleSquares(List<Square> possibleSquares) {
         for (Square fi : possibleSquares) {
             int id = fi.getId();
-            MainActivity.b[id].setBackground(context.getResources().getDrawable(R.color.yellow));;
+            MainActivity.b[id].setBackground(context.getResources().getDrawable(R.drawable.yellow_square));;
         }
     }
 
