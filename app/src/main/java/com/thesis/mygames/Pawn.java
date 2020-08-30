@@ -2,10 +2,10 @@ package com.thesis.mygames;
 
 import android.os.Build;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.RequiresApi;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -187,7 +187,7 @@ public class Pawn extends Piece {
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public List<Square> action(Button []b) {
+    public List<Square> action(ImageButton[]b) {
         List<Square> list = null;
 
         try {

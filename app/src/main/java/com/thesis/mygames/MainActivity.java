@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
             params.width = 125;
             params.height = 125;
             b[i].setLayoutParams(params);
-            b[i].setImageResource(R.drawable.black_bishop);
             b[i].setBackground( getResources().getDrawable( Chessboard.getSquareColor(i)));
 
             //b[i].setTag(i);
