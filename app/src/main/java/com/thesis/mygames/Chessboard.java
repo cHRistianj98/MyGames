@@ -100,6 +100,4 @@ public class Chessboard {
         return asciiRepresentationOfFirstSign - 97 + 64 - numericValueOfSecondSign * 8;
     }
 
-
-
 }
