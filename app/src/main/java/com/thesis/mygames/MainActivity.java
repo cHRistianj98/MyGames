@@ -15,7 +15,6 @@ import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-
     public static ImageButton[] b = new ImageButton[64];
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -37,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
             params.height = 125;
             b[i].setLayoutParams(params);
             b[i].setBackground( getResources().getDrawable( Chessboard.getSquareColor(i)));
-
-            //b[i].setTag(i);
-
             layout.addView(b[i]);
         }
 
