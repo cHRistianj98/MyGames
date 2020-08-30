@@ -36,6 +36,44 @@ public class Chessboard {
     public static StringBuilder PGNTagGenerator = new StringBuilder();
     public static StringBuilder PGNMoveGenerator = new StringBuilder();
 
+    public static int[] whiteIcons = {
+            R.drawable.white_pawn,
+            R.drawable.white_pawn,
+            R.drawable.white_pawn,
+            R.drawable.white_pawn,
+            R.drawable.white_pawn,
+            R.drawable.white_pawn,
+            R.drawable.white_pawn,
+            R.drawable.white_pawn,
+            R.drawable.white_rook,
+            R.drawable.white_knight,
+            R.drawable.white_bishop,
+            R.drawable.white_queen,
+            R.drawable.white_king,
+            R.drawable.white_bishop,
+            R.drawable.white_knight,
+            R.drawable.white_rook
+    };
+
+    public static int[] blackIcons = {
+            R.drawable.black_rook,
+            R.drawable.black_knight,
+            R.drawable.black_bishop,
+            R.drawable.black_queen,
+            R.drawable.black_king,
+            R.drawable.black_bishop,
+            R.drawable.black_knight,
+            R.drawable.black_rook,
+            R.drawable.black_pawn,
+            R.drawable.black_pawn,
+            R.drawable.black_pawn,
+            R.drawable.black_pawn,
+            R.drawable.black_pawn,
+            R.drawable.black_pawn,
+            R.drawable.black_pawn,
+            R.drawable.black_pawn
+    };
+
 
     public Chessboard(Context mContext) {
         this.context = mContext;

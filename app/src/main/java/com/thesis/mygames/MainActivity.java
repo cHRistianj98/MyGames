@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < 64 ; i++) {
             b[i] = new ImageButton(this);
+            b[i].setId(i);
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.width = 125;
             params.height = 125;
