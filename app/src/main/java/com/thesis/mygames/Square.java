@@ -60,11 +60,6 @@ public class Square implements Comparable<Square> {
         return Objects.hash(id, piece, name);
     }
 
-    @Override
-    public String toString() {
-        return "id = " + this.getId() + " piece = " + this.getPiece();
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int compareTo(@NotNull Square o) {

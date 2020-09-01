@@ -145,8 +145,10 @@ public class Chessboard {
         addPiece(blackPieces.get(14), 6, blackIcons[6]);
         addPiece(blackPieces.get(15), 7, blackIcons[7]);
 
+        moveList.add("a4");
+        pieceMovedList.add(whitePieces.get(0));
+
         Turn.enableWhitePieces(context);
-//        Turn.disableBlackPieces();
     }
 
     public static void addPiece(Piece piece, int id, int icon) {

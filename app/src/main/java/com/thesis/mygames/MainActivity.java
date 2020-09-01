@@ -39,7 +39,16 @@ public class MainActivity extends AppCompatActivity {
             layout.addView(b[i]);
         }
 
+        Button btn = findViewById(R.id.next_move);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Move.makeNextMove(getApplicationContext());
+            }
+        });
         Chessboard.init();
     }
+
+
 
 }

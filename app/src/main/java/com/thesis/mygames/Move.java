@@ -11,7 +11,7 @@ import java.util.List;
 public class Move {
     private Piece piece;
     private Piece newPieceAfterPawnPromotion = null;
-    private static Context context;
+    public  Context context;
     private Square endSquare = null;
     private Square startSquare = null;
     private String pieceAfterPromotion = "";
@@ -19,18 +19,21 @@ public class Move {
     private boolean wasPawnPromotion = false;
 
     public Move(Context context, Piece piece) {
-        Move.context = context;
+        this.context = context;
         this.piece = piece;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static void makeNextMove() {
-        if(Chessboard.moveList.size() == Chessboard.moveIndicator - 1)
-            return;
+    public static void makeNextMove(Context context) {
+//        if(Chessboard.moveList.size() == Chessboard.moveIndicator - 1)
+//            return;
 
-        Piece p = Chessboard.pieceMovedList.get(Chessboard.moveIndicator + 1);
-        String endSquareName = getEndSquareName(Chessboard.moveIndicator + 1);
-        makeQuickMove(p, endSquareName);
+        //Piece p = Chessboard.pieceMovedList.get(Chessboard.moveIndicator + 1);
+        Piece p = Chessboard.pieceMovedList.get(0);
+       //String endSquareName = getEndSquareName(Chessboard.moveIndicator + 1);
+
+        String endSquareName = getEndSquareName(0);
+        makeQuickMove(p, endSquareName, context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -65,7 +68,7 @@ public class Move {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static void makeQuickMove(Piece piece, String endSquareName) {
+    public static void makeQuickMove(Piece piece, String endSquareName, Context context) {
         Square endSquare = Chessboard.getSquares(Chessboard.getSquareId(endSquareName));
 
         if(!piece.possibleFieldsToMoveCheck().contains(endSquare)) {
@@ -127,7 +130,7 @@ public class Move {
         endSquare = f;
         MainActivity.b[startSquareId].setImageResource(0);
         Chessboard.getSquares(startSquareId).setPiece(null);
-        removeUnnecessaryActionListeners();
+         removeUnnecessaryActionListeners();
 
         if (Pawn.wasEnPassant)
             enPassantMoveHandler(endSquareId);
@@ -160,12 +163,6 @@ public class Move {
         Chessboard.moveIndicator++;
 
         Chessboard.pieceMovedList.add(piece);
-
-//        PGNFormat.generatePgnTags();
-//        System.out.println(Chessboard.PGNTagGenerator);
-//
-//        PGNFormat.generatePgnMoves();
-//        System.out.println(Chessboard.PGNMoveGenerator);
 
         if (piece instanceof King)
             ((King) piece).setWasMoved(true);
