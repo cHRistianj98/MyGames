@@ -1,7 +1,6 @@
 package com.thesis.mygames;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
 
@@ -22,6 +21,47 @@ public class Move {
     public Move(Context context, Piece piece) {
         Move.context = context;
         this.piece = piece;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static void makeNextMove() {
+        if(Chessboard.moveList.size() == Chessboard.moveIndicator - 1)
+            return;
+
+        Piece p = Chessboard.pieceMovedList.get(Chessboard.moveIndicator + 1);
+        String endSquareName = getEndSquareName(Chessboard.moveIndicator + 1);
+        makeQuickMove(p, endSquareName);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static String getEndSquareName(int indicator) {
+        String move = Chessboard.moveList.get(indicator);
+
+        char lastSign = move.charAt(move.length() - 1);
+        if(lastSign == '+' || lastSign == '#')
+            return Character.toString(move.charAt(move.length() - 3)) + move.charAt(move.length() - 2);
+
+        else if(lastSign == 'Q' || lastSign == 'N'|| lastSign == 'B' || lastSign == 'R')
+            return Character.toString(move.charAt(move.length() - 4)) + move.charAt(move.length() - 3);
+
+        else if(lastSign == 'O') {
+            if(move.length() == 3) {
+                if(Chessboard.moveList.size() % 2 == 0) {
+                    return "g8";
+                } else {
+                    return "g1";
+                }
+            } else {
+                if(Chessboard.moveList.size() % 2 == 0) {
+                    return "c8";
+                } else {
+                    return "c1";
+                }
+            }
+        } else {
+            return Character.toString(move.charAt(move.length() - 2)) + move.charAt(move.length() - 1);
+        }
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -116,6 +156,10 @@ public class Move {
 
         chessNotation(wasCapture, wasPawnPromotion, ((King) Chessboard.blackPieces.get(12)).isCheck() ||
                 ((King) Chessboard.whitePieces.get(12)).isCheck());
+
+        Chessboard.moveIndicator++;
+
+        Chessboard.pieceMovedList.add(piece);
 
 //        PGNFormat.generatePgnTags();
 //        System.out.println(Chessboard.PGNTagGenerator);

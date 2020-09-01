@@ -29,6 +29,9 @@ public class Chessboard {
     public static List<Piece> whitePieces = new ArrayList<>();
     public static List<Piece> blackPieces = new ArrayList<>();
     public static List<String> moveList = new ArrayList<>();
+    public static List<Piece> pieceMovedList = new ArrayList<>();
+    public static int moveIndicator = -1;
+
     public static Square enPassantPossible = null;
     public static int numberOfHalfMoves = 0;
     public static int fullMoveNumber = 0;
@@ -149,13 +152,7 @@ public class Chessboard {
     public static void addPiece(Piece piece, int id, int icon) {
         MainActivity.b[id].setImageResource(icon);
         Chessboard.getSquares(id).setPiece(piece);
-//        b[id].addActionListener(
-//                e -> {
-//                    List<Square> list = piece.action(Chessboard.b);
-//                    Move move = new Move(piece);
-//                    move.addListeners(list);
-//                }
-//        );
+
     }
 
     public static int getSquareColor(int i) {
