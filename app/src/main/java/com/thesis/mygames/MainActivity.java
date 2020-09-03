@@ -23,7 +23,6 @@ import static com.thesis.mygames.Chessboard.*;
 
 public class MainActivity extends AppCompatActivity implements PromotionDialog.SingleChoiceListener{
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
         Move.activity = this;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onPositiveButtonClicked(String[] list, int position) {
         Move.selectedPiece = list[position];

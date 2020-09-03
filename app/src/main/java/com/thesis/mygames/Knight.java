@@ -1,7 +1,6 @@
 package com.thesis.mygames;
 
 import android.os.Build;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.RequiresApi;
@@ -25,7 +24,6 @@ public class Knight extends Piece {
         super(square, color, id, icon);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public List<Integer> getMyPiecesBlocked() {
         List<Integer> toRemove = new ArrayList<>();
@@ -147,7 +145,7 @@ public class Knight extends Piece {
 
         return validId;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public List<Square> possibleFieldsToMove(){
         List<Square> possibleSquares = new ArrayList<>();
@@ -160,7 +158,7 @@ public class Knight extends Piece {
         Collections.sort(possibleSquares);
         return possibleSquares;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public List<Square> possibleFieldsToMoveCheck() {
         List<Square> possibleSquares = this.possibleFieldsToMove();
@@ -211,7 +209,7 @@ public class Knight extends Piece {
         }
         return possibleSquareDuringCheck;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public List<Square> action(ImageButton[]b) {
         List<Square> list = null;

@@ -16,14 +16,15 @@ public class Rook extends Piece {
     public Rook(boolean color){
         super(color);
     }
+
     public Rook(Square square, boolean color, int icon) {
         super(square, color, icon);
     }
+
     public Rook(Square square, boolean color, int id, int icon) {
         super(square, color, id, icon);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public List<Integer> getMyPiecesBlocked() {
         List<Integer> toRemove = new ArrayList<>();
@@ -36,7 +37,6 @@ public class Rook extends Piece {
         return toRemove;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getBlockingPieceOnRightSide(List<Integer> toRemove) {
         int squareId = this.square.getId();
         if(squareId % 8 == 7) return;
@@ -50,7 +50,6 @@ public class Rook extends Piece {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getBlockingPieceOnLeftSide(List<Integer> toRemove) {
         int squareId = this.square.getId();
         if(squareId % 8 == 0) return;
@@ -64,7 +63,6 @@ public class Rook extends Piece {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getBlockingPieceOnTopSide(List<Integer> toRemove) {
         int squareId = this.square.getId();
         for (int i = squareId - 8; i >= 0 ; i = i - 8) {
@@ -76,7 +74,6 @@ public class Rook extends Piece {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getBlockingPieceOnBottomSide(List<Integer> toRemove) {
         int squareId = this.square.getId();
         for (int i = squareId + 8; i < 64 ; i = i + 8) {
@@ -88,7 +85,6 @@ public class Rook extends Piece {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public List<Square> possibleFieldsToMove(){
         List<Square> possibleSquares = new ArrayList<>();
@@ -101,7 +97,6 @@ public class Rook extends Piece {
         return possibleSquares;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getPossibleHorizontalSquaresToRight(List<Square> possibleSquares) {
         int squareId = this.square.getId();
         if(squareId % 8 == 7) return;
@@ -119,7 +114,6 @@ public class Rook extends Piece {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getPossibleHorizontalSquaresToLeft(List<Square> possibleSquares) {
         int squareId = this.square.getId();
         if(squareId % 8 == 0) return;
@@ -137,7 +131,6 @@ public class Rook extends Piece {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getPossibleVerticalSquaresToUp(List<Square> possibleSquares) {
         int squareId = this.square.getId();
         for (int i = squareId - 8; i >= 0 ; i = i - 8) {
@@ -150,7 +143,6 @@ public class Rook extends Piece {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getPossibleVerticalSquaresToDown(List<Square> possibleSquares) {
         int squareId = this.square.getId();
         for (int i = squareId + 8; i < 64 ; i = i + 8) {
@@ -163,7 +155,6 @@ public class Rook extends Piece {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public List<Square> possibleFieldsToMoveCheck() {
         List<Square> everyPossibleSquares = this.possibleFieldsToMove();
@@ -196,7 +187,6 @@ public class Rook extends Piece {
         return possibleSquares;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void simulateObjectDeletion(int squareId, int pieceId) {
         if (this.getColor()) {
             Chessboard.blackPieces.set(pieceId, null);
@@ -206,7 +196,6 @@ public class Rook extends Piece {
         Chessboard.getSquares(squareId).setPiece(null);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void simulateMoveOnSquare(Square s, List<Square> possibleSquares) {
         Chessboard.getSquares(s.getId()).setPiece(this);
         if(this.getColor()) {
@@ -218,7 +207,6 @@ public class Rook extends Piece {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void simulateReturnCapturedPieceOnSquare(int pieceId, Piece piece, Square s) {
         if(this.getColor()) {
             Chessboard.blackPieces.set(pieceId, piece);
@@ -236,7 +224,6 @@ public class Rook extends Piece {
         this.wasMoved = wasMoved;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public List<Square> action(ImageButton []b) {
         List<Square> list = null;

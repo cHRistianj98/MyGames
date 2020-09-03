@@ -17,10 +17,11 @@ public class Pawn extends Piece {
     public Pawn(Square square, boolean color, int icon) {
         super(square, color, icon);
     }
+
     public Pawn(Square square, boolean color, int id, int icon) {
         super(square, color, id, icon);
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public List<Integer> getMyPiecesBlocked() {
         List<Integer> toRemove = new ArrayList<>();
@@ -51,7 +52,7 @@ public class Pawn extends Piece {
         }
         return toRemove;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     public List<Square> possibleTakingToMove() {
         List<Square> possibleTaking = new ArrayList<>();
 
@@ -73,7 +74,7 @@ public class Pawn extends Piece {
 
         return possibleTaking;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public List<Square> possibleFieldsToMove() {
 
@@ -134,7 +135,7 @@ public class Pawn extends Piece {
         Collections.sort(possibleSquares);
         return possibleSquares;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public List<Square> possibleFieldsToMoveCheck() {
         List<Square> possibleSquares = this.possibleFieldsToMove();
@@ -185,17 +186,12 @@ public class Pawn extends Piece {
         }
         return possibleSquareDuringCheck;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public List<Square> action(ImageButton[]b) {
         List<Square> list = null;
 
         try {
-            //            if(Chessboard.gameState == GameState.NORMAL)
-//                list = this.possibleFieldsToMove();
-//            else if(Chessboard.gameState == GameState.CHECK) {
-//                list = this.possibleFieldsToMoveCheck();
-//            }
             list = this.possibleFieldsToMoveCheck();
         } catch (Exception ex) {
             ex.printStackTrace();

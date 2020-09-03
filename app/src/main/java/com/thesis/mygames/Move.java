@@ -30,7 +30,6 @@ public class Move {
         this.piece = piece;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void makeNextMove() {
         if(moveList.size() == moveIndicator + 1)
             return;
@@ -53,7 +52,6 @@ public class Move {
         isNavigationMove = false;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void makeUndoMove() {
         if (moveIndicator == -1)
             return;
@@ -77,7 +75,6 @@ public class Move {
         isNavigationMove = false;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void makeQuickMove(Piece piece, String endSquareName) {
         Square endSquare = getSquares(getSquareId(endSquareName));
 
@@ -90,14 +87,12 @@ public class Move {
         move.makeMove(endSquare.getId(), endSquare, startSquareId);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void addListeners(List<Square> possibleSquares) {
         resetActionListeners();
         showPossibleSquares(possibleSquares);
         setActionListenersOnPossibleSquares(possibleSquares);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void resetActionListeners() {
         Square f;
         for (int i = 0; i < 64; i++) {
@@ -112,7 +107,6 @@ public class Move {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void showPossibleSquares(List<Square> possibleSquares) {
         for (Square fi : possibleSquares) {
             int id = fi.getId();
@@ -120,7 +114,6 @@ public class Move {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void setActionListenersOnPossibleSquares(List<Square> possibleSquares) {
         final int startSquareId = piece.getSquare().getId();
 
@@ -136,7 +129,6 @@ public class Move {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void makeMove(int endSquareId, Square f, int startSquareId) {
         startSquare = piece.getSquare();
         endSquare = f;
@@ -190,19 +182,16 @@ public class Move {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void removeUnnecessaryActionListeners() {
         removeCurrentActionListener(piece);
         removePossibleActionListeners(piece.possibleFieldsToMove());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void removeCurrentActionListener(Piece p) {
         int start = p.getSquare().getId();
         b[start].setOnClickListener(null);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void removePossibleActionListeners(List<Square> possibleSquares) {
         for (Square f : possibleSquares) {
             b[f.getId()].setBackground(MyApplication.getAppContext().getResources().getDrawable( getSquareColor(f.getId())));
@@ -210,7 +199,6 @@ public class Move {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void enPassantMoveHandler(int endId) {
         if (piece.getColor()) {
             blackPieces.set(getSquares(endId + 8).getPiece().getId(), null);
@@ -226,7 +214,6 @@ public class Move {
         wasCapture = true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void deleteCapturedBlackPiece(int endId) {
         blackPieces.set(getSquares(endSquare.getId()).getPiece().getId(), null);
         getSquares(endSquare.getId()).setPiece(null);
@@ -234,7 +221,6 @@ public class Move {
         wasCapture = true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void deleteCapturedWhitePiece(int endId) {
         whitePieces.set(getSquares(endSquare.getId()).getPiece().getId(), null);
         getSquares(endSquare.getId()).setPiece(null);
@@ -242,14 +228,12 @@ public class Move {
         wasCapture = true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void setPieceOnNewSquare(int endSquareId) {
         piece.setSquare(getSquares(endSquareId));
         b[endSquareId].setImageResource(piece.getIcon());
         getSquares(endSquareId).setPiece(piece);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void shortCastleHandler() {
         resetActionListeners();
         if (piece.getColor()) {
@@ -269,7 +253,6 @@ public class Move {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void longCastleHandler() {
         resetActionListeners();
         if (piece.getColor()) {
@@ -289,7 +272,6 @@ public class Move {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void pawnPromotion(int endSquareId, boolean color) {
         DialogFragment singleChoiceDialog = new PromotionDialog();
         singleChoiceDialog.setCancelable(false);
@@ -297,7 +279,6 @@ public class Move {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void setNewPieceAfterPawnPromotion() {
         int pawnId = piece.getId();
         int endSquareId = endSquare.getId();
@@ -368,7 +349,6 @@ public class Move {
         getSquares(endSquareId).setPiece(newPieceAfterPawnPromotion);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void chessNotation(boolean wasCapture, boolean wasPawnPromotion, boolean wasCheck) {
         StringBuilder move = new StringBuilder();
         if (piece instanceof Pawn) {
@@ -457,7 +437,6 @@ public class Move {
         else return "";
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private int isOtherPieceWhichCanMoveOnTheSameSquare() {
         if (piece.getColor()) {
             for (Piece p : whitePieces) {
@@ -496,7 +475,7 @@ public class Move {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     public Square getEnPassantPossibleSquare() {
         if (piece instanceof Pawn) {
             if (endSquare.getId() - startSquare.getId() == 16)
@@ -508,7 +487,6 @@ public class Move {
         return null;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void setTurn() {
         if (piece.getColor()) {
             Turn.disableWhitePieces();

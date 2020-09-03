@@ -1,7 +1,7 @@
 package com.thesis.mygames;
 
 import android.os.Build;
-import android.widget.Button;
+
 import android.widget.ImageButton;
 
 import androidx.annotation.RequiresApi;
@@ -26,7 +26,7 @@ public class Queen extends Piece{
     public Queen(Square square, boolean color, int id, int icon) {
         super(square, color, id, icon);
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public List<Square> possibleFieldsToMove(){
         List<Square> possibleSquares = new ArrayList<>();
@@ -40,7 +40,7 @@ public class Queen extends Piece{
         Collections.sort(possibleSquares);
         return possibleSquares;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     private void getPossibleHorizontalSquaresToRight(List<Square> possibleSquares) {
         int squareId = this.square.getId();
         if(squareId % 8 == 7) return;
@@ -57,7 +57,7 @@ public class Queen extends Piece{
             }
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     private void getPossibleHorizontalSquaresToLeft(List<Square> possibleSquares) {
         int squareId = this.square.getId();
         if(squareId % 8 == 0) return;
@@ -74,7 +74,7 @@ public class Queen extends Piece{
             }
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     private void getPossibleVerticalSquaresToUp(List<Square> possibleSquares) {
         int squareId = this.square.getId();
         for (int i = squareId - 8; i >= 0 ; i = i - 8) {
@@ -86,7 +86,7 @@ public class Queen extends Piece{
             possibleSquares.add(getSquares(i));
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     private void getPossibleVerticalSquaresToDown(List<Square> possibleSquares) {
         int squareId = this.square.getId();
         for (int i = squareId + 8; i < 64 ; i = i + 8) {
@@ -98,7 +98,7 @@ public class Queen extends Piece{
             possibleSquares.add(getSquares(i));
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     private void getPossibleSquaresOnDiagonals(List<Square> possibleSquares) {
         List<Integer> squaresOnBorders = Arrays.asList( 0, 1, 2, 3, 4, 5, 6, 7,
                 15, 23, 31, 39, 47, 55,
@@ -128,7 +128,6 @@ public class Queen extends Piece{
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public List<Square> possibleFieldsToMoveCheck() {
         List<Square> possibleSquares = this.possibleFieldsToMove();
@@ -179,7 +178,7 @@ public class Queen extends Piece{
         }
         return possibleSquareDuringCheck;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public List<Integer> getMyPiecesBlocked() {
         List<Integer> toRemove = new ArrayList<>();
@@ -331,7 +330,7 @@ public class Queen extends Piece{
         Collections.sort(toRemove);
         return toRemove;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public List<Square> action(ImageButton[]b) {
         List<Square> list = null;

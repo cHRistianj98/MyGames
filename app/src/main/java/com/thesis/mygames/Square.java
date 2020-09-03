@@ -1,9 +1,5 @@
 package com.thesis.mygames;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -43,7 +39,6 @@ public class Square implements Comparable<Square> {
         this.piece = piece;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,13 +49,11 @@ public class Square implements Comparable<Square> {
                 Objects.equals(name, square.name);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int hashCode() {
         return Objects.hash(id, piece, name);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int compareTo(@NotNull Square o) {
         return Integer.compare(getId(), o.getId());

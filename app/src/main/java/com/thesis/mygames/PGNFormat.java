@@ -85,7 +85,6 @@ public class PGNFormat {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void generatePgnMoves() {
         if(moveList.size() % 2 == 1) {
             PGNMoveGenerator.append(moveList.size()/2 + 1).

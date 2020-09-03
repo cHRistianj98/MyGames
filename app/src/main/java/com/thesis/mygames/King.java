@@ -1,7 +1,6 @@
 package com.thesis.mygames;
 
 import android.os.Build;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.RequiresApi;
@@ -76,7 +75,6 @@ public class King extends Piece {
         return validId;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public List<Square> checkValidFields(List<Square> possibleSquares) {
 
         validId.clear();
@@ -93,7 +91,6 @@ public class King extends Piece {
         return possibleSquares;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public List<Integer> getMyPiecesBlocked() {
         List<Integer> toRemove = new ArrayList<>();
@@ -110,7 +107,6 @@ public class King extends Piece {
         return toRemove;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void checkIfCheckOnPossibleFields() {
 
         for (int i = 0; i < validId.size(); i++) {
@@ -145,7 +141,6 @@ public class King extends Piece {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void checkIfMyPieceOnValidFields() {
         for (int i = 0; i < validId.size(); i++) {
             if(Chessboard.getSquares(validId.get(i)).getPiece() != null && Chessboard.getSquares(validId.get(i)).getPiece().getColor() == this.getColor())
@@ -153,7 +148,6 @@ public class King extends Piece {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public boolean isCheck() {
 
         attackedFieldsFun();
@@ -167,7 +161,6 @@ public class King extends Piece {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public boolean isCheckmate() {
         List<Square> possibilities = new ArrayList<>();
 
@@ -225,7 +218,6 @@ public class King extends Piece {
 //        return true;
 //    }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void attackedFieldsFun() {
         if(this.getColor()) {
             for(Piece p : Chessboard.blackPieces) {
@@ -270,7 +262,7 @@ public class King extends Piece {
         }
 
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public List<Square> possibleFieldsToMove() {
         List<Square> possibleSquares = new ArrayList<>();
@@ -278,7 +270,7 @@ public class King extends Piece {
         Collections.sort(possibleSquares);
         return possibleSquares;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     public List<Square> possibleFieldsToMoveCheck() {
         List<Square> possibleSquares = this.possibleFieldsToMove();
@@ -339,7 +331,6 @@ public class King extends Piece {
         return possibleSquareDuringCheck;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public boolean isShortCastlePossible() {
         if(wasMoved ||
                 isCheck() ||
@@ -362,7 +353,6 @@ public class King extends Piece {
         return true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public boolean isLongCastlePossible() {
         if (
                 wasMoved ||
@@ -386,7 +376,6 @@ public class King extends Piece {
         return true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public boolean isSquareAttacked(Square s) {
         attackedFieldsFun();
         return attackedSquares.contains(s);
@@ -400,17 +389,11 @@ public class King extends Piece {
         this.wasMoved = wasMoved;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public List<Square> action(ImageButton[]b) {
         List<Square> list = null;
 
         try {
-            //            if(Chessboard.gameState == GameState.NORMAL)
-//                list = this.possibleFieldsToMove();
-//            else if(Chessboard.gameState == GameState.CHECK) {
-//                list = this.possibleFieldsToMoveCheck();
-//            }
             list = this.possibleFieldsToMoveCheck();
         } catch (Exception ex) {
             ex.printStackTrace();

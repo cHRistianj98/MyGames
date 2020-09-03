@@ -14,6 +14,7 @@ public abstract class Piece {
     public Piece(boolean color) {
         this.color = color;
     }
+
     public Piece(Square square, boolean color, int icon) {
         this.square = square;
         this.color = color;
@@ -38,18 +39,23 @@ public abstract class Piece {
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public boolean getColor() {
         return color;
     }
+
     public Square getSquare() {
         return square;
     }
+
     public void setSquare(Square square) {
         this.square = square;
     }
+
         @Override
     public String toString() {
         return "Piece{" +
