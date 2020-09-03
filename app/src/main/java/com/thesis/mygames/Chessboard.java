@@ -1,13 +1,9 @@
 package com.thesis.mygames;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.ImageButton;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,15 +17,13 @@ import static android.graphics.Color.argb;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class Chessboard {
-    private static Context context;
-    private Activity activity;
+
     private static final Square[] squares = new Square[64];
-    // public static final Button[] b = new Button[64];
+    public static ImageButton[] b = new ImageButton[64];
 
     public static List<Piece> whitePieces = new ArrayList<>();
     public static List<Piece> blackPieces = new ArrayList<>();
-    public static List<String> moveList = new ArrayList<>();
-    public static List<Piece> pieceMovedList = new ArrayList<>();
+    public static List<Move> moveList = new ArrayList<>();
     public static int moveIndicator = -1;
 
     public static Square enPassantPossible = null;
@@ -76,16 +70,6 @@ public class Chessboard {
             R.drawable.black_pawn,
             R.drawable.black_pawn
     };
-
-
-    public Chessboard(Context mContext) {
-        this.context = mContext;
-        activity = (mContext instanceof Activity) ? (Activity) mContext : null;
-    }
-
-    public Context getContext() {
-        return context;
-    }
 
     public static void init() {
         for (int i = 0; i < 64; i++) {
@@ -145,14 +129,11 @@ public class Chessboard {
         addPiece(blackPieces.get(14), 6, blackIcons[6]);
         addPiece(blackPieces.get(15), 7, blackIcons[7]);
 
-        moveList.add("a4");
-        pieceMovedList.add(whitePieces.get(0));
-
-        Turn.enableWhitePieces(context);
+        Turn.enableWhitePieces();
     }
 
     public static void addPiece(Piece piece, int id, int icon) {
-        MainActivity.b[id].setImageResource(icon);
+        Chessboard.b[id].setImageResource(icon);
         Chessboard.getSquares(id).setPiece(piece);
 
     }

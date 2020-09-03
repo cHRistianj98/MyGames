@@ -14,17 +14,17 @@ public class Turn {
     public static boolean whiteTurn;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static void enableWhitePieces(final Context context) {
+    public static void enableWhitePieces() {
         whiteTurn = true;
         for (final Piece p : Chessboard.whitePieces) {
             if(p == null)
                 continue;
 
-            MainActivity.b[p.getSquare().getId()].setOnClickListener(new View.OnClickListener() {
+            Chessboard.b[p.getSquare().getId()].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    List<Square> list = p.action(MainActivity.b);
-                    Move move = new Move(context, p);
+                    List<Square> list = p.action(Chessboard.b);
+                    Move move = new Move(p);
                     move.addListeners(list);
                 }
             });
@@ -32,17 +32,17 @@ public class Turn {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static void enableBlackPieces(final Context context) {
+    public static void enableBlackPieces() {
         whiteTurn = false;
         for (final Piece p : Chessboard.blackPieces) {
             if(p == null)
                 continue;
 
-            MainActivity.b[p.getSquare().getId()].setOnClickListener(new View.OnClickListener() {
+            Chessboard.b[p.getSquare().getId()].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    List<Square> list = p.action(MainActivity.b);
-                    Move move = new Move(context, p);
+                    List<Square> list = p.action(Chessboard.b);
+                    Move move = new Move(p);
                     move.addListeners(list);
                 }
             });
@@ -55,7 +55,7 @@ public class Turn {
             if(p == null)
                 continue;
 
-            ImageButton btn = MainActivity.b[p.getSquare().getId()];
+            ImageButton btn = Chessboard.b[p.getSquare().getId()];
             btn.setOnClickListener(null);
         }
     }
@@ -67,7 +67,7 @@ public class Turn {
             if(p == null)
                 continue;
 
-            ImageButton btn = MainActivity.b[p.getSquare().getId()];
+            ImageButton btn = Chessboard.b[p.getSquare().getId()];
             btn.setOnClickListener(null);
         }
     }

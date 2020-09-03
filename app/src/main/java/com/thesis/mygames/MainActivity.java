@@ -1,8 +1,13 @@
 package com.thesis.mygames;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
+import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,16 +17,16 @@ import android.widget.GridLayout;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import static com.thesis.mygames.Chessboard.*;
 
-    public static ImageButton[] b = new ImageButton[64];
+public class MainActivity extends AppCompatActivity implements PromotionDialog.SingleChoiceListener{
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new Chessboard(getApplicationContext());
         setContentView(R.layout.activity_main);
 
         GridLayout layout = (GridLayout) findViewById(R.id.buttonContainerGridLayout);
@@ -35,20 +40,45 @@ public class MainActivity extends AppCompatActivity {
             params.width = 125;
             params.height = 125;
             b[i].setLayoutParams(params);
-            b[i].setBackground( getResources().getDrawable( Chessboard.getSquareColor(i)));
+            b[i].setBackground( getResources().getDrawable( getSquareColor(i)));
             layout.addView(b[i]);
         }
 
-        Button btn = findViewById(R.id.next_move);
-        btn.setOnClickListener(new View.OnClickListener() {
+        Button nextButton = findViewById(R.id.next_move);
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Move.makeNextMove(getApplicationContext());
+                Move.makeNextMove();
             }
         });
-        Chessboard.init();
+
+        Button undoButton = findViewById(R.id.undo_move);
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Move.makeUndoMove();
+            }
+        });
+
+        init();
+        Move.activity = this;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void onPositiveButtonClicked(String[] list, int position) {
+        Move.selectedPiece = list[position];
 
+        Move move = moveList.get(moveList.size() - 1);
+        move.setNewPieceAfterPawnPromotion();
+
+        TextView textView = findViewById(R.id.promo);
+        textView.setText(Move.selectedPiece);
+    }
+
+    @Override
+    public void onNegativeButtonClicked() {
+
+    }
 
 }

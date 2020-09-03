@@ -1,6 +1,5 @@
 package com.thesis.mygames;
 
-import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -22,6 +21,7 @@ public class FENFormat {
 
         return fen.toString();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String getFenPosition() {
         StringBuilder fen = new StringBuilder();
@@ -53,6 +53,7 @@ public class FENFormat {
 
         return fen.toString();
     }
+
     public static String generateLetterBasedOnPiece(Piece p) {
         if(p.getColor()) {
             if(p instanceof Pawn) return "P";
@@ -71,10 +72,12 @@ public class FENFormat {
         }
         return "";
     }
+
     public static String whoseMove() {
         if(Turn.whiteTurn) return "w";
         else return "b";
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String getCastlingInformation() {
         StringBuilder fen = new StringBuilder();
@@ -93,6 +96,7 @@ public class FENFormat {
         else
             return fen.toString();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String getEnPassantPossibility() {
         if(Chessboard.enPassantPossible == null)
@@ -100,12 +104,14 @@ public class FENFormat {
         else
             return Chessboard.getSquareName(Chessboard.enPassantPossible.getId());
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String getNumberOfHalfMoves() {
         int counter = 0;
-        for (String move : Chessboard.moveList) {
-            if(move.startsWith("a") || move.startsWith("b") || move.startsWith("c") || move.startsWith("d") ||
-               move.startsWith("e") || move.startsWith("f") || move.startsWith("g") || move.startsWith("h") || move.contains("x")) {
+        for (Move move : Chessboard.moveList) {
+            if(move.getNotation().startsWith("a") || move.getNotation().startsWith("b") || move.getNotation().startsWith("c") ||
+                    move.getNotation().startsWith("d") || move.getNotation().startsWith("e") || move.getNotation().startsWith("f")
+                    || move.getNotation().startsWith("g") || move.getNotation().startsWith("h") || move.getNotation().contains("x")) {
                 counter = 0;
             } else {
                 counter++;
@@ -113,6 +119,7 @@ public class FENFormat {
         }
         return Integer.toString(counter);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String getFullMoveNumber() {
         int listSize = Chessboard.moveList.size();
@@ -121,7 +128,7 @@ public class FENFormat {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static void loadPositionFromFen(Context context, String fen) throws Exception {
+    public static void loadPositionFromFen(String fen) throws Exception {
         if(!isFenValid(fen))
             throw new IllegalArgumentException("Code in FEN format is wrong!");
         clearPieces();
@@ -129,12 +136,13 @@ public class FENFormat {
         setObjectsOnNull();
         setNewObjects(fen);
         setIcons();
-        setTurn(context, fen);
+        setTurn(fen);
         setCastlingInformation(fen);
         setEnPassantPossible(fen);
         setNumberOfHalfMoves(fen);
         setFullMoveNumber(fen);
     }
+
     public static boolean isFenValid(String fen) {
         //this regular expression search if Fen have correct form
         // but it doesn't include e.g only 2 king on chessboard or max 8 squares in rank
@@ -162,6 +170,7 @@ public class FENFormat {
 
         return true;
     }
+
     private static boolean verifyRank(String rank) {
         int count = 0;
         for (int i = 0; i < rank.length(); i++) {
@@ -173,23 +182,28 @@ public class FENFormat {
         }
         return count == 8;
     }
+
     public static String getShortFen(String fen) {
         int index = fen.indexOf(" ");
 
         return fen.substring(0, index);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void clearPieces() {
         for (int i = 0; i < 64; i++) {
             Chessboard.getSquares(i).setPiece(null);
-            MainActivity.b[i].setImageResource(0);
+            Chessboard.b[i].setImageResource(0);
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void removeActionListeners() {
         for (int i = 0; i < 64; i++) {
-            MainActivity.b[i].setOnClickListener(null);
+            Chessboard.b[i].setOnClickListener(null);
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void setObjectsOnNull() {
         for (int i = 0; i < 16; i++) {
@@ -197,6 +211,7 @@ public class FENFormat {
             Chessboard.blackPieces.set(i, null);
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void setNewObjects(String fen) throws Exception {
         char sign;
@@ -212,6 +227,7 @@ public class FENFormat {
 
         }
     }
+
     public static boolean isPiece(char s) {
         if ( s == 'p' || s == 'P' || s == 'r' || s == 'R' ||  s == 'n' || s == 'N' ||
                 s == 'b' || s == 'B' || s == 'q' || s == 'Q' || s == 'k' || s == 'K') {
@@ -220,6 +236,7 @@ public class FENFormat {
        else
            return false;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void objectFactory(char s, String fen, int i) throws Exception {
         switch (s) {
@@ -237,6 +254,7 @@ public class FENFormat {
             case 'K': createObject(new King(Chessboard.getSquares(getSquareIdFromFen(fen, i)),true, Chessboard.whiteIcons[12])); break;
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void createObject(Piece p) throws Exception {
         p.setId(assignId(p));
@@ -250,6 +268,7 @@ public class FENFormat {
         //System.out.println(p.getIcon().toString());
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static int assignId(Piece p) {
 
@@ -378,6 +397,7 @@ public class FENFormat {
        //throw new Exception("There is no valid Id for this piece!");
         return 1000;
     }
+
     public static int getSquareIdFromFen(String fen, int id) {
         char sign;
         int counter = 0;
@@ -395,30 +415,33 @@ public class FENFormat {
         }
         return counter;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void setIcons() {
         for (Piece p : Chessboard.whitePieces) {
             if(p == null)
                 continue;
-            MainActivity.b[p.getSquare().getId()].setImageResource(p.getIcon());
+            Chessboard.b[p.getSquare().getId()].setImageResource(p.getIcon());
         }
         for (Piece p : Chessboard.blackPieces) {
             if(p == null)
                 continue;
-            MainActivity.b[p.getSquare().getId()].setImageResource(p.getIcon());
+            Chessboard.b[p.getSquare().getId()].setImageResource(p.getIcon());
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static void setTurn(Context context, String fen) {
+    public static void setTurn(String fen) {
         int index = fen.indexOf(" ");
         if(fen.charAt(index + 1) == 'w') {
-            Turn.enableWhitePieces(context);
+            Turn.enableWhitePieces();
             Turn.disableBlackPieces();
         } else {
             Turn.disableWhitePieces();
-            Turn.enableBlackPieces(context);
+            Turn.enableBlackPieces();
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void setCastlingInformation(String fen) {
 
@@ -459,6 +482,7 @@ public class FENFormat {
             }
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void setEnPassantPossible(String fen) {
         int lastIndex = fen.lastIndexOf(" ");
@@ -478,6 +502,7 @@ public class FENFormat {
         }
         Chessboard.enPassantPossible = Chessboard.getSquares(Chessboard.getSquareId(squareName.toString()));
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void setNumberOfHalfMoves(String fen) {
         int lastIndex = fen.lastIndexOf(" ");
@@ -492,6 +517,7 @@ public class FENFormat {
         }
         Chessboard.numberOfHalfMoves = Integer.parseInt(toConvert.toString());
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void setFullMoveNumber(String fen) {
         String []fenSplitted = fen.split(" ");

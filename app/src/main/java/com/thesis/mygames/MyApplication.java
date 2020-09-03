@@ -1,7 +1,7 @@
 package com.thesis.mygames;
 
-import android.app.Application;
-import android.content.Context;
+        import android.app.Application;
+        import android.content.Context;
 
 public class MyApplication extends Application {
 
