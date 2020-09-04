@@ -15,16 +15,15 @@ public class Move {
     public static AppCompatActivity activity;
     public static boolean isNavigationMove = false;
     public static boolean isUndoMove = false;
-    public static String selectedPiece;
 
     private Piece piece;
     private Piece newPieceAfterPawnPromotion = null;
     private Piece capturedPiece = null;
     private Piece castledRook = null;
-    private Piece promotedPawn = null;
     private Square endSquare = null;
     private Square startSquare = null;
     private String pieceAfterPromotion = "";
+    private String selectedPiece;
     private boolean wasCapture = false;
     private boolean wasPawnPromotion = false;
     private boolean wasEnPassant = false;
@@ -221,7 +220,12 @@ public class Move {
         }
          else if (this.piece instanceof Pawn && this.piece.getSquare().getId() >= 0 && this.piece.getSquare().getId() <= 7) {
             wasPawnPromotion = true;
-            pawnPromotion();
+            if(!isNavigationMove)
+                pawnPromotion();
+            else {
+                Move move = moveList.get(moveList.size() - 1);
+                move.setNewPieceAfterPawnPromotion();
+            }
         } else if (this.piece instanceof Pawn && this.piece.getSquare().getId() >= 56 && this.piece.getSquare().getId() <= 63) {
             wasPawnPromotion = true;
             pawnPromotion();
@@ -592,5 +596,14 @@ public class Move {
 
     public void setPiece(Piece piece) {
         this.piece = piece;
+    }
+
+
+    public String getSelectedPiece() {
+        return selectedPiece;
+    }
+
+    public void setSelectedPiece(String selectedPiece) {
+        this.selectedPiece = selectedPiece;
     }
 }

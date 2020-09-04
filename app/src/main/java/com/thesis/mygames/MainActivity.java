@@ -65,13 +65,9 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
 
     @Override
     public void onPositiveButtonClicked(String[] list, int position) {
-        Move.selectedPiece = list[position];
-
         Move move = moveList.get(moveList.size() - 1);
+        move.setSelectedPiece(list[position]);
         move.setNewPieceAfterPawnPromotion();
-
-        TextView textView = findViewById(R.id.promo);
-        textView.setText(Move.selectedPiece);
     }
 
     @Override
