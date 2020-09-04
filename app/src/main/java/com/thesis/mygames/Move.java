@@ -1,7 +1,5 @@
 package com.thesis.mygames;
 
-
-import android.app.Activity;
 import android.os.Build;
 import android.view.View;
 
@@ -15,16 +13,23 @@ import static com.thesis.mygames.Chessboard.*;
 
 public class Move {
     public static AppCompatActivity activity;
+    public static boolean isNavigationMove = false;
+    public static boolean isUndoMove = false;
+    public static String selectedPiece;
+
     private Piece piece;
     private Piece newPieceAfterPawnPromotion = null;
+    private Piece capturedPiece = null;
+    private Piece castledRook = null;
+    private Piece promotedPawn = null;
     private Square endSquare = null;
     private Square startSquare = null;
     private String pieceAfterPromotion = "";
     private boolean wasCapture = false;
     private boolean wasPawnPromotion = false;
-    public static boolean isNavigationMove = false;
+    private boolean wasEnPassant = false;
+    private boolean wasCastling = false;
     private String notation;
-    public static String selectedPiece;
 
     public Move(Piece piece) {
         this.piece = piece;
@@ -57,14 +62,72 @@ public class Move {
             return;
 
         isNavigationMove = true;
+        isUndoMove = true;
+        Pawn.wasEnPassant = false;
 
-        Piece p = moveList.get(moveIndicator).piece;
-        int endSquareId = moveList.get(moveIndicator).startSquare.getId();
-        String endSquareName = getSquareName(endSquareId);
-        makeQuickMove(p, endSquareName);
+        Move lastMove = moveList.get(moveIndicator);
+        String endSquareName = getSquareName(lastMove.startSquare.getId());
+        makeQuickMove(lastMove.piece, endSquareName);
 
         moveList.remove(moveList.size() - 1);
         moveIndicator -= 2;
+
+        if(lastMove.wasPawnPromotion) {
+            lastMove.endSquare.setPiece(null);
+            if(lastMove.piece.color) {
+                whitePieces.set(lastMove.newPieceAfterPawnPromotion.getId(), lastMove.piece);
+            } else {
+                blackPieces.set(lastMove.newPieceAfterPawnPromotion.getId(), lastMove.piece);
+            }
+            b[lastMove.endSquare.getId()].setImageResource(0);
+
+            if(lastMove.wasCapture) {
+                lastMove.endSquare.setPiece(lastMove.capturedPiece);
+                if(lastMove.piece.color) {
+                    blackPieces.set(getSquares(lastMove.endSquare.getId()).getPiece().getId(), lastMove.capturedPiece);
+                } else {
+                    whitePieces.set(getSquares(lastMove.endSquare.getId()).getPiece().getId(), lastMove.capturedPiece);
+                }
+                lastMove.capturedPiece.setSquare(lastMove.endSquare);
+                b[lastMove.endSquare.getId()].setImageResource(lastMove.capturedPiece.getIcon());
+            }
+
+            lastMove.startSquare.setPiece(lastMove.piece);
+            lastMove.piece.setSquare(lastMove.startSquare);
+            b[lastMove.startSquare.getId()].setImageResource(lastMove.piece.getIcon());
+        }
+
+        else if (lastMove.wasEnPassant) {
+            if (lastMove.piece.getColor()) {
+                blackPieces.set(lastMove.capturedPiece.getId(), lastMove.capturedPiece);
+            } else {
+                whitePieces.set(lastMove.capturedPiece.getId(), lastMove.capturedPiece);
+            }
+            getSquares(lastMove.capturedPiece.getSquare().getId()).setPiece(lastMove.capturedPiece);
+            b[lastMove.capturedPiece.getSquare().getId()].setImageResource(lastMove.capturedPiece.getIcon());
+        }
+
+        else if(lastMove.wasCapture) {
+            lastMove.endSquare.setPiece(lastMove.capturedPiece);
+            if(lastMove.piece.color) {
+                blackPieces.set(getSquares(lastMove.endSquare.getId()).getPiece().getId(), lastMove.capturedPiece);
+            } else {
+                whitePieces.set(getSquares(lastMove.endSquare.getId()).getPiece().getId(), lastMove.capturedPiece);
+            }
+            lastMove.capturedPiece.setSquare(lastMove.endSquare);
+            b[lastMove.endSquare.getId()].setImageResource(lastMove.capturedPiece.getIcon());
+        }
+
+        else if(lastMove.wasCastling) {
+            Square endRookSquare = lastMove.castledRook.getSquare();
+            if(endRookSquare.getId() % 8 == 5) {
+                endRookSquare.setPiece(null);
+                b[endRookSquare.getId()].setImageResource(0);
+                getSquares(endRookSquare.getId() + 2).setPiece(lastMove.castledRook);
+                b[endRookSquare.getId() + 2].setImageResource(lastMove.castledRook.getIcon());
+            }
+        }
+
         if(moveIndicator % 2 == 0) {
             Turn.enableBlackPieces();
             Turn.disableWhitePieces();
@@ -73,6 +136,7 @@ public class Move {
             Turn.disableBlackPieces();
         }
         isNavigationMove = false;
+        isUndoMove = false;
     }
 
     public static void makeQuickMove(Piece piece, String endSquareName) {
@@ -106,7 +170,6 @@ public class Move {
         }
     }
 
-
     private void showPossibleSquares(List<Square> possibleSquares) {
         for (Square fi : possibleSquares) {
             int id = fi.getId();
@@ -134,9 +197,10 @@ public class Move {
         endSquare = f;
         b[startSquareId].setImageResource(0);
         getSquares(startSquareId).setPiece(null);
-         removeUnnecessaryActionListeners();
+        if(!isUndoMove)
+            removeUnnecessaryActionListeners();
 
-        if (Pawn.wasEnPassant)
+        if (Pawn.wasEnPassant && !isUndoMove)
             enPassantMoveHandler(endSquareId);
 
         else if (getSquares(endSquare.getId()).getPiece() != null && piece.getColor() && !getSquares(endSquare.getId()).getPiece().getColor())
@@ -148,17 +212,19 @@ public class Move {
 
         setPieceOnNewSquare(endSquareId);
 
-        if (piece instanceof King && endSquare.getId() - startSquare.getId() == 2) {
+        if (piece instanceof King && endSquare.getId() - startSquare.getId() == 2 && !isUndoMove) {
+            wasCastling = true;
             shortCastleHandler();
-        } else if (piece instanceof King && endSquare.getId() - startSquare.getId() == -2) {
+        } else if (piece instanceof King && endSquare.getId() - startSquare.getId() == -2 && !isUndoMove) {
+            wasCastling = true;
             longCastleHandler();
         }
          else if (this.piece instanceof Pawn && this.piece.getSquare().getId() >= 0 && this.piece.getSquare().getId() <= 7) {
             wasPawnPromotion = true;
-            pawnPromotion(endSquareId, true);
+            pawnPromotion();
         } else if (this.piece instanceof Pawn && this.piece.getSquare().getId() >= 56 && this.piece.getSquare().getId() <= 63) {
             wasPawnPromotion = true;
-            pawnPromotion(endSquareId, false);
+            pawnPromotion();
         }
 
         chessNotation(wasCapture, wasPawnPromotion, ((King) blackPieces.get(12)).isCheck() ||
@@ -201,20 +267,24 @@ public class Move {
 
     private void enPassantMoveHandler(int endId) {
         if (piece.getColor()) {
+            capturedPiece = blackPieces.get(getSquares(endId + 8).getPiece().getId());
             blackPieces.set(getSquares(endId + 8).getPiece().getId(), null);
             getSquares(endId + 8).setPiece(null);
             b[endId + 8].setImageResource(0);
         } else {
+            capturedPiece = whitePieces.get(getSquares(endId - 8).getPiece().getId());
             whitePieces.set(getSquares(endId - 8).getPiece().getId(), null);
             getSquares(endId - 8).setPiece(null);
             b[endId - 8].setImageResource(0);
         }
 
+        wasEnPassant = true;
         Pawn.wasEnPassant = false;
         wasCapture = true;
     }
 
     private void deleteCapturedBlackPiece(int endId) {
+        capturedPiece = blackPieces.get(getSquares(endSquare.getId()).getPiece().getId());
         blackPieces.set(getSquares(endSquare.getId()).getPiece().getId(), null);
         getSquares(endSquare.getId()).setPiece(null);
         b[endId].setImageResource(0);
@@ -222,6 +292,7 @@ public class Move {
     }
 
     private void deleteCapturedWhitePiece(int endId) {
+        capturedPiece = whitePieces.get(getSquares(endSquare.getId()).getPiece().getId());
         whitePieces.set(getSquares(endSquare.getId()).getPiece().getId(), null);
         getSquares(endSquare.getId()).setPiece(null);
         b[endId].setImageResource(0);
@@ -237,6 +308,7 @@ public class Move {
     private void shortCastleHandler() {
         resetActionListeners();
         if (piece.getColor()) {
+            castledRook = whitePieces.get(15);
             b[63].setImageResource(0);
             getSquares(63).setPiece(null);
             removeCurrentActionListener(whitePieces.get(15));
@@ -244,6 +316,7 @@ public class Move {
             b[61].setImageResource(whitePieces.get(15).getIcon());
             getSquares(61).setPiece(whitePieces.get(15));
         } else {
+            castledRook = blackPieces.get(15);
             b[7].setImageResource(0);
             getSquares(7).setPiece(null);
             removeCurrentActionListener(blackPieces.get(15));
@@ -256,6 +329,7 @@ public class Move {
     private void longCastleHandler() {
         resetActionListeners();
         if (piece.getColor()) {
+            castledRook = whitePieces.get(8);
             b[56].setImageResource(0);
             getSquares(56).setPiece(null);
             removeCurrentActionListener(whitePieces.get(8));
@@ -263,6 +337,7 @@ public class Move {
             b[59].setImageResource(whitePieces.get(8).getIcon());
             getSquares(59).setPiece(whitePieces.get(8));
         } else {
+            castledRook = blackPieces.get(8);
             b[0].setImageResource(0);
             getSquares(0).setPiece(null);
             removeCurrentActionListener(blackPieces.get(8));
@@ -272,11 +347,10 @@ public class Move {
         }
     }
 
-    public void pawnPromotion(int endSquareId, boolean color) {
+    public void pawnPromotion() {
         DialogFragment singleChoiceDialog = new PromotionDialog();
         singleChoiceDialog.setCancelable(false);
         singleChoiceDialog.show(activity.getSupportFragmentManager(), "Single Choice Dialog");
-
     }
 
     public void setNewPieceAfterPawnPromotion() {
@@ -474,7 +548,6 @@ public class Move {
         return 0;
 
     }
-
 
     public Square getEnPassantPossibleSquare() {
         if (piece instanceof Pawn) {

@@ -78,5 +78,4 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
     public void onNegativeButtonClicked() {
 
     }
-
 }

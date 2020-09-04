@@ -1,21 +1,10 @@
 package com.thesis.mygames;
 
-import android.os.Build;
-import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.ImageButton;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import static android.graphics.Color.argb;
-
-@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class Chessboard {
 
     private static final Square[] squares = new Square[64];
@@ -187,5 +176,4 @@ public class Chessboard {
         // Explanation: 'a' in Ascii table equals 97 and letters represent horizontal of chessboard
         return asciiRepresentationOfFirstSign - 97 + 64 - numericValueOfSecondSign * 8;
     }
-
 }

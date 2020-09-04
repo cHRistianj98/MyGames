@@ -1,9 +1,5 @@
 package com.thesis.mygames;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,7 +9,7 @@ public class FENFormat {
         StringBuilder fen = new StringBuilder();
         fen.append(getFenPosition()).append(" ").
                 append(whoseMove()).append(" ").
-                append(getCastlingInformation()).append(" "). //może zwracać głupoty
+                append(getCastlingInformation()).append(" ").
                 append(getEnPassantPossibility()).append(" ").
                 append(getNumberOfHalfMoves()).append(" ").
                 append(getFullMoveNumber());
@@ -124,6 +120,7 @@ public class FENFormat {
     public static void loadPositionFromFen(String fen) throws Exception {
         if(!isFenValid(fen))
             throw new IllegalArgumentException("Code in FEN format is wrong!");
+
         clearPieces();
         removeActionListeners();
         setObjectsOnNull();
@@ -174,12 +171,6 @@ public class FENFormat {
             }
         }
         return count == 8;
-    }
-
-    public static String getShortFen(String fen) {
-        int index = fen.indexOf(" ");
-
-        return fen.substring(0, index);
     }
 
     public static void clearPieces() {

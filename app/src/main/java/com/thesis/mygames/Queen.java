@@ -1,10 +1,6 @@
 package com.thesis.mygames;
 
-import android.os.Build;
-
 import android.widget.ImageButton;
-
-import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Arrays;

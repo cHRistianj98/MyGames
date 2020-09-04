@@ -1,6 +1,5 @@
 package com.thesis.mygames;
 
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import java.util.List;

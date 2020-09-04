@@ -108,7 +108,6 @@ public class King extends Piece {
     }
 
     public void checkIfCheckOnPossibleFields() {
-
         for (int i = 0; i < validId.size(); i++) {
             if(attackedSquares.contains(Chessboard.getSquares(validId.get(i)))) {
                 toRemove.add(validId.get(i));}
@@ -138,7 +137,6 @@ public class King extends Piece {
         }
         validId.removeAll(toRemove);
         toRemove.clear();
-
     }
 
     public void checkIfMyPieceOnValidFields() {
@@ -149,7 +147,6 @@ public class King extends Piece {
     }
 
     public boolean isCheck() {
-
         attackedFieldsFun();
         if(attackedSquares.contains(this.square)) {
             attackedSquares.clear();
@@ -158,7 +155,6 @@ public class King extends Piece {
             attackedSquares.clear();
             return false;
         }
-
     }
 
     public boolean isCheckmate() {

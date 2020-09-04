@@ -93,5 +93,4 @@ public class PGNFormat {
            PGNMoveGenerator.append(moveList.get(moveList.size() - 1)).append(" ");
         }
     }
-
 }
