@@ -1,22 +1,14 @@
 package com.thesis.mygames;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
 
-import android.app.Dialog;
-import android.app.FragmentTransaction;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import static com.thesis.mygames.Chessboard.*;
@@ -59,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
             }
         });
 
+        TextView moves = (TextView) findViewById(R.id.moves);
+        moves.setMovementMethod(new ScrollingMovementMethod());
+
         init();
         Move.activity = this;
     }
@@ -74,4 +69,11 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
     public void onNegativeButtonClicked() {
 
     }
+
+//    public void loadPositionFromFen(View view) throws Exception {
+//        EditText editText = findViewById(R.id.fen);
+//        String fen = editText.getText().toString();
+//
+//        FENFormat.loadPositionFromFen(fen);
+//    }
 }

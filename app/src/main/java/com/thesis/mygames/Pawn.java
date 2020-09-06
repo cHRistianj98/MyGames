@@ -26,10 +26,10 @@ public class Pawn extends Piece {
         if( this.getColor() ) {
             Square leftPieceToTake = (square.getId() - 9 < 0) ? null : Chessboard.getSquares(square.getId() - 9);
             Square rightPieceToTake = (square.getId() - 7 < 0) ? null : Chessboard.getSquares(square.getId() - 7);
-            if (rightPieceToTake.getPiece() != null && rightPieceToTake.getPiece().getColor()
+            if (rightPieceToTake != null && rightPieceToTake.getPiece() != null && rightPieceToTake.getPiece().getColor()
                     && !Arrays.asList(15, 23, 31, 39, 47, 55).contains(square.getId()))
                 toRemove.add(rightPieceToTake.getId());
-            if (leftPieceToTake.getPiece() != null && leftPieceToTake.getPiece().getColor()
+            if (leftPieceToTake != null && leftPieceToTake.getPiece() != null && leftPieceToTake.getPiece().getColor()
                     && !Arrays.asList(8, 16, 24, 32, 40, 48).contains(square.getId()))
                 toRemove.add(leftPieceToTake.getId());
         }
@@ -39,10 +39,10 @@ public class Pawn extends Piece {
             Square leftPieceToTakeBlack = square.getId() + 9 > 63 ? null : Chessboard.getSquares(square.getId() + 9);
             Square rightPieceToTakeBlack = square.getId() + 7 > 63 ? null : Chessboard.getSquares(square.getId() + 7);
 
-            if (rightPieceToTakeBlack.getPiece() != null && !rightPieceToTakeBlack.getPiece().getColor()
+            if (rightPieceToTakeBlack != null && rightPieceToTakeBlack.getPiece() != null && !rightPieceToTakeBlack.getPiece().getColor()
                     && !Arrays.asList(8, 16, 24, 32, 40, 48).contains(square.getId()))
                 toRemove.add(rightPieceToTakeBlack.getId());
-            if (leftPieceToTakeBlack.getPiece() != null && !leftPieceToTakeBlack.getPiece().getColor() &&
+            if (leftPieceToTakeBlack != null && leftPieceToTakeBlack.getPiece() != null && !leftPieceToTakeBlack.getPiece().getColor() &&
                     !Arrays.asList(15, 23, 31, 39, 47, 55).contains(square.getId()))
                 toRemove.add(leftPieceToTakeBlack.getId());
         }
@@ -83,21 +83,21 @@ public class Pawn extends Piece {
             Square leftPieceToTake = (square.getId() - 9 < 0) ? null : Chessboard.getSquares(square.getId() - 9);
             Square rightPieceToTake = (square.getId() - 7 < 0) ? null : Chessboard.getSquares(square.getId() - 7);
 
-            if (twoUpSquare != null && oneUpSquare.getPiece() == null && twoUpSquare.getPiece() == null && square.getId() >= 48 && square.getId() <= 55)
+            if (oneUpSquare != null && twoUpSquare != null && oneUpSquare.getPiece() == null && twoUpSquare.getPiece() == null && square.getId() >= 48 && square.getId() <= 55)
                 possibleSquares.add(twoUpSquare);
-            if (oneUpSquare.getPiece() == null)
+            if (oneUpSquare != null && oneUpSquare.getPiece() == null)
                 possibleSquares.add(oneUpSquare);
-            if (rightPieceToTake.getPiece() != null && !rightPieceToTake.getPiece().getColor()
+            if (rightPieceToTake != null && rightPieceToTake.getPiece() != null && !rightPieceToTake.getPiece().getColor()
                     && !Arrays.asList(15, 23, 31, 39, 47, 55).contains(square.getId()))
                 possibleSquares.add(rightPieceToTake);
-            else if(rightPieceToTake.equals(Chessboard.enPassantPossible)) {
+            else if(rightPieceToTake != null && rightPieceToTake.equals(Chessboard.enPassantPossible)) {
                 possibleSquares.add(rightPieceToTake);
                 wasEnPassant = true;
             }
-            if (leftPieceToTake.getPiece() != null && !leftPieceToTake.getPiece().getColor()
+            if (leftPieceToTake != null && leftPieceToTake.getPiece() != null && !leftPieceToTake.getPiece().getColor()
                     && !Arrays.asList(8, 16, 24, 32, 40, 48).contains(square.getId()))
                 possibleSquares.add(leftPieceToTake);
-            else if(leftPieceToTake.equals(Chessboard.enPassantPossible)) {
+            else if(leftPieceToTake != null && leftPieceToTake.equals(Chessboard.enPassantPossible)) {
                 possibleSquares.add(leftPieceToTake);
                 wasEnPassant = true;
             }
@@ -109,21 +109,21 @@ public class Pawn extends Piece {
             Square leftPieceToTakeBlack = square.getId() + 9 > 63 ? null : Chessboard.getSquares(square.getId() + 9);
             Square rightPieceToTakeBlack = square.getId() + 7 > 63 ? null : Chessboard.getSquares(square.getId() + 7);
 
-            if (twoUpSquareBlack != null && oneUpSquareBlack.getPiece() == null && twoUpSquareBlack.getPiece() == null && square.getId() >= 8 && square.getId() <= 15)
+            if (oneUpSquareBlack != null && twoUpSquareBlack != null && oneUpSquareBlack.getPiece() == null && twoUpSquareBlack.getPiece() == null && square.getId() >= 8 && square.getId() <= 15)
                 possibleSquares.add(twoUpSquareBlack);
-            if (oneUpSquareBlack.getPiece() == null)
+            if (oneUpSquareBlack != null && oneUpSquareBlack.getPiece() == null)
                 possibleSquares.add(oneUpSquareBlack);
-            if (rightPieceToTakeBlack.getPiece() != null && rightPieceToTakeBlack.getPiece().getColor()
+            if (rightPieceToTakeBlack != null && rightPieceToTakeBlack.getPiece() != null && rightPieceToTakeBlack.getPiece().getColor()
                     && !Arrays.asList(8, 16, 24, 32, 40, 48).contains(square.getId()))
                 possibleSquares.add(rightPieceToTakeBlack);
-            else if(rightPieceToTakeBlack.equals(Chessboard.enPassantPossible)) {
+            else if(rightPieceToTakeBlack != null && rightPieceToTakeBlack.equals(Chessboard.enPassantPossible)) {
                 wasEnPassant = true;
                 possibleSquares.add(rightPieceToTakeBlack);
             }
-            if (leftPieceToTakeBlack.getPiece() != null && leftPieceToTakeBlack.getPiece().getColor()
+            if (leftPieceToTakeBlack != null && leftPieceToTakeBlack.getPiece() != null && leftPieceToTakeBlack.getPiece().getColor()
                     && !Arrays.asList(15, 23, 31, 39, 47, 55).contains(square.getId()))
                 possibleSquares.add(leftPieceToTakeBlack);
-            else if(leftPieceToTakeBlack.equals(Chessboard.enPassantPossible)) {
+            else if(leftPieceToTakeBlack != null && leftPieceToTakeBlack.equals(Chessboard.enPassantPossible)) {
                 wasEnPassant = true;
                 possibleSquares.add(leftPieceToTakeBlack);
             }

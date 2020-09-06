@@ -2,6 +2,7 @@ package com.thesis.mygames;
 
 import android.os.Build;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -247,8 +248,11 @@ public class Move {
 
         moveList.add(this);
 
-//        PGNFormat.generatePGNFromPosition();
-//        System.out.println(PGNGenerator);
+        if(!isNavigationMove && !wasPawnPromotion)
+            PGNFormat.generatePgnMoves();
+
+        TextView textView = activity.findViewById(R.id.moves);
+        textView.setText(PGNMoveGenerator.toString());
 
     }
 
@@ -422,6 +426,13 @@ public class Move {
                 }
                 break;
         }
+
+        Move move = moveList.get(moveList.size() - 1);
+        move.setNotation(move.getNotation() + pieceAfterPromotion);
+        PGNFormat.generatePgnMoves();
+
+        TextView textView = activity.findViewById(R.id.moves);
+        textView.setText(PGNMoveGenerator.toString());
 
         newPieceAfterPawnPromotion.setSquare(getSquares(endSquareId));
         getSquares(endSquareId).setPiece(newPieceAfterPawnPromotion);

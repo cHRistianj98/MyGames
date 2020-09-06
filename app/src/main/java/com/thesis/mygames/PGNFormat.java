@@ -88,9 +88,9 @@ public class PGNFormat {
     public static void generatePgnMoves() {
         if(moveList.size() % 2 == 1) {
             PGNMoveGenerator.append(moveList.size()/2 + 1).
-                    append(". ").append(moveList.get(moveList.size() - 1)).append(" ");
+                    append(". ").append(moveList.get(moveList.size() - 1).getNotation()).append(" ");
         } else {
-           PGNMoveGenerator.append(moveList.get(moveList.size() - 1)).append(" ");
+           PGNMoveGenerator.append(moveList.get(moveList.size() - 1).getNotation()).append(" ");
         }
     }
 }
