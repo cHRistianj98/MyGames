@@ -5,6 +5,8 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.thesis.mygames.Chessboard.*;
