@@ -7,4 +7,12 @@
         <item>Goniec</item>
         <item>Skoczek</item>
     </string-array>
+
+    <string name="new_game_button_text">Dodaj nową grę</string>
+    <string name="my_games_button_text">Moje gry</string>
+    <string name="about_app_text">O aplikacji</string>
+
+    <string name="next_move_text">Next!</string>
+    <string name="undo_move_text">Undo!</string>
+    <string name="save_text">Save!</string>
 </resources>

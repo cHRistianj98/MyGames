@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static com.thesis.mygames.Chessboard.*;
 
@@ -92,5 +93,94 @@ public class PGNFormat {
         } else {
            PGNMoveGenerator.append(moveList.get(moveList.size() - 1).getNotation()).append(" ");
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static int getMovedPiece(String move, int index) {
+
+        String []classes = { "info.kania.Knight", "info.kania.Rook", "info.kania.Bishop", "info.kania.Queen", "info.kania.King", "info.kania.Pawn" };
+        String myClass;
+        switch(move.charAt(0)) {
+            case 'O': return 12;
+            case 'N': myClass = classes[0]; break;
+            case 'B': myClass = classes[2]; break;
+            case 'R': myClass = classes[1]; break;
+            case 'Q': myClass = classes[3]; break;
+            case 'K': myClass = classes[4]; break;
+            default: myClass = classes[5]; break;
+        }
+
+        List<Piece> pieces = index % 2 == 0 ? whitePieces : blackPieces;
+        Integer []possiblePieces = pieces.stream()
+                .filter(p -> {
+                    try {
+                        return isBelongToClass(p, myClass);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    return false;
+                })
+                .filter(p -> p.possibleFieldsToMoveCheck().contains(getSquares(getSquareId(getEndSquareName(move)))))
+                .map(Piece::getId)
+                .toArray(Integer[]::new);
+
+        if(possiblePieces.length == 1)
+            return possiblePieces[0];
+
+        else if (possiblePieces.length > 1){
+            List<Integer> listOfSquaresWherePieceCanBe = getRangeOfPossibleSquareId(move.charAt(1));
+            for (Integer possiblePiece : possiblePieces) {
+                if (listOfSquaresWherePieceCanBe.contains(pieces.get(possiblePiece).getId()))
+                    return possiblePiece;
+            }
+        }
+
+        return 0;
+    }
+
+    public static boolean isBelongToClass(Object obj, String c) throws ClassNotFoundException {
+        return Class.forName(c).isInstance(obj);
+    }
+
+    public static String getEndSquareName(String move) {
+        char lastSign = move.charAt(move.length() - 1);
+        if(lastSign == '+' || lastSign == '#')
+            return Character.toString(move.charAt(move.length() - 3)) + move.charAt(move.length() - 2);
+
+        else if(lastSign == 'Q' || lastSign == 'N'|| lastSign == 'B' || lastSign == 'R')
+            return Character.toString(move.charAt(move.length() - 4)) + move.charAt(move.length() - 3);
+
+        else if(lastSign == 'O') {
+            if(move.length() == 3) {
+                if(Chessboard.moveList.size() % 2 == 0) {
+                    return "g8";
+                } else {
+                    return "g1";
+                }
+            } else {
+                if(Chessboard.moveList.size() % 2 == 0) {
+                    return "c8";
+                } else {
+                    return "c1";
+                }
+            }
+        } else {
+            return Character.toString(move.charAt(move.length() - 2)) + move.charAt(move.length() - 1);
+        }
+    }
+
+    public static List<Integer> getRangeOfPossibleSquareId(char c) {
+        List<Integer> possibilities = new LinkedList<>();
+        List<Character> coordinates = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h');
+        if(coordinates.contains(c)) {
+            for (int i = Character.getNumericValue(c) % 10; i < 64; i = i + 8)
+                possibilities.add(i);
+            return possibilities;
+        }
+        int param = Character.getNumericValue(c);
+        for (int i = 64 - param*8; i < 64 - (param-1)*8; i++) {
+            possibilities.add(i);
+        }
+        return possibilities;
     }
 }

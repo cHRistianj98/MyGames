@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
@@ -16,7 +15,6 @@
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
-        android:paddingBottom="10dp"
         android:columnCount="8"
         android:rowCount="8"
         tools:context=".MainActivity">
@@ -54,14 +52,23 @@
         android:layout_below="@id/moves"
         android:layout_toEndOf="@id/undo_move"
         android:layout_marginStart="10dp"
-        android:text="Next!" />
+        android:text="@string/next_move_text" />
 
     <Button
         android:id="@+id/undo_move"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/moves"
-        android:layout_marginStart="100dp"
-        android:text="Undo!" />
+        android:layout_marginStart="70dp"
+        android:text="@string/undo_move_text" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/moves"
+        android:layout_toEndOf="@+id/next_move"
+        android:text="@string/save_text" />
 
 </RelativeLayout>
