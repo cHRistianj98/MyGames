@@ -18,4 +18,9 @@ public class NavigationActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    public void showMyGames(View view) {
+        Intent intent = new Intent(this, MyGamesActivity.class);
+        startActivity(intent);
+    }
 }

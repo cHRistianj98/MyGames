@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MyGames</string>
 
+    <!--Pawn Promotion-->
     <string-array name="pieces">
         <item>Hetman</item>
         <item>Wieża</item>
@@ -8,11 +9,34 @@
         <item>Skoczek</item>
     </string-array>
 
-    <string name="new_game_button_text">Dodaj nową grę</string>
+    <string name="new_game_button_text">Dodaj nową partię</string>
     <string name="my_games_button_text">Moje gry</string>
     <string name="about_app_text">O aplikacji</string>
 
     <string name="next_move_text">Next!</string>
     <string name="undo_move_text">Undo!</string>
     <string name="save_text">Save!</string>
+
+    <string name="event_hint">Nazwa turnieju</string>
+    <string name="site_hint">Nazwa lokacji</string>
+    <string name="date_hint">data partii</string>
+    <string name="round_hint">runda</string>
+    <string name="white_lastname_hint">nazwisko grającego białymi</string>
+    <string name="white_firstname_hint">imię grającego białymi</string>
+    <string name="black_lastname_hint">nazwisko grającego czarnymi</string>
+    <string name="black_firstname_hint">imię grającego czarnymi</string>
+    <string name="white_elo_hint">ranking grającego białymi</string>
+    <string name="black_elo_hint">ranking grającego czarnymi</string>
+    <string name="result_label">Rezultat</string>
+    <string name="save_button_label">Ok</string>
+
+    <string-array name="results">
+        <item>1-0</item>
+        <item>1/2-1/2</item>
+        <item>0-1</item>
+    </string-array>
+
+    <string name="about_app">
+        Aplikacja bardzo dobra pozdrawiam
+    </string>
 </resources>
