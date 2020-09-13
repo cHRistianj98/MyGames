@@ -39,19 +39,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_input_layout_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="date"
-                android:hint="@string/date_hint" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_layout_round"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -142,7 +129,6 @@
                 android:hint="@string/black_elo_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
         <TextView
             android:id="@+id/result_label"
             android:layout_width="match_parent"
@@ -155,6 +141,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/results" />
+
+        <TextView
+            android:id="@+id/date"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:hint="@string/date_hint" />
 
         <Button
             android:id="@+id/save_button"

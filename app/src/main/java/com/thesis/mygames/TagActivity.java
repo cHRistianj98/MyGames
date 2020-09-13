@@ -2,12 +2,13 @@ package com.thesis.mygames;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -15,16 +16,21 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Calendar;
 import java.util.regex.Pattern;
 
 public class TagActivity extends AppCompatActivity {
 
-    EditText event, site, date, round, whiteLastName, whiteFirstName, blackLastName, blackFirstName,
+    public static final String TAG = "TagActivity";
+
+    private EditText event, site, round, whiteLastName, whiteFirstName, blackLastName, blackFirstName,
              whiteElo, blackElo;
-    TextInputLayout tilEvent, tilSite, tilDate, tilRound, tilWhiteLastName, tilWhiteFirstName,
+    private TextInputLayout tilEvent, tilSite, tilRound, tilWhiteLastName, tilWhiteFirstName,
                     tilBlackLastName, tilBlackFirstName, tilWhiteElo, tilBlackELo;
-    Spinner result;
-    Button saveButton;
+    private TextView date;
+    private DatePickerDialog.OnDateSetListener dateSetListener;
+    private Spinner result;
+    private Button saveButton;
 
 
     @Override
@@ -32,12 +38,33 @@ public class TagActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag);
         initializeWidgets();
+
+        date.setOnClickListener(v -> {
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog dialog = new DatePickerDialog(
+                    TagActivity.this,
+                    android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                    dateSetListener,
+                    year, month, day);
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+
+            dateSetListener = (view, year1, month1, dayOfMonth) -> {
+                month1 = month1 + 1;
+                String date = year1 + "." + month1 + "." + dayOfMonth;
+                TagActivity.this.date.setText(date);
+            };
+        });
     }
 
     private void initializeWidgets() {
         event = (EditText) findViewById(R.id.event);
         site = (EditText) findViewById(R.id.site);
-        date = (EditText) findViewById(R.id.date);
         round = (EditText) findViewById(R.id.round);
         whiteLastName = (EditText) findViewById(R.id.white_lastname);
         whiteFirstName = (EditText) findViewById(R.id.white_firstname);
@@ -48,7 +75,6 @@ public class TagActivity extends AppCompatActivity {
 
         tilEvent = (TextInputLayout) findViewById(R.id.text_input_layout_event);
         tilSite = (TextInputLayout) findViewById(R.id.text_input_layout_site);
-        tilDate = (TextInputLayout) findViewById(R.id.text_input_layout_date);
         tilRound = (TextInputLayout) findViewById(R.id.text_input_layout_round);
         tilWhiteLastName = (TextInputLayout) findViewById(R.id.text_input_layout_white_lastname);
         tilWhiteFirstName = (TextInputLayout) findViewById(R.id.text_input_layout_white_firstname);
@@ -57,6 +83,7 @@ public class TagActivity extends AppCompatActivity {
         tilWhiteElo = (TextInputLayout) findViewById(R.id.text_input_layout_white_elo);
         tilBlackELo = (TextInputLayout) findViewById(R.id.text_input_layout_black_elo);
 
+        date = (TextView) findViewById(R.id.date);
         result = (Spinner) findViewById(R.id.result);
         saveButton = (Button) findViewById(R.id.save_button);
     }

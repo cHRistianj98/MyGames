@@ -19,7 +19,7 @@
 
     <string name="event_hint">Nazwa turnieju</string>
     <string name="site_hint">Nazwa lokacji</string>
-    <string name="date_hint">data partii</string>
+    <string name="date_hint">Podaj datę partii</string>
     <string name="round_hint">runda</string>
     <string name="white_lastname_hint">nazwisko/login grającego białymi*</string>
     <string name="white_firstname_hint">imię grającego białymi</string>
