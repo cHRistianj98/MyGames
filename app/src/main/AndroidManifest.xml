@@ -11,14 +11,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AboutAppActivity"></activity>
-        <activity android:name=".TagActivity" />
-        <activity android:name=".MyGamesActivity" />
-        <activity android:name=".NavigationActivity">
+        <activity android:name=".TagActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".MyGamesActivity" />
+        <activity android:name=".NavigationActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity android:name=".MainActivity" />
     </application>
