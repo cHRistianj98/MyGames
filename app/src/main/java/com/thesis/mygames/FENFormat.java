@@ -234,7 +234,7 @@ public class FENFormat {
         }
     }
 
-    public static void createObject(Piece p) throws Exception {
+    public static void createObject(Piece p) {
         p.setId(assignId(p));
         if (p.getColor()) {
 
@@ -243,8 +243,6 @@ public class FENFormat {
             Chessboard.blackPieces.set(p.getId(), p);
         }
         Chessboard.getSquares(p.getSquare().getId()).setPiece(p);
-        //System.out.println(p.getIcon().toString());
-
     }
 
     public static int assignId(Piece p) {

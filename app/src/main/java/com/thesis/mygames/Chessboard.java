@@ -119,6 +119,13 @@ public class Chessboard {
         addPiece(blackPieces.get(15), 7, blackIcons[7]);
 
         Turn.enableWhitePieces();
+
+//        try {
+//            FENFormat.loadPositionFromFen("rnbqkbnr/pp2pppp/2p5/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
     }
 
     public static void addPiece(Piece piece, int id, int icon) {

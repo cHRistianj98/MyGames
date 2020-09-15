@@ -71,4 +71,11 @@
         android:layout_toEndOf="@+id/next_move"
         android:text="@string/save_text" />
 
+    <Button
+        android:id="@+id/fen_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="fen"
+        android:layout_below="@+id/undo_move" />
+
 </RelativeLayout>

@@ -3,12 +3,17 @@ package com.thesis.mygames;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,6 +27,9 @@ import java.util.regex.Pattern;
 public class TagActivity extends AppCompatActivity {
 
     public static final String TAG = "TagActivity";
+    public static final String MOVES = "moves";
+
+    private SQLiteDatabase db;
 
     private EditText event, site, round, whiteLastName, whiteFirstName, blackLastName, blackFirstName,
              whiteElo, blackElo;
@@ -91,9 +99,8 @@ public class TagActivity extends AppCompatActivity {
     public void addNewGameToDatabase(View view) {
         Validator validator = new Validator();
         if(validator.validate()) {
-            ;
+            new AddingGameAsyncTask().execute();
         }
-
     }
 
     private class Validator {
@@ -135,7 +142,9 @@ public class TagActivity extends AppCompatActivity {
             if(lastName.getText().toString().isEmpty()) {
                 inputLayout.setError("nazwa/login zawodnika nie może być pusta");
                 Toast.makeText(TagActivity.this, R.string.empty_lastname_error, Toast.LENGTH_SHORT).show();
+                return false;
             }
+
             Pattern p = Pattern.compile("^[a-zA-Z0-9śćźżółęąŚĆŻŹÓŁĘĄ.]*$");
             boolean isValid = p.matcher(lastName.getText().toString()).find();
 
@@ -163,4 +172,47 @@ public class TagActivity extends AppCompatActivity {
             return isValid;
         }
     }
+
+    private class AddingGameAsyncTask extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            Intent intent = getIntent();
+            SQLiteOpenHelper myGamesDatabaseHelper = new MyGamesDatabaseHelper(TagActivity.this);
+            try {
+                db = myGamesDatabaseHelper.getReadableDatabase();
+
+                MyGamesDatabaseHelper.insertGame(db,
+                        event.getText().toString().isEmpty() ? "?" : event.getText().toString(),
+                        site.getText().toString().isEmpty() ? "?" : site.getText().toString(),
+                        date.getText().toString().isEmpty() ? "????.??.??" : date.getText().toString(),
+                        round.getText().toString().isEmpty() ? 0 : Integer.parseInt(round.getText().toString()),
+                        whiteFirstName.getText().toString(),
+                        whiteLastName.getText().toString().isEmpty() ? "?" : whiteLastName.getText().toString(),
+                        blackFirstName.getText().toString(),
+                        blackLastName.getText().toString().isEmpty() ? "?" : blackLastName.getText().toString(),
+                        result.getSelectedItem().toString(),
+                        whiteElo.getText().toString().isEmpty() ? 0 : Integer.parseInt(whiteElo.getText().toString()),
+                        blackElo.getText().toString().isEmpty() ? 0 : Integer.parseInt(blackElo.getText().toString()),
+                        intent.getStringExtra(MOVES)
+                );
+                return true;
+            } catch (SQLiteException e) {
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if(!success) {
+                Toast toast = Toast.makeText(TagActivity.this, "Baza danych jest obecnie niedostępna",
+                        Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
+            Intent intent = new Intent(TagActivity.this, MyGamesActivity.class);
+            startActivity(intent);
+        }
+    }
+
+
 }

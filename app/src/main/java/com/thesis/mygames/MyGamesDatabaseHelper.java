@@ -10,12 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 class MyGamesDatabaseHelper extends SQLiteOpenHelper {
-    //private static final String DB_NAME = "my_games";
+    private static final String DB_NAME = "my_games";
     private static final int DB_VERSION = 1;
 
     public MyGamesDatabaseHelper(@Nullable Context context) {
-        //super(context, DB_NAME, null, DB_VERSION);
-        super(context, null, null, DB_VERSION);
+        super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override
