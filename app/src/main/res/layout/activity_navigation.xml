@@ -8,9 +8,9 @@
     tools:context=".NavigationActivity">
 
     <Button
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/new_game_button"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="@string/new_game_button_text"
         android:layout_gravity="center"
@@ -19,7 +19,7 @@
     <Button
         android:layout_marginTop="10dp"
         android:id="@+id/my_games_button"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="@string/my_games_button_text"
         android:layout_gravity="center"
@@ -28,7 +28,7 @@
     <Button
         android:layout_marginTop="10dp"
         android:id="@+id/about_app"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="@string/about_app_text"
         android:layout_gravity="center"/>

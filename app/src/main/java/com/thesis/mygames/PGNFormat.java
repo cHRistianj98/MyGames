@@ -100,7 +100,8 @@ public class PGNFormat {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static int getMovedPiece(String move, int index) {
 
-        String []classes = { "info.kania.Knight", "info.kania.Rook", "info.kania.Bishop", "info.kania.Queen", "info.kania.King", "info.kania.Pawn" };
+        String []classes = { "com.thesis.mygames.Knight", "com.thesis.mygames.Rook", "com.thesis.mygames.Bishop",
+                             "com.thesis.mygames.Queen", "com.thesis.mygames.King", "com.thesis.mygames.Pawn" };
         String myClass;
         switch(move.charAt(0)) {
             case 'O': return 12;

@@ -33,19 +33,19 @@ class MyGamesDatabaseHelper extends SQLiteOpenHelper {
                 + "black_elo INTEGER, "
                 + "moves TEXT);");
 
-       insertGame(db,
-               "",
-               "",
-               "",
-               1,
-               "Jan",
-               "Wojtyla",
-               "Marcin",
-               "Najman",
-               "1-0",
-               1000,
-               1000,
-               "e2 e7");
+//       insertGame(db,
+//               "",
+//               "",
+//               "",
+//               1,
+//               "Jan",
+//               "Wojtyla",
+//               "Marcin",
+//               "Najman",
+//               "1-0",
+//               1000,
+//               1000,
+//               "1. e2 e7");
     }
 
     @Override

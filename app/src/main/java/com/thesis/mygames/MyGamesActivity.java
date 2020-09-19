@@ -1,18 +1,24 @@
 package com.thesis.mygames;
 
+import android.annotation.SuppressLint;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 public class MyGamesActivity extends ListActivity {
+    public static final String TAG = "MyGamesActivity";
+
     private SQLiteDatabase db;
     private Cursor cursor;
     ListView listGames;
@@ -48,11 +54,59 @@ public class MyGamesActivity extends ListActivity {
 //
 //            }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         cursor.close();
         db.close();
+    }
+
+    @Override
+    protected void onListItemClick(ListView listView, View itemView, int position, long id) {
+        new ShowGameAsyncTask().execute((int)id);
+    }
+
+
+    private class ShowGameAsyncTask extends AsyncTask<Integer, Void, Boolean> {
+        private String moves;
+
+        @Override
+        protected Boolean doInBackground(Integer... ids) {
+            int id = ids[0];
+            SQLiteOpenHelper myGamesDatabaseHelper = new MyGamesDatabaseHelper(MyGamesActivity.this);
+            try {
+                db = myGamesDatabaseHelper.getReadableDatabase();
+                Cursor singleCursor = db.query("GAME",
+                        new String[]{"_id", "moves"},
+                        "_id = ?",
+                        new String[] { Integer.toString(id) },
+                        null, null, null
+                        );
+
+                if(singleCursor.moveToFirst()) {
+                    moves = singleCursor.getString(1);
+                }
+                singleCursor.close();
+
+                Intent intent = new Intent(MyGamesActivity.this, MainActivity.class);
+                intent.putExtra(MainActivity.EXTRA_GAME_ID, id);
+                intent.putExtra(MainActivity.EXTRA_MOVES, moves);
+                startActivity(intent);
+                return true;
+            } catch (SQLiteException e) {
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if(!success) {
+                Toast toast = Toast.makeText(MyGamesActivity.this, "Baza danych jest obecnie niedostępna",
+                        Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
     }
 
     private class GamesAsyncTask extends AsyncTask<Void, Void, Boolean> {

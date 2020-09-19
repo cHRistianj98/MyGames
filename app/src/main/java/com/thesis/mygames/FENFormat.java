@@ -117,7 +117,7 @@ public class FENFormat {
         return listSize % 2 == 0 ? Integer.toString((listSize + 2) / 2) : Integer.toString((listSize + 1) / 2);
     }
 
-    public static void loadPositionFromFen(String fen) throws Exception {
+    public static void loadPositionFromFen(String fen) throws IllegalArgumentException {
         if(!isFenValid(fen))
             throw new IllegalArgumentException("Code in FEN format is wrong!");
 
@@ -134,26 +134,21 @@ public class FENFormat {
     }
 
     public static boolean isFenValid(String fen) {
-        //this regular expression search if Fen have correct form
-        // but it doesn't include e.g only 2 king on chessboard or max 8 squares in rank
         Pattern pattern = Pattern.compile("((([prnbqkPRNBQK12345678]*/){7})([prnbqkPRNBQK12345678]*)) (w|b) ((K?Q?k?q?)|\\-) (([abcdefgh][36])|\\-) (\\d*) (\\d*)");
         Matcher matcher = pattern.matcher(fen);
         if (!matcher.matches()) {
             return false;
         }
 
-        // Check each rank.
         String[] ranks = matcher.group(2).split("/");
         for (String rank : ranks) {
-            if (!verifyRank(rank)) {
+            if (!verifyRank(rank))
                 return false;
-            }
         }
         if (!verifyRank(matcher.group(4))) {
             return false;
         }
 
-        // Check two kings.
         if (!matcher.group(1).contains("k") || !matcher.group(1).contains("K")) {
             return false;
         }
@@ -193,7 +188,7 @@ public class FENFormat {
         }
     }
 
-    public static void setNewObjects(String fen) throws Exception {
+    public static void setNewObjects(String fen) {
         char sign;
         for (int i = 0; i < fen.length() ; i++) {
             sign = fen.charAt(i);
@@ -217,7 +212,7 @@ public class FENFormat {
            return false;
     }
 
-    public static void objectFactory(char s, String fen, int i) throws Exception {
+    public static void objectFactory(char s, String fen, int i) {
         switch (s) {
             case 'p': createObject(new Pawn(Chessboard.getSquares(getSquareIdFromFen(fen, i)),false, Chessboard.blackIcons[8])); break;
             case 'P': createObject(new Pawn(Chessboard.getSquares(getSquareIdFromFen(fen, i)),true, Chessboard.whiteIcons[0])); break;

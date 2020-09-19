@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Chessboard {
 
-    private static final Square[] squares = new Square[64];
+    private static Square[] squares = new Square[64];
     public static ImageButton[] b = new ImageButton[64];
 
     public static List<Piece> whitePieces = new ArrayList<>();
@@ -182,5 +182,22 @@ public class Chessboard {
 
         // Explanation: 'a' in Ascii table equals 97 and letters represent horizontal of chessboard
         return asciiRepresentationOfFirstSign - 97 + 64 - numericValueOfSecondSign * 8;
+    }
+
+    public static void resetChessboard() {
+        squares = new Square[64];
+        b = new ImageButton[64];
+
+        whitePieces = new ArrayList<>();
+        blackPieces = new ArrayList<>();
+        moveList = new ArrayList<>();
+        moveIndicator = -1;
+
+        enPassantPossible = null;
+        numberOfHalfMoves = 0;
+        fullMoveNumber = 0;
+        //public static GameState gameState = GameState.NORMAL;
+        PGNTagGenerator = new StringBuilder();
+        PGNMoveGenerator = new StringBuilder();
     }
 }
