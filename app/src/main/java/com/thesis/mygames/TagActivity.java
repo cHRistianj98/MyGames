@@ -186,11 +186,11 @@ public class TagActivity extends AppCompatActivity {
                         site.getText().toString().isEmpty() ? "?" : site.getText().toString(),
                         date.getText().toString().isEmpty() ? "????.??.??" : date.getText().toString(),
                         round.getText().toString().isEmpty() ? 0 : Integer.parseInt(round.getText().toString()),
-                        whiteFirstName.getText().toString(),
+                        whiteFirstName.getText().toString().isEmpty() ? "?" : whiteFirstName.getText().toString(),
                         whiteLastName.getText().toString().isEmpty() ? "?" : whiteLastName.getText().toString(),
-                        blackFirstName.getText().toString(),
+                        blackFirstName.getText().toString().isEmpty() ? "?" : blackFirstName.getText().toString(),
                         blackLastName.getText().toString().isEmpty() ? "?" : blackLastName.getText().toString(),
-                        result.getSelectedItem().toString(),
+                        getStringResult(result.getSelectedItem().toString()),
                         whiteElo.getText().toString().isEmpty() ? 0 : Integer.parseInt(whiteElo.getText().toString()),
                         blackElo.getText().toString().isEmpty() ? 0 : Integer.parseInt(blackElo.getText().toString()),
                         intent.getStringExtra(MOVES)
@@ -214,5 +214,13 @@ public class TagActivity extends AppCompatActivity {
         }
     }
 
-
+    private String getStringResult(String selectedItem) {
+        String[] resultArray = getApplicationContext().getResources().getStringArray(R.array.results);
+        if(selectedItem.equals(resultArray[0]))
+            return "1-0";
+        else if(selectedItem.equals(resultArray[1]))
+            return "1/2-1/2";
+        else
+            return "0-1";
+    }
 }

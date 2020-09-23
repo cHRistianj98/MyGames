@@ -3,6 +3,8 @@ package com.thesis.mygames;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.thesis.mygames.Chessboard.*;
+
 public class FENFormat {
 
     public static String generateFENFromPosition() {
@@ -22,7 +24,7 @@ public class FENFormat {
         Square s;
         int counter = 0;
         for (int i = 0 ; i < 64;  i++) {
-            s = Chessboard.getSquares(i);
+            s = getSquares(i);
             if(s.getPiece() != null) {
                 if(counter == 0) {
                     fen.append(generateLetterBasedOnPiece(s.getPiece()));
@@ -75,13 +77,13 @@ public class FENFormat {
     public static String getCastlingInformation() {
         StringBuilder fen = new StringBuilder();
 
-        if(!((King)Chessboard.whitePieces.get(12)).isWasMoved() && !((Rook)Chessboard.whitePieces.get(15)).isWasMoved())
+        if(!((King) whitePieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(15)).isWasMoved())
             fen.append("K");
-        if(!((King)Chessboard.whitePieces.get(12)).isWasMoved() && !((Rook)Chessboard.whitePieces.get(8)).isWasMoved())
+        if(!((King) whitePieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(8)).isWasMoved())
             fen.append("Q");
-        if(!((King)Chessboard.blackPieces.get(12)).isWasMoved() && !((Rook)Chessboard.whitePieces.get(15)).isWasMoved())
+        if(!((King) blackPieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(15)).isWasMoved())
             fen.append("k");
-        if(!((King)Chessboard.blackPieces.get(12)).isWasMoved() && !((Rook)Chessboard.whitePieces.get(8)).isWasMoved())
+        if(!((King) blackPieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(8)).isWasMoved())
             fen.append("q");
 
         if(fen.toString().equals(""))
@@ -91,15 +93,15 @@ public class FENFormat {
     }
 
     public static String getEnPassantPossibility() {
-        if(Chessboard.enPassantPossible == null)
+        if(enPassantPossible == null)
             return "-";
         else
-            return Chessboard.getSquareName(Chessboard.enPassantPossible.getId());
+            return getSquareName(enPassantPossible.getId());
     }
 
     public static String getNumberOfHalfMoves() {
         int counter = 0;
-        for (Move move : Chessboard.moveList) {
+        for (Move move : moveList) {
             if(move.getNotation().startsWith("a") || move.getNotation().startsWith("b") || move.getNotation().startsWith("c") ||
                     move.getNotation().startsWith("d") || move.getNotation().startsWith("e") || move.getNotation().startsWith("f")
                     || move.getNotation().startsWith("g") || move.getNotation().startsWith("h") || move.getNotation().contains("x")) {
@@ -112,7 +114,7 @@ public class FENFormat {
     }
 
     public static String getFullMoveNumber() {
-        int listSize = Chessboard.moveList.size();
+        int listSize = moveList.size();
 
         return listSize % 2 == 0 ? Integer.toString((listSize + 2) / 2) : Integer.toString((listSize + 1) / 2);
     }
@@ -170,21 +172,21 @@ public class FENFormat {
 
     public static void clearPieces() {
         for (int i = 0; i < 64; i++) {
-            Chessboard.getSquares(i).setPiece(null);
-            Chessboard.b[i].setImageResource(0);
+            getSquares(i).setPiece(null);
+            b[i].setImageResource(0);
         }
     }
 
     public static void removeActionListeners() {
         for (int i = 0; i < 64; i++) {
-            Chessboard.b[i].setOnClickListener(null);
+            b[i].setOnClickListener(null);
         }
     }
 
     public static void setObjectsOnNull() {
         for (int i = 0; i < 16; i++) {
-            Chessboard.whitePieces.set(i, null);
-            Chessboard.blackPieces.set(i, null);
+            whitePieces.set(i, null);
+            blackPieces.set(i, null);
         }
     }
 
@@ -204,40 +206,35 @@ public class FENFormat {
     }
 
     public static boolean isPiece(char s) {
-        if ( s == 'p' || s == 'P' || s == 'r' || s == 'R' ||  s == 'n' || s == 'N' ||
-                s == 'b' || s == 'B' || s == 'q' || s == 'Q' || s == 'k' || s == 'K') {
-            return true;
-        }
-       else
-           return false;
+        return s == 'p' || s == 'P' || s == 'r' || s == 'R' || s == 'n' || s == 'N' ||
+                s == 'b' || s == 'B' || s == 'q' || s == 'Q' || s == 'k' || s == 'K';
     }
 
     public static void objectFactory(char s, String fen, int i) {
         switch (s) {
-            case 'p': createObject(new Pawn(Chessboard.getSquares(getSquareIdFromFen(fen, i)),false, Chessboard.blackIcons[8])); break;
-            case 'P': createObject(new Pawn(Chessboard.getSquares(getSquareIdFromFen(fen, i)),true, Chessboard.whiteIcons[0])); break;
-            case 'r': createObject(new Rook(Chessboard.getSquares(getSquareIdFromFen(fen, i)),false, Chessboard.blackIcons[0])); break;
-            case 'R': createObject(new Rook(Chessboard.getSquares(getSquareIdFromFen(fen, i)),true, Chessboard.whiteIcons[8])); break;
-            case 'n': createObject(new Knight(Chessboard.getSquares(getSquareIdFromFen(fen, i)),false, Chessboard.blackIcons[1])); break;
-            case 'N': createObject(new Knight(Chessboard.getSquares(getSquareIdFromFen(fen, i)),true, Chessboard.whiteIcons[9])); break;
-            case 'b': createObject(new Bishop(Chessboard.getSquares(getSquareIdFromFen(fen, i)),false, Chessboard.blackIcons[2])); break;
-            case 'B': createObject(new Bishop(Chessboard.getSquares(getSquareIdFromFen(fen, i)),true, Chessboard.whiteIcons[10])); break;
-            case 'q': createObject(new Queen(Chessboard.getSquares(getSquareIdFromFen(fen, i)),false, Chessboard.blackIcons[3])); break;
-            case 'Q': createObject(new Queen(Chessboard.getSquares(getSquareIdFromFen(fen, i)),true, Chessboard.whiteIcons[11])); break;
-            case 'k': createObject(new King(Chessboard.getSquares(getSquareIdFromFen(fen, i)),false, Chessboard.blackIcons[4])); break;
-            case 'K': createObject(new King(Chessboard.getSquares(getSquareIdFromFen(fen, i)),true, Chessboard.whiteIcons[12])); break;
+            case 'p': createObject(new Pawn(getSquares(getSquareIdFromFen(fen, i)),false, blackIcons[8])); break;
+            case 'P': createObject(new Pawn(getSquares(getSquareIdFromFen(fen, i)),true, whiteIcons[0])); break;
+            case 'r': createObject(new Rook(getSquares(getSquareIdFromFen(fen, i)),false, blackIcons[0])); break;
+            case 'R': createObject(new Rook(getSquares(getSquareIdFromFen(fen, i)),true, whiteIcons[8])); break;
+            case 'n': createObject(new Knight(getSquares(getSquareIdFromFen(fen, i)),false, blackIcons[1])); break;
+            case 'N': createObject(new Knight(getSquares(getSquareIdFromFen(fen, i)),true, whiteIcons[9])); break;
+            case 'b': createObject(new Bishop(getSquares(getSquareIdFromFen(fen, i)),false, blackIcons[2])); break;
+            case 'B': createObject(new Bishop(getSquares(getSquareIdFromFen(fen, i)),true, whiteIcons[10])); break;
+            case 'q': createObject(new Queen(getSquares(getSquareIdFromFen(fen, i)),false, blackIcons[3])); break;
+            case 'Q': createObject(new Queen(getSquares(getSquareIdFromFen(fen, i)),true, whiteIcons[11])); break;
+            case 'k': createObject(new King(getSquares(getSquareIdFromFen(fen, i)),false, blackIcons[4])); break;
+            case 'K': createObject(new King(getSquares(getSquareIdFromFen(fen, i)),true, whiteIcons[12])); break;
         }
     }
 
     public static void createObject(Piece p) {
         p.setId(assignId(p));
         if (p.getColor()) {
-
-            Chessboard.whitePieces.set(p.getId(), p);
+            whitePieces.set(p.getId(), p);
         } else {
-            Chessboard.blackPieces.set(p.getId(), p);
+            blackPieces.set(p.getId(), p);
         }
-        Chessboard.getSquares(p.getSquare().getId()).setPiece(p);
+        getSquares(p.getSquare().getId()).setPiece(p);
     }
 
     public static int assignId(Piece p) {
@@ -245,18 +242,18 @@ public class FENFormat {
         if (p.getColor()) {
             if(p instanceof Pawn) {
                 for (int i = 0; i < 8; i++) {
-                    if(Chessboard.whitePieces.get(i) == null) {
+                    if(whitePieces.get(i) == null) {
                         return i;
                     }
                 }
             }
 
             else if(p instanceof Rook) {
-                if(Chessboard.whitePieces.get(8) == null) return 8;
-                if(Chessboard.whitePieces.get(15) == null) return 15;
+                if(whitePieces.get(8) == null) return 8;
+                if(whitePieces.get(15) == null) return 15;
                 else {
                     for (int i = 0; i < 8; i++) {
-                        if(Chessboard.whitePieces.get(i) == null) {
+                        if(whitePieces.get(i) == null) {
                             return i;
                         }
                     }
@@ -264,11 +261,11 @@ public class FENFormat {
             }
 
             else if(p instanceof Knight) {
-                if(Chessboard.whitePieces.get(9) == null) return 9;
-                if(Chessboard.whitePieces.get(14) == null) return 14;
+                if(whitePieces.get(9) == null) return 9;
+                if(whitePieces.get(14) == null) return 14;
                 else {
                     for (int i = 0; i < 8; i++) {
-                        if(Chessboard.whitePieces.get(i) == null) {
+                        if(whitePieces.get(i) == null) {
                             return i;
                         }
                     }
@@ -276,11 +273,11 @@ public class FENFormat {
             }
 
             else if(p instanceof Bishop) {
-                if(Chessboard.whitePieces.get(10) == null) return 10;
-                if(Chessboard.whitePieces.get(13) == null) return 13;
+                if(whitePieces.get(10) == null) return 10;
+                if(whitePieces.get(13) == null) return 13;
                 else {
                     for (int i = 0; i < 8; i++) {
-                        if(Chessboard.whitePieces.get(i) == null) {
+                        if(whitePieces.get(i) == null) {
                             return i;
                         }
                     }
@@ -288,10 +285,10 @@ public class FENFormat {
             }
 
             else if(p instanceof Queen) {
-                if(Chessboard.whitePieces.get(11) == null) return 11;
+                if(whitePieces.get(11) == null) return 11;
                 else {
                     for (int i = 0; i < 8; i++) {
-                        if(Chessboard.whitePieces.get(i) == null) {
+                        if(whitePieces.get(i) == null) {
                             return i;
                         }
                     }
@@ -305,18 +302,18 @@ public class FENFormat {
         } else {
             if(p instanceof Pawn) {
                 for (int i = 0; i < 8; i++) {
-                    if(Chessboard.blackPieces.get(i) == null) {
+                    if(blackPieces.get(i) == null) {
                         return i;
                     }
                 }
             }
 
             else if(p instanceof Rook) {
-                if(Chessboard.blackPieces.get(8) == null) return 8;
-                if(Chessboard.blackPieces.get(15) == null) return 15;
+                if(blackPieces.get(8) == null) return 8;
+                if(blackPieces.get(15) == null) return 15;
                 else {
                     for (int i = 0; i < 8; i++) {
-                        if(Chessboard.blackPieces.get(i) == null) {
+                        if(blackPieces.get(i) == null) {
                             return i;
                         }
                     }
@@ -324,11 +321,11 @@ public class FENFormat {
             }
 
             else if(p instanceof Knight) {
-                if(Chessboard.blackPieces.get(9) == null) return 9;
-                if(Chessboard.blackPieces.get(14) == null) return 14;
+                if(blackPieces.get(9) == null) return 9;
+                if(blackPieces.get(14) == null) return 14;
                 else {
                     for (int i = 0; i < 8; i++) {
-                        if(Chessboard.blackPieces.get(i) == null) {
+                        if(blackPieces.get(i) == null) {
                             return i;
                         }
                     }
@@ -336,11 +333,11 @@ public class FENFormat {
             }
 
             else if(p instanceof Bishop) {
-                if(Chessboard.blackPieces.get(10) == null) return 10;
-                if(Chessboard.blackPieces.get(13) == null) return 13;
+                if(blackPieces.get(10) == null) return 10;
+                if(blackPieces.get(13) == null) return 13;
                 else {
                     for (int i = 0; i < 8; i++) {
-                        if(Chessboard.blackPieces.get(i) == null) {
+                        if(blackPieces.get(i) == null) {
                             return i;
                         }
                     }
@@ -348,10 +345,10 @@ public class FENFormat {
             }
 
             else if(p instanceof Queen) {
-                if(Chessboard.blackPieces.get(11) == null) return 11;
+                if(blackPieces.get(11) == null) return 11;
                 else {
                     for (int i = 0; i < 8; i++) {
-                        if(Chessboard.blackPieces.get(i) == null) {
+                        if(blackPieces.get(i) == null) {
                             return i;
                         }
                     }
@@ -387,15 +384,15 @@ public class FENFormat {
     }
 
     public static void setIcons() {
-        for (Piece p : Chessboard.whitePieces) {
+        for (Piece p : whitePieces) {
             if(p == null)
                 continue;
-            Chessboard.b[p.getSquare().getId()].setImageResource(p.getIcon());
+            b[p.getSquare().getId()].setImageResource(p.getIcon());
         }
-        for (Piece p : Chessboard.blackPieces) {
+        for (Piece p : blackPieces) {
             if(p == null)
                 continue;
-            Chessboard.b[p.getSquare().getId()].setImageResource(p.getIcon());
+            b[p.getSquare().getId()].setImageResource(p.getIcon());
         }
     }
 
@@ -412,40 +409,40 @@ public class FENFormat {
 
     public static void setCastlingInformation(String fen) {
 
-        if((Chessboard.whitePieces.get(12)) != null)((King) Chessboard.whitePieces.get(12)).setWasMoved(true);
-        if((Chessboard.whitePieces.get(15)) != null)((Rook) Chessboard.whitePieces.get(15)).setWasMoved(true);
-        if((Chessboard.whitePieces.get(8)) != null)((Rook) Chessboard.whitePieces.get(8)).setWasMoved(true);
-        if((Chessboard.blackPieces.get(12)) != null)((King) Chessboard.blackPieces.get(12)).setWasMoved(true);
-        if((Chessboard.blackPieces.get(15)) != null)((Rook) Chessboard.blackPieces.get(15)).setWasMoved(true);
-        if((Chessboard.blackPieces.get(8)) != null)((Rook) Chessboard.blackPieces.get(8)).setWasMoved(true);
+        if((whitePieces.get(12)) != null)((King) whitePieces.get(12)).setWasMoved(true);
+        if((whitePieces.get(15)) != null)((Rook) whitePieces.get(15)).setWasMoved(true);
+        if((whitePieces.get(8)) != null)((Rook) whitePieces.get(8)).setWasMoved(true);
+        if((blackPieces.get(12)) != null)((King) blackPieces.get(12)).setWasMoved(true);
+        if((blackPieces.get(15)) != null)((Rook) blackPieces.get(15)).setWasMoved(true);
+        if((blackPieces.get(8)) != null)((Rook) blackPieces.get(8)).setWasMoved(true);
         char sign;
         for(int i = fen.indexOf(" ") + 3; i < fen.length(); i++) {
             sign = fen.charAt(i);
             if(sign == ' ')
                 break;
             if(sign == 'K') {
-                ((King) Chessboard.whitePieces.get(12)).setWasMoved(false);
-                ((Rook) Chessboard.whitePieces.get(15)).setWasMoved(false);
+                ((King) whitePieces.get(12)).setWasMoved(false);
+                ((Rook) whitePieces.get(15)).setWasMoved(false);
             }
             else if(sign == 'Q') {
-                ((King) Chessboard.whitePieces.get(12)).setWasMoved(false);
-                ((Rook) Chessboard.whitePieces.get(8)).setWasMoved(false);
+                ((King) whitePieces.get(12)).setWasMoved(false);
+                ((Rook) whitePieces.get(8)).setWasMoved(false);
             }
             else if(sign == 'k') {
-                ((King) Chessboard.blackPieces.get(12)).setWasMoved(false);
-                ((Rook) Chessboard.blackPieces.get(15)).setWasMoved(false);
+                ((King) blackPieces.get(12)).setWasMoved(false);
+                ((Rook) blackPieces.get(15)).setWasMoved(false);
             }
             else if(sign == 'q') {
-                ((King) Chessboard.blackPieces.get(12)).setWasMoved(false);
-                ((Rook) Chessboard.blackPieces.get(8)).setWasMoved(false);
+                ((King) blackPieces.get(12)).setWasMoved(false);
+                ((Rook) blackPieces.get(8)).setWasMoved(false);
             }
             else if(sign == '-') {
-                if((Chessboard.whitePieces.get(12)) != null)((King) Chessboard.whitePieces.get(12)).setWasMoved(true);
-                if((Chessboard.whitePieces.get(15)) != null)((Rook) Chessboard.whitePieces.get(15)).setWasMoved(true);
-                if((Chessboard.whitePieces.get(8)) != null)((Rook) Chessboard.whitePieces.get(8)).setWasMoved(true);
-                if((Chessboard.blackPieces.get(12)) != null)((King) Chessboard.blackPieces.get(12)).setWasMoved(true);
-                if((Chessboard.blackPieces.get(15)) != null)((Rook) Chessboard.blackPieces.get(15)).setWasMoved(true);
-                if((Chessboard.blackPieces.get(8)) != null)((Rook) Chessboard.blackPieces.get(8)).setWasMoved(true);
+                if((whitePieces.get(12)) != null)((King) whitePieces.get(12)).setWasMoved(true);
+                if((whitePieces.get(15)) != null)((Rook) whitePieces.get(15)).setWasMoved(true);
+                if((whitePieces.get(8)) != null)((Rook) whitePieces.get(8)).setWasMoved(true);
+                if((blackPieces.get(12)) != null)((King) blackPieces.get(12)).setWasMoved(true);
+                if((blackPieces.get(15)) != null)((Rook) blackPieces.get(15)).setWasMoved(true);
+                if((blackPieces.get(8)) != null)((Rook) blackPieces.get(8)).setWasMoved(true);
             }
         }
     }
@@ -461,12 +458,12 @@ public class FENFormat {
             if(sign == ' ')
                 break;
             if(sign == '-') {
-                Chessboard.enPassantPossible = null;
+                enPassantPossible = null;
                 return;
             }
             squareName.append(sign);
         }
-        Chessboard.enPassantPossible = Chessboard.getSquares(Chessboard.getSquareId(squareName.toString()));
+        enPassantPossible = getSquares(getSquareId(squareName.toString()));
     }
 
     public static void setNumberOfHalfMoves(String fen) {
@@ -480,13 +477,13 @@ public class FENFormat {
                 break;
             toConvert.append(sign);
         }
-        Chessboard.numberOfHalfMoves = Integer.parseInt(toConvert.toString());
+        numberOfHalfMoves = Integer.parseInt(toConvert.toString());
     }
 
     public static void setFullMoveNumber(String fen) {
         String []fenSplitted = fen.split(" ");
-        Chessboard.moveList.clear();
-        Chessboard.fullMoveNumber = Integer.parseInt(fenSplitted[5]);
+        moveList.clear();
+        fullMoveNumber = Integer.parseInt(fenSplitted[5]);
 
     }
 }

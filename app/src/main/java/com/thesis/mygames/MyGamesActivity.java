@@ -69,7 +69,9 @@ public class MyGamesActivity extends ListActivity {
 
 
     private class ShowGameAsyncTask extends AsyncTask<Integer, Void, Boolean> {
-        private String moves;
+        private String moves, event, site, date, whiteFirstName, whiteLastName, blackFirstName,
+                        blackLastName, result;
+        private int round;
 
         @Override
         protected Boolean doInBackground(Integer... ids) {
@@ -78,7 +80,19 @@ public class MyGamesActivity extends ListActivity {
             try {
                 db = myGamesDatabaseHelper.getReadableDatabase();
                 Cursor singleCursor = db.query("GAME",
-                        new String[]{"_id", "moves"},
+                        new String[] {
+                                "_id",
+                                "moves",
+                                "event",
+                                "site",
+                                "date",
+                                "round",
+                                "white_firstname",
+                                "white_lastname",
+                                "black_firstname",
+                                "black_lastname",
+                                "result"
+                        },
                         "_id = ?",
                         new String[] { Integer.toString(id) },
                         null, null, null
@@ -86,12 +100,31 @@ public class MyGamesActivity extends ListActivity {
 
                 if(singleCursor.moveToFirst()) {
                     moves = singleCursor.getString(1);
+                    event = singleCursor.getString(2);
+                    site = singleCursor.getString(3);
+                    date = singleCursor.getString(4);
+                    round = singleCursor.getInt(5);
+                    whiteFirstName = singleCursor.getString(6);
+                    whiteLastName = singleCursor.getString(7);
+                    blackFirstName = singleCursor.getString(8);
+                    blackLastName = singleCursor.getString(9);
+                    result = singleCursor.getString(10);
                 }
                 singleCursor.close();
 
                 Intent intent = new Intent(MyGamesActivity.this, MainActivity.class);
                 intent.putExtra(MainActivity.EXTRA_GAME_ID, id);
                 intent.putExtra(MainActivity.EXTRA_MOVES, moves);
+                intent.putExtra("event", event);
+                intent.putExtra("site", site);
+                intent.putExtra("date", date);
+                intent.putExtra("round", round);
+                intent.putExtra("white_firstname", whiteFirstName);
+                intent.putExtra("white_lastname", whiteLastName);
+                intent.putExtra("black_firstname", blackFirstName);
+                intent.putExtra("black_lastname", blackLastName);
+                intent.putExtra("result", result);
+
                 startActivity(intent);
                 return true;
             } catch (SQLiteException e) {

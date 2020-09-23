@@ -16,6 +16,7 @@ public class Move {
     public static AppCompatActivity activity;
     public static boolean isNavigationMove = false;
     public static boolean isUndoMove = false;
+    public static String selectedPieceFromPgn = "";
 
     private Piece piece;
     private Piece newPieceAfterPawnPromotion = null;
@@ -221,7 +222,13 @@ public class Move {
         }
          else if (this.piece instanceof Pawn && this.piece.getSquare().getId() >= 0 && this.piece.getSquare().getId() <= 7) {
             wasPawnPromotion = true;
-            if(!isNavigationMove)
+
+            if(!selectedPieceFromPgn.equals("")) {
+                selectedPiece = selectedPieceFromPgn;
+                setNewPieceAfterPawnPromotion();
+                selectedPieceFromPgn = "";
+            }
+            else if(!isNavigationMove)
                 pawnPromotion();
             else {
                 Move move = moveList.get(moveList.size() - 1);
@@ -229,7 +236,18 @@ public class Move {
             }
         } else if (this.piece instanceof Pawn && this.piece.getSquare().getId() >= 56 && this.piece.getSquare().getId() <= 63) {
             wasPawnPromotion = true;
-            pawnPromotion();
+
+            if(!selectedPieceFromPgn.equals("")) {
+                selectedPiece = selectedPieceFromPgn;
+                setNewPieceAfterPawnPromotion();
+                selectedPieceFromPgn = "";
+            }
+            else if(!isNavigationMove)
+                pawnPromotion();
+            else {
+                Move move = moveList.get(moveList.size() - 1);
+                move.setNewPieceAfterPawnPromotion();
+            }
         }
 
         chessNotation(wasCapture, wasPawnPromotion, ((King) blackPieces.get(12)).isCheck() ||
@@ -364,6 +382,16 @@ public class Move {
     public void setNewPieceAfterPawnPromotion() {
         int pawnId = piece.getId();
         int endSquareId = endSquare.getId();
+
+        if(isNavigationMove && !isUndoMove) {
+            String nextMoveNotation = moveList.get(moveIndicator + 1).notation;
+            char lastSign = nextMoveNotation.charAt(nextMoveNotation.length() - 1);
+            if(lastSign == 'Q' || lastSign == 'R' || lastSign == 'B' || lastSign == 'N') {
+                String moveNotation = moveList.get(moveIndicator + 1).notation;
+                setSelectedPiece(moveList.get(moveIndicator + 1).selectedPiece);
+            }
+        }
+
         switch (selectedPiece) {
             case "Hetman":
                 newPieceAfterPawnPromotion = new Queen(piece.getSquare(), piece.color, pawnId, 0);

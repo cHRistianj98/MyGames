@@ -75,6 +75,15 @@
             android:layout_below="@+id/fen_button"
             android:onClick="shareFen"/>
 
+        <Button
+            android:id="@+id/share_pgn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="udostępnij PGN"
+            android:layout_below="@+id/share_fen"
+            android:onClick="sharePgn" />
+
     </RelativeLayout>
 </ScrollView>
 

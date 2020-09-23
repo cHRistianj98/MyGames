@@ -22,8 +22,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.material.chip.ChipGroup;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,8 +110,11 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
             List<Piece> pieces;
             for (int i = 0; i < moveList.size(); i++) {
                 pieces = i % 2 == 0 ? whitePieces : blackPieces;
-                int id = PGNFormat.getMovedPiece(moveList.get(i), i);
-                Move.makeQuickMove(pieces.get(PGNFormat.getMovedPiece(moveList.get(i), i)), PGNFormat.getEndSquareName(moveList.get(i)));
+                try {
+                    Move.makeQuickMove(pieces.get(PGNFormat.getMovedPiece(moveList.get(i), i)), PGNFormat.getEndSquareName(moveList.get(i)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -137,8 +138,13 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
             List<Piece> pieces;
             for (int i = 0; i < moveList.size(); i++) {
                 pieces = i % 2 == 0 ? whitePieces : blackPieces;
-                int id = PGNFormat.getMovedPiece(moveList.get(i), i);
-                Move.makeQuickMove(pieces.get(PGNFormat.getMovedPiece(moveList.get(i), i)), PGNFormat.getEndSquareName(moveList.get(i)));
+                int id = 0;
+                try {
+                    id = PGNFormat.getMovedPiece(moveList.get(i), i);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Move.makeQuickMove(pieces.get(id), PGNFormat.getEndSquareName(moveList.get(i)));
             }
         }
     }
@@ -191,5 +197,52 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, fen);
         startActivity(intent);
+    }
+
+    public void sharePgn(View view) {
+        PGNFormat.generatePgnTags(
+                getIntent().getStringExtra("event"),
+                getIntent().getStringExtra("site"),
+                getIntent().getStringExtra("date"),
+                getIntent().getIntExtra("round", 0),
+                getIntent().getStringExtra("white_lastname"),
+                getIntent().getStringExtra("white_firstname"),
+                getIntent().getStringExtra("black_lastname"),
+                getIntent().getStringExtra("black_firstname"),
+                getIntent().getStringExtra("result")
+        );
+
+        String pgn = PGNTagGenerator.toString() + "\n" +
+                PGNMoveGenerator.toString() +
+                getIntent().getStringExtra("result") + "\n";
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, pgn);
+        startActivity(intent);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void loadGameFromPgn(View view) {
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.pgn_dialog, null);
+
+        final EditText pgn = (EditText) dialogView.findViewById(R.id.pgn);
+        Button buttonSubmit = (Button) dialogView.findViewById(R.id.pgn_button_submit);
+        Button buttonCancel = (Button) dialogView.findViewById(R.id.pgn_button_cancel);
+
+        buttonCancel.setOnClickListener(view12 -> dialogBuilder.dismiss());
+        buttonSubmit.setOnClickListener(view1 -> {
+            try {
+                PGNFormat.loadGameFromPgn(pgn.getText().toString());
+                dialogBuilder.dismiss();
+            } catch (IllegalArgumentException e) {
+                pgn.setError("Nieprawidłowy format kodu PGN");
+            }
+        });
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
     }
 }

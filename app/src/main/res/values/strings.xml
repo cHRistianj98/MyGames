@@ -49,4 +49,6 @@
     <string name="label_select_fen">Podaj kod w formacie FEN</string>
     <string name="label_submit">Ok</string>
     <string name="label_cancel">Cofnij</string>
+
+    <string name="label_select_pgn">Podaj kod w formacie PGN</string>
 </resources>

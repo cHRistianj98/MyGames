@@ -4,23 +4,26 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import static com.thesis.mygames.Chessboard.*;
 
 public class PGNFormat {
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static void generatePgnTags() {
-        PGNTagGenerator.append(generateEventTag("Memoral Anderssena")).append("\n");
-        PGNTagGenerator.append(generateSiteTag("Warsaw", "POL")).append("\n");
-        PGNTagGenerator.append(generateDateTag(LocalDate.of(2012, 3, 3))).append("\n");
-        PGNTagGenerator.append(generateRoundTag(5)).append("\n");
-        PGNTagGenerator.append(generateWhiteTag("Pazdzioch", "Marian")).append("\n");
-        PGNTagGenerator.append(generateBlackTag("Papka", "Jan")).append("\n");
-        PGNTagGenerator.append(generateResultTag("1-0")).append("\n");
+    public static void generatePgnTags(String event, String site, String date, int round, String whiteLastName,
+                                       String whiteFirstName, String blackLastName, String blackFirstName,
+                                       String result) {
+        PGNTagGenerator.append(generateEventTag(event)).append("\n");
+        PGNTagGenerator.append(generateSiteTag(site, "POL")).append("\n");
+        PGNTagGenerator.append(generateDateTag(date)).append("\n");
+        PGNTagGenerator.append(generateRoundTag(round)).append("\n");
+        PGNTagGenerator.append(generateWhiteTag(whiteLastName, whiteFirstName)).append("\n");
+        PGNTagGenerator.append(generateBlackTag(blackLastName, blackFirstName)).append("\n");
+        PGNTagGenerator.append(generateResultTag(result)).append("\n");
     }
 
     public static String generateEventTag(String event) {
@@ -31,26 +34,17 @@ public class PGNFormat {
     }
 
     public static String generateSiteTag(String site, String country) {
-        if(site == null || country == null)
+        if(site == null || country == null || site.equals("?"))
             return "[Site \"?\"]";
 
         return String.format("[Site \"%s %s\"]", site, country);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static String generateDateTag(LocalDate date) {
-        if(date == null)
+    public static String generateDateTag(String date) {
+        if(date == null || date.equals("????.??.??"))
             return "[Date \"????.??.??\"]";
 
-        int year = date.getYear();
-
-        int month = date.getMonthValue();
-        String monthStr = month < 10 ? "0" + month : Integer.toString(month);
-
-        int day = date.getDayOfMonth();
-        String dayStr = day < 10 ? "0" + day : Integer.toString(day);
-
-        return String.format("[Date \"%d.%s.%s\"]", year, monthStr, dayStr);
+        return date;
     }
 
     public static String generateRoundTag(int number) {
@@ -60,27 +54,30 @@ public class PGNFormat {
         return String.format("[Round \"%d\"]", number);
     }
 
-    public static String generateWhiteTag(String lastName, String firstName, String... secondName) {
-        if(lastName == null)
+    public static String generateWhiteTag(String lastName, String firstName) {
+        if(lastName == null || lastName.equals("?"))
             return "[White \"?\"]";
 
-        if(secondName.length != 0)
-            return String.format("[White \"%s, %s %s\"]", lastName, firstName, secondName[0]);
+        else if(firstName == null || firstName.equals("?"))
+            return String.format("[White \"%s\"]", lastName);
 
         return String.format("[White \"%s, %s\"]", lastName, firstName);
     }
 
-    public static String generateBlackTag(String lastName, String firstName, String... secondName) {
-        if(lastName == null)
+    public static String generateBlackTag(String lastName, String firstName) {
+        if(lastName == null || lastName.equals("?"))
             return "[Black \"?\"]";
 
-        if(secondName.length != 0)
-            return String.format("[Black \"%s, %s %s\"]", lastName, firstName, secondName[0]);
+        else if(firstName == null || firstName.equals("?"))
+            return String.format("[Black \"%s\"]", lastName);
 
         return String.format("[Black \"%s, %s\"]", lastName, firstName);
     }
 
     public static String generateResultTag(String result) {
+        if (result == null)
+            return "[Result \"*\"]";
+
         if(result.equals("1-0") || result.equals("1/2-1/2") || result.equals("0-1")) {
             return String.format("[Result \"%s\"]", result);
         } else {
@@ -98,7 +95,7 @@ public class PGNFormat {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static int getMovedPiece(String move, int index) {
+    public static int getMovedPiece(String move, int index) throws Exception {
 
         String []classes = { "com.thesis.mygames.Knight", "com.thesis.mygames.Rook", "com.thesis.mygames.Bishop",
                              "com.thesis.mygames.Queen", "com.thesis.mygames.King", "com.thesis.mygames.Pawn" };
@@ -133,12 +130,12 @@ public class PGNFormat {
         else if (possiblePieces.length > 1){
             List<Integer> listOfSquaresWherePieceCanBe = getRangeOfPossibleSquareId(move.charAt(1));
             for (Integer possiblePiece : possiblePieces) {
-                if (listOfSquaresWherePieceCanBe.contains(pieces.get(possiblePiece).getId()))
+                if (listOfSquaresWherePieceCanBe.contains(pieces.get(possiblePiece).getSquare().getId()))
                     return possiblePiece;
             }
         }
 
-        return 0;
+        throw new Exception("Ruch nie będący pionem zwraca 0: " + move);
     }
 
     public static boolean isBelongToClass(Object obj, String c) throws ClassNotFoundException {
@@ -155,13 +152,13 @@ public class PGNFormat {
 
         else if(lastSign == 'O') {
             if(move.length() == 3) {
-                if(Chessboard.moveList.size() % 2 == 0) {
+                if(Chessboard.moveList.size() % 2 == 1) {
                     return "g8";
                 } else {
                     return "g1";
                 }
             } else {
-                if(Chessboard.moveList.size() % 2 == 0) {
+                if(Chessboard.moveList.size() % 2 == 1) {
                     return "c8";
                 } else {
                     return "c1";
@@ -185,5 +182,86 @@ public class PGNFormat {
             possibilities.add(i);
         }
         return possibilities;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void loadGameFromPgn(String pgn) {
+        if(!isPgnValid(pgn))
+            throw new IllegalArgumentException("Code in PGN format is wrong!");
+
+        StringBuilder moveSection = new StringBuilder();
+
+        Scanner scanner = new Scanner(pgn);
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            line = line.trim();
+            Pattern compiledTagPattern = Pattern.compile("\\[.*\\]");
+
+            if(compiledTagPattern.matcher(line).matches()) {
+                continue;
+            }
+
+            Pattern compiledMoveSection = Pattern.compile("(.+ )+(1\\-0)?(1\\\\2\\-1\\\\2)?(0\\-1)?");
+
+            if(compiledMoveSection.matcher(line + " ").matches()) {
+                moveSection.append(line);
+            }
+        }
+        scanner.close();
+
+        String moves = moveSection.toString();
+
+        moves = moves.trim();
+        String []movesArray = moves.split(" ");
+
+        for (int i = 0; i < movesArray.length; i++) {
+            if(i%3 == 0)
+                movesArray[i] = null;
+        }
+
+        List<String> moveList = new ArrayList<>();
+
+        for (int i = 0; i < movesArray.length; i++) {
+            if(movesArray[i] != null)
+                moveList.add(movesArray[i]);
+        }
+
+        List<Piece> pieces;
+        for (int i = 0; i < moveList.size() - 1; i++) {
+            pieces = i % 2 == 0 ? whitePieces : blackPieces;
+            int id = 0;
+            try {
+                id = PGNFormat.getMovedPiece(moveList.get(i), i);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if(pieces.get(id) instanceof Pawn &&
+                    Arrays.asList("a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8", "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1")
+                            .contains(PGNFormat.getEndSquareName(moveList.get(i)))) {
+                Move.selectedPieceFromPgn = getPieceName(moveList.get(i));
+            }
+            Move.makeQuickMove(pieces.get(id), PGNFormat.getEndSquareName(moveList.get(i)));
+        }
+    }
+
+    public static boolean isPgnValid(String pgn) {
+        return true;
+    }
+
+    public static String getPieceName(String moveNotation) {
+        char lastSign = moveNotation.charAt(moveNotation.length() - 1);
+        String[] piecesNames = Move.activity.getApplicationContext().getResources().getStringArray(R.array.pieces);
+
+        switch (lastSign) {
+            case 'Q':
+                return piecesNames[0];
+            case 'R':
+                return piecesNames[1];
+            case 'B':
+                return piecesNames[2];
+            case 'N':
+                return piecesNames[3];
+        }
+        return "nic";
     }
 }
