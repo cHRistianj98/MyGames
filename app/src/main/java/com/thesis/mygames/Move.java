@@ -1,21 +1,17 @@
 package com.thesis.mygames;
 
-import android.os.Build;
-import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.thesis.mygames.Chessboard.*;
 
 public class Move {
     public static AppCompatActivity activity;
-    public static boolean isNavigationMove = false;
-    public static boolean isUndoMove = false;
     public static String selectedPieceFromPgn = "";
 
     private Piece piece;
@@ -40,38 +36,25 @@ public class Move {
         if(moveList.size() == moveIndicator + 1)
             return;
 
-        isNavigationMove = true;
-
         Piece p = moveList.get(moveIndicator + 1).piece;
         String endSquareName = getSquareName(moveList.get(moveIndicator + 1).getEndSquare().getId());
-        makeQuickMove(p, endSquareName);
 
-        moveList.remove(moveList.size() - 1);
-        if(moveIndicator % 2 == 0) {
-            Turn.enableBlackPieces();
-            Turn.disableWhitePieces();
-        } else {
-            Turn.enableWhitePieces();
-            Turn.disableBlackPieces();
-        }
-
-        isNavigationMove = false;
+        Square endSquare = getSquares(getSquareId(endSquareName));
+        Move move = new Move(p);
+        int startSquareId = p.getSquare().getId();
+        move.nextMoveHandler(endSquare.getId(), endSquare, startSquareId);
     }
 
     public static void makeUndoMove() {
         if (moveIndicator == -1)
             return;
 
-        isNavigationMove = true;
-        isUndoMove = true;
-        Pawn.wasEnPassant = false;
-
         Move lastMove = moveList.get(moveIndicator);
         String endSquareName = getSquareName(lastMove.startSquare.getId());
-        makeQuickMove(lastMove.piece, endSquareName);
-
-        moveList.remove(moveList.size() - 1);
-        moveIndicator -= 2;
+        Square endSquare = getSquares(getSquareId(endSquareName));
+        Move move = new Move(lastMove.piece);
+        int startSquareId = lastMove.piece.getSquare().getId();
+        move.undoMoveHandler(endSquare.getId(), endSquare, startSquareId);
 
         if(lastMove.wasPawnPromotion) {
             lastMove.endSquare.setPiece(null);
@@ -128,25 +111,10 @@ public class Move {
                 b[endRookSquare.getId() + 2].setImageResource(lastMove.castledRook.getIcon());
             }
         }
-
-        if(moveIndicator % 2 == 0) {
-            Turn.enableBlackPieces();
-            Turn.disableWhitePieces();
-        } else {
-            Turn.enableWhitePieces();
-            Turn.disableBlackPieces();
-        }
-        isNavigationMove = false;
-        isUndoMove = false;
     }
 
     public static void makeQuickMove(Piece piece, String endSquareName) {
         Square endSquare = getSquares(getSquareId(endSquareName));
-
-//        if(!piece.possibleFieldsToMoveCheck().contains(endSquare)) {
-//            throw new IllegalArgumentException("This whiteSquare is illegal for this piece!");
-//        }
-
         Move move = new Move(piece);
         int startSquareId = piece.getSquare().getId();
         move.makeMove(endSquare.getId(), endSquare, startSquareId);
@@ -163,9 +131,8 @@ public class Move {
         for (int i = 0; i < 64; i++) {
             f = getSquares(i);
             b[i].setBackground(MyApplication.getAppContext().getResources().getDrawable( getSquareColor(i)));
-            if (f.getPiece() != null && f.getPiece().getColor() == piece.getColor()) {
+            if (f.getPiece() != null && f.getPiece().getColor() == piece.getColor())
                 continue;
-            }
 
             b[i].setOnClickListener(null);
         }
@@ -174,7 +141,7 @@ public class Move {
     private void showPossibleSquares(List<Square> possibleSquares) {
         for (Square fi : possibleSquares) {
             int id = fi.getId();
-            b[id].setBackground(MyApplication.getAppContext().getResources().getDrawable(R.drawable.yellow_square));;
+            b[id].setBackground(MyApplication.getAppContext().getResources().getDrawable(R.drawable.yellow_square));
         }
     }
 
@@ -183,14 +150,77 @@ public class Move {
 
         for (final Square endSquare : possibleSquares) {
             final int endSquareId = endSquare.getId();
-            b[endSquareId].setOnClickListener(new View.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                @Override
-                public void onClick(View v) {
-                    makeMove(endSquareId, endSquare, startSquareId);
-                }
-            });
+            b[endSquareId].setOnClickListener(v -> makeMove(endSquareId, endSquare, startSquareId));
         }
+    }
+
+    public void nextMoveHandler(int endSquareId, Square f, int startSquareId) {
+        startSquare = getSquares(startSquareId);
+        endSquare = f;
+        b[startSquareId].setImageResource(0);
+        getSquares(startSquareId).setPiece(null);
+
+        boolean wasBlackPieceCaptured = getSquares(endSquare.getId()).getPiece() != null
+                && piece.getColor() && !getSquares(endSquare.getId()).getPiece().getColor();
+        boolean wasWhitePieceCaptured = getSquares(endSquare.getId()).getPiece() != null
+                && !piece.getColor() && getSquares(endSquare.getId()).getPiece().getColor();
+        wasEnPassant = piece instanceof Pawn
+                && Arrays.asList(-9, -7, 7, 9).contains(endSquareId - startSquareId)
+                && endSquare.getPiece() == null;
+        if (wasEnPassant)
+            enPassantMoveHandler(endSquareId);
+        else if (wasBlackPieceCaptured)
+            deleteCapturedBlackPiece(endSquareId);
+        else if (wasWhitePieceCaptured)
+            deleteCapturedWhitePiece(endSquareId);
+
+        setPieceOnNewSquare(endSquareId);
+
+        wasCastling = piece instanceof King && endSquare.getId() - startSquare.getId() == 2;
+        if (wasCastling)
+            shortCastleHandler();
+
+        wasCastling = piece instanceof King && endSquare.getId() - startSquare.getId() == -2;
+        if (wasCastling)
+            longCastleHandler();
+
+        wasPawnPromotion = piece.color ?
+                piece instanceof Pawn && piece.getSquare().getId()>=0 && piece.getSquare().getId()<=7 :
+                piece instanceof Pawn && piece.getSquare().getId()>=56 && piece.getSquare().getId()<=63;
+        if (wasPawnPromotion)
+            simulatePawnPromotion();
+
+        moveIndicator++;
+        setTurn();
+    }
+
+    public void undoMoveHandler(int endSquareId, Square f, int startSquareId) {
+        startSquare = getSquares(startSquareId);
+        endSquare = f;
+        b[startSquareId].setImageResource(0);
+        getSquares(startSquareId).setPiece(null);
+
+        boolean wasBlackPieceCaptured = getSquares(endSquare.getId()).getPiece() != null && piece.getColor()
+                && !getSquares(endSquare.getId()).getPiece().getColor();
+        boolean wasWhitePieceCaptured = getSquares(endSquare.getId()).getPiece() != null && !piece.getColor()
+                && getSquares(endSquare.getId()).getPiece().getColor();
+        if (wasBlackPieceCaptured)
+            deleteCapturedBlackPiece(endSquareId);
+        else if (wasWhitePieceCaptured)
+            deleteCapturedWhitePiece(endSquareId);
+
+        setPieceOnNewSquare(endSquareId);
+
+        wasPawnPromotion = piece.color ?
+                piece instanceof Pawn && piece.getSquare().getId()>=0 && piece.getSquare().getId()<=7 :
+                piece instanceof Pawn && piece.getSquare().getId()>=56 && piece.getSquare().getId()<=63;
+        if (wasPawnPromotion) {
+            Move move = moveList.get(moveList.size() - 1);
+            move.setNewPieceAfterPawnPromotion();
+        }
+
+        moveIndicator--;
+        setTurn();
     }
 
     public void makeMove(int endSquareId, Square f, int startSquareId) {
@@ -198,57 +228,37 @@ public class Move {
         endSquare = f;
         b[startSquareId].setImageResource(0);
         getSquares(startSquareId).setPiece(null);
-        if(!isUndoMove)
-            removeUnnecessaryActionListeners();
+        removeUnnecessaryActionListeners();
 
-        if (Pawn.wasEnPassant && !isUndoMove)
+        boolean wasBlackPieceCaptured = getSquares(endSquare.getId()).getPiece() != null
+                && piece.getColor() && !getSquares(endSquare.getId()).getPiece().getColor();
+        boolean wasWhitePieceCaptured = getSquares(endSquare.getId()).getPiece() != null
+                && !piece.getColor() && getSquares(endSquare.getId()).getPiece().getColor();
+        wasEnPassant = piece instanceof Pawn
+                && Arrays.asList(-9, -7, 7, 9).contains(endSquareId - startSquareId)
+                && endSquare.getPiece() == null;
+        if (wasEnPassant)
             enPassantMoveHandler(endSquareId);
-
-        else if (getSquares(endSquare.getId()).getPiece() != null && piece.getColor() && !getSquares(endSquare.getId()).getPiece().getColor())
+        else if (wasBlackPieceCaptured)
             deleteCapturedBlackPiece(endSquareId);
-
-        else if (getSquares(endSquare.getId()).getPiece() != null && !piece.getColor() && getSquares(endSquare.getId()).getPiece().getColor()) {
+        else if (wasWhitePieceCaptured)
             deleteCapturedWhitePiece(endSquareId);
-        }
 
         setPieceOnNewSquare(endSquareId);
 
-        if (piece instanceof King && endSquare.getId() - startSquare.getId() == 2 && !isUndoMove) {
-            wasCastling = true;
+        wasCastling = piece instanceof King && endSquare.getId() - startSquare.getId() == 2;
+        if (wasCastling)
             shortCastleHandler();
-        } else if (piece instanceof King && endSquare.getId() - startSquare.getId() == -2 && !isUndoMove) {
-            wasCastling = true;
+
+        wasCastling = piece instanceof King && endSquare.getId() - startSquare.getId() == -2;
+        if (wasCastling)
             longCastleHandler();
-        }
-         else if (this.piece instanceof Pawn && this.piece.getSquare().getId() >= 0 && this.piece.getSquare().getId() <= 7) {
-            wasPawnPromotion = true;
 
-            if(!selectedPieceFromPgn.equals("")) {
-                selectedPiece = selectedPieceFromPgn;
-                setNewPieceAfterPawnPromotion();
-                selectedPieceFromPgn = "";
-            }
-            else if(!isNavigationMove)
-                pawnPromotion();
-            else {
-                Move move = moveList.get(moveList.size() - 1);
-                move.setNewPieceAfterPawnPromotion();
-            }
-        } else if (this.piece instanceof Pawn && this.piece.getSquare().getId() >= 56 && this.piece.getSquare().getId() <= 63) {
-            wasPawnPromotion = true;
-
-            if(!selectedPieceFromPgn.equals("")) {
-                selectedPiece = selectedPieceFromPgn;
-                setNewPieceAfterPawnPromotion();
-                selectedPieceFromPgn = "";
-            }
-            else if(!isNavigationMove)
-                pawnPromotion();
-            else {
-                Move move = moveList.get(moveList.size() - 1);
-                move.setNewPieceAfterPawnPromotion();
-            }
-        }
+        wasPawnPromotion = piece.color ?
+                piece instanceof Pawn && piece.getSquare().getId()>=0 && piece.getSquare().getId()<=7 :
+                piece instanceof Pawn && piece.getSquare().getId()>=56 && piece.getSquare().getId()<=63;
+        if (wasPawnPromotion)
+            pawnPromotion();
 
         chessNotation(wasCapture, wasPawnPromotion, ((King) blackPieces.get(12)).isCheck() ||
                 ((King) whitePieces.get(12)).isCheck());
@@ -265,13 +275,41 @@ public class Move {
         setTurn();
 
         moveList.add(this);
-
-        if(!isNavigationMove && !wasPawnPromotion)
+        if(!wasPawnPromotion)
             PGNFormat.generatePgnMoves();
 
         TextView textView = activity.findViewById(R.id.moves);
         textView.setText(PGNMoveGenerator.toString());
 
+//        else if (this.piece instanceof Pawn && this.piece.getSquare().getId() >= 0 && this.piece.getSquare().getId() <= 7) {
+//            wasPawnPromotion = true;
+//
+//            if(!selectedPieceFromPgn.equals("")) {
+//                selectedPiece = selectedPieceFromPgn;
+//                setNewPieceAfterPawnPromotion();
+//                selectedPieceFromPgn = "";
+//            }
+//            else if(!isNavigationMove)
+//                pawnPromotion();
+//            else {
+//                Move move = moveList.get(moveList.size() - 1);
+//                move.setNewPieceAfterPawnPromotion();
+//            }
+//        } else if (this.piece instanceof Pawn && this.piece.getSquare().getId() >= 56 && this.piece.getSquare().getId() <= 63) {
+//            wasPawnPromotion = true;
+//
+//            if(!selectedPieceFromPgn.equals("")) {
+//                selectedPiece = selectedPieceFromPgn;
+//                setNewPieceAfterPawnPromotion();
+//                selectedPieceFromPgn = "";
+//            }
+//            else if(!isNavigationMove)
+//                pawnPromotion();
+//            else {
+//                Move move = moveList.get(moveList.size() - 1);
+//                move.setNewPieceAfterPawnPromotion();
+//            }
+//        }
     }
 
     private void removeUnnecessaryActionListeners() {
@@ -305,7 +343,6 @@ public class Move {
         }
 
         wasEnPassant = true;
-        Pawn.wasEnPassant = false;
         wasCapture = true;
     }
 
@@ -379,81 +416,70 @@ public class Move {
         singleChoiceDialog.show(activity.getSupportFragmentManager(), "Single Choice Dialog");
     }
 
+    public void simulatePawnPromotion() {
+        int pawnId = piece.getId();
+        int endSquareId = endSquare.getId();
+
+        String nextMoveNotation = moveList.get(moveIndicator + 1).notation;
+        char lastSign = nextMoveNotation.charAt(nextMoveNotation.length() - 1);
+        if(lastSign == 'Q' || lastSign == 'R' || lastSign == 'B' || lastSign == 'N') {
+            setSelectedPiece(moveList.get(moveIndicator + 1).selectedPiece);
+        }
+
+        String[] piecesNames = Move.activity.getApplicationContext().getResources().getStringArray(R.array.pieces);
+
+        if(selectedPiece.equals(piecesNames[0]))
+            promotionHandler(new Queen(piece.getSquare(), piece.color, pawnId, 0), "Q", whiteIcons[11], blackIcons[3]);
+        else if(selectedPiece.equals(piecesNames[1]))
+            promotionHandler(new Rook(piece.getSquare(), piece.color, pawnId, 0), "R", whiteIcons[8], blackIcons[0]);
+        else if(selectedPiece.equals(piecesNames[2]))
+            promotionHandler(new Bishop(piece.getSquare(), piece.color, pawnId, 0), "B", whiteIcons[10], blackIcons[2]);
+        else
+            promotionHandler(new Knight(piece.getSquare(), piece.color, pawnId, 0), "N", whiteIcons[9], blackIcons[1]);
+
+        newPieceAfterPawnPromotion.setSquare(getSquares(endSquareId));
+        getSquares(endSquareId).setPiece(newPieceAfterPawnPromotion);
+    }
+
+    public void simulatePawnPromotionFromPgn() {
+        int pawnId = piece.getId();
+        int endSquareId = endSquare.getId();
+
+        String nextMoveNotation = moveList.get(moveIndicator + 1).notation;
+        char lastSign = nextMoveNotation.charAt(nextMoveNotation.length() - 1);
+        if(lastSign == 'Q' || lastSign == 'R' || lastSign == 'B' || lastSign == 'N') {
+            setSelectedPiece(moveList.get(moveIndicator + 1).selectedPiece);
+        }
+
+        String[] piecesNames = Move.activity.getApplicationContext().getResources().getStringArray(R.array.pieces);
+
+        if(selectedPiece.equals(piecesNames[0]))
+            promotionHandler(new Queen(piece.getSquare(), piece.color, pawnId, 0), "Q", whiteIcons[11], blackIcons[3]);
+        else if(selectedPiece.equals(piecesNames[1]))
+            promotionHandler(new Rook(piece.getSquare(), piece.color, pawnId, 0), "R", whiteIcons[8], blackIcons[0]);
+        else if(selectedPiece.equals(piecesNames[2]))
+            promotionHandler(new Bishop(piece.getSquare(), piece.color, pawnId, 0), "B", whiteIcons[10], blackIcons[2]);
+        else
+            promotionHandler(new Knight(piece.getSquare(), piece.color, pawnId, 0), "N", whiteIcons[9], blackIcons[1]);
+
+        newPieceAfterPawnPromotion.setSquare(getSquares(endSquareId));
+        getSquares(endSquareId).setPiece(newPieceAfterPawnPromotion);
+    }
+
     public void setNewPieceAfterPawnPromotion() {
         int pawnId = piece.getId();
         int endSquareId = endSquare.getId();
 
-        if(isNavigationMove && !isUndoMove) {
-            String nextMoveNotation = moveList.get(moveIndicator + 1).notation;
-            char lastSign = nextMoveNotation.charAt(nextMoveNotation.length() - 1);
-            if(lastSign == 'Q' || lastSign == 'R' || lastSign == 'B' || lastSign == 'N') {
-                String moveNotation = moveList.get(moveIndicator + 1).notation;
-                setSelectedPiece(moveList.get(moveIndicator + 1).selectedPiece);
-            }
-        }
+        String[] piecesNames = Move.activity.getApplicationContext().getResources().getStringArray(R.array.pieces);
 
-        switch (selectedPiece) {
-            case "Hetman":
-                newPieceAfterPawnPromotion = new Queen(piece.getSquare(), piece.color, pawnId, 0);
-                pieceAfterPromotion = "Q";
-                if (piece.getColor()) {
-                    b[endSquareId].setImageResource(whiteIcons[11]);
-                    newPieceAfterPawnPromotion.setIcon(whiteIcons[11]);
-                    whitePieces.set(pawnId, null);
-                    whitePieces.set(pawnId, newPieceAfterPawnPromotion);
-                } else {
-                    b[endSquareId].setImageResource(blackIcons[3]);
-                    newPieceAfterPawnPromotion.setIcon(blackIcons[3]);
-                    blackPieces.set(pawnId, null);
-                    blackPieces.set(pawnId, newPieceAfterPawnPromotion);
-                }
-                break;
-            case "Wieża":
-                newPieceAfterPawnPromotion = new Rook(piece.getSquare(), piece.color, pawnId, 0);
-                pieceAfterPromotion = "R";
-                if (piece.getColor()) {
-                    b[endSquareId].setImageResource(whiteIcons[8]);
-                    newPieceAfterPawnPromotion.setIcon(whiteIcons[8]);
-                    whitePieces.set(pawnId, null);
-                    whitePieces.set(pawnId, newPieceAfterPawnPromotion);
-                } else {
-                    b[endSquareId].setImageResource(blackIcons[0]);
-                    newPieceAfterPawnPromotion.setIcon(blackIcons[0]);
-                    blackPieces.set(pawnId, null);
-                    blackPieces.set(pawnId, newPieceAfterPawnPromotion);
-                }
-                break;
-            case "Goniec":
-                newPieceAfterPawnPromotion = new Bishop(piece.getSquare(), piece.color, pawnId, 0);
-                pieceAfterPromotion = "B";
-                if (piece.getColor()) {
-                    b[endSquareId].setImageResource(whiteIcons[10]);
-                    newPieceAfterPawnPromotion.setIcon(whiteIcons[10]);
-                    whitePieces.set(pawnId, null);
-                    whitePieces.set(pawnId, newPieceAfterPawnPromotion);
-                } else {
-                    b[endSquareId].setImageResource(blackIcons[2]);
-                    newPieceAfterPawnPromotion.setIcon(blackIcons[2]);
-                    blackPieces.set(pawnId, null);
-                    blackPieces.set(pawnId, newPieceAfterPawnPromotion);
-                }
-                break;
-            case "Skoczek":
-                newPieceAfterPawnPromotion = new Knight(piece.getSquare(), piece.color, pawnId, 0);
-                pieceAfterPromotion = "N";
-                if (piece.getColor()) {
-                    b[endSquareId].setImageResource(whiteIcons[9]);
-                    newPieceAfterPawnPromotion.setIcon(whiteIcons[9]);
-                    whitePieces.set(pawnId, null);
-                    whitePieces.set(pawnId, newPieceAfterPawnPromotion);
-                } else {
-                    b[endSquareId].setImageResource(blackIcons[1]);
-                    newPieceAfterPawnPromotion.setIcon(blackIcons[1]);
-                    blackPieces.set(pawnId, null);
-                    blackPieces.set(pawnId, newPieceAfterPawnPromotion);
-                }
-                break;
-        }
+        if(selectedPiece.equals(piecesNames[0]))
+            promotionHandler(new Queen(piece.getSquare(), piece.color, pawnId, 0), "Q", whiteIcons[11], blackIcons[3]);
+        else if(selectedPiece.equals(piecesNames[1]))
+            promotionHandler(new Rook(piece.getSquare(), piece.color, pawnId, 0), "R", whiteIcons[8], blackIcons[0]);
+        else if(selectedPiece.equals(piecesNames[2]))
+            promotionHandler(new Bishop(piece.getSquare(), piece.color, pawnId, 0), "B", whiteIcons[10], blackIcons[2]);
+        else
+            promotionHandler(new Knight(piece.getSquare(), piece.color, pawnId, 0), "N", whiteIcons[9], blackIcons[1]);
 
         Move move = moveList.get(moveList.size() - 1);
         move.setNotation(move.getNotation() + pieceAfterPromotion);
@@ -464,6 +490,21 @@ public class Move {
 
         newPieceAfterPawnPromotion.setSquare(getSquares(endSquareId));
         getSquares(endSquareId).setPiece(newPieceAfterPawnPromotion);
+    }
+
+    public void promotionHandler(Piece p, String letter, int whiteIcon, int blackIcon) {
+        int pawnId = piece.getId();
+        int endSquareId = endSquare.getId();
+        newPieceAfterPawnPromotion = p;
+        pieceAfterPromotion = letter;
+
+        int icon = piece.color ? whiteIcon : blackIcon;
+        b[endSquareId].setImageResource(icon);
+        newPieceAfterPawnPromotion.setIcon(icon);
+
+        List<Piece> pieces = piece.color ? whitePieces : blackPieces;
+        pieces.set(pawnId, null);
+        pieces.set(pawnId, newPieceAfterPawnPromotion);
     }
 
     public void chessNotation(boolean wasCapture, boolean wasPawnPromotion, boolean wasCheck) {
@@ -617,10 +658,6 @@ public class Move {
         return endSquare;
     }
 
-    public void setEndSquare(Square endSquare) {
-        this.endSquare = endSquare;
-    }
-
     public String getNotation() {
         return notation;
     }
@@ -635,11 +672,6 @@ public class Move {
 
     public void setPiece(Piece piece) {
         this.piece = piece;
-    }
-
-
-    public String getSelectedPiece() {
-        return selectedPiece;
     }
 
     public void setSelectedPiece(String selectedPiece) {

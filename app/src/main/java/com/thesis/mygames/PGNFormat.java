@@ -240,7 +240,12 @@ public class PGNFormat {
                             .contains(PGNFormat.getEndSquareName(moveList.get(i)))) {
                 Move.selectedPieceFromPgn = getPieceName(moveList.get(i));
             }
-            Move.makeQuickMove(pieces.get(id), PGNFormat.getEndSquareName(moveList.get(i)));
+            Square endSquare = getSquares(getSquareId(PGNFormat.getEndSquareName(moveList.get(i))));
+            Move move = new Move(pieces.get(id));
+            int startSquareId = pieces.get(id).getSquare().getId();
+            move.makeMove(endSquare.getId(), endSquare, startSquareId);
+
+            // Move.makeQuickMove(pieces.get(id), PGNFormat.getEndSquareName(moveList.get(i)));
         }
     }
 

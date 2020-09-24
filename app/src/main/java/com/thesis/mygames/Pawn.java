@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class Pawn extends Piece {
-    public static boolean wasEnPassant = false;
-
     public Pawn(Square square, boolean color, int icon) {
         super(square, color, icon);
     }
@@ -92,14 +90,12 @@ public class Pawn extends Piece {
                 possibleSquares.add(rightPieceToTake);
             else if(rightPieceToTake != null && rightPieceToTake.equals(Chessboard.enPassantPossible)) {
                 possibleSquares.add(rightPieceToTake);
-                wasEnPassant = true;
             }
             if (leftPieceToTake != null && leftPieceToTake.getPiece() != null && !leftPieceToTake.getPiece().getColor()
                     && !Arrays.asList(8, 16, 24, 32, 40, 48).contains(square.getId()))
                 possibleSquares.add(leftPieceToTake);
             else if(leftPieceToTake != null && leftPieceToTake.equals(Chessboard.enPassantPossible)) {
                 possibleSquares.add(leftPieceToTake);
-                wasEnPassant = true;
             }
         }
         //////////////////////////////BLACK///////////////////////////////////////////
@@ -117,14 +113,12 @@ public class Pawn extends Piece {
                     && !Arrays.asList(8, 16, 24, 32, 40, 48).contains(square.getId()))
                 possibleSquares.add(rightPieceToTakeBlack);
             else if(rightPieceToTakeBlack != null && rightPieceToTakeBlack.equals(Chessboard.enPassantPossible)) {
-                wasEnPassant = true;
                 possibleSquares.add(rightPieceToTakeBlack);
             }
             if (leftPieceToTakeBlack != null && leftPieceToTakeBlack.getPiece() != null && leftPieceToTakeBlack.getPiece().getColor()
                     && !Arrays.asList(15, 23, 31, 39, 47, 55).contains(square.getId()))
                 possibleSquares.add(leftPieceToTakeBlack);
             else if(leftPieceToTakeBlack != null && leftPieceToTakeBlack.equals(Chessboard.enPassantPossible)) {
-                wasEnPassant = true;
                 possibleSquares.add(leftPieceToTakeBlack);
             }
         }
