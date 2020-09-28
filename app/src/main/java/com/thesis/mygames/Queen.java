@@ -10,11 +10,6 @@ import java.util.List;
 import static com.thesis.mygames.Chessboard.getSquares;
 
 public class Queen extends Piece{
-
-    public Queen(boolean color){
-        super(color);
-    }
-
     public Queen(Square square, boolean color, int icon) {
         super(square, color, icon);
     }

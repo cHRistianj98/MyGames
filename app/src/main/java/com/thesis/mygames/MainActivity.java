@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
     public static String WHITE = null;
     public static String BLACK = null;
     public static String DATE = null;
-    public static String RESULT = null;
+    //public static String RESULT = null;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GridLayout layout = (GridLayout) findViewById(R.id.buttonContainerGridLayout);
+        GridLayout layout = findViewById(R.id.buttonContainerGridLayout);
 
         layout.setColumnCount(8);
         layout.setRowCount(8);
@@ -71,23 +71,23 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
             layout.addView(b[i]);
         }
 
-        Button nextButton = (Button) findViewById(R.id.next_move);
+        Button nextButton = findViewById(R.id.next_move);
         nextButton.setOnClickListener(v -> Move.makeNextMove());
 
-        Button undoButton = (Button) findViewById(R.id.undo_move);
+        Button undoButton = findViewById(R.id.undo_move);
         undoButton.setOnClickListener(v -> Move.makeUndoMove());
 
-        Button save = (Button) findViewById(R.id.save);
+        Button save = findViewById(R.id.save);
         save.setOnClickListener(v -> {
             Intent intent = new Intent(this, TagActivity.class);
             intent.putExtra(TagActivity.MOVES, PGNMoveGenerator.toString());
             startActivity(intent);
         });
 
-        Button fen = (Button) findViewById(R.id.fen_button);
+        Button fen = findViewById(R.id.fen_button);
         fen.setOnClickListener(v -> loadPositionFromFen());
 
-        TextView moves = (TextView) findViewById(R.id.moves);
+        TextView moves = findViewById(R.id.moves);
         moves.setMovementMethod(new ScrollingMovementMethod());
 
         init();
@@ -107,9 +107,9 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
 
             List<String> moveList = new ArrayList<>();
 
-            for (int i = 0; i < movesArray.length; i++) {
-                if(movesArray[i] != null)
-                    moveList.add(movesArray[i]);
+            for (String move : movesArray) {
+                if (move != null)
+                    moveList.add(move);
             }
 
             List<Piece> pieces;
@@ -135,9 +135,9 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
 
             List<String> moveList = new ArrayList<>();
 
-            for (int i = 0; i < movesArray.length; i++) {
-                if(movesArray[i] != null)
-                    moveList.add(movesArray[i]);
+            for (String move : movesArray) {
+                if (move != null)
+                    moveList.add(move);
             }
 
             List<Piece> pieces;
@@ -178,9 +178,9 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.fen_dialog, null);
 
-        final EditText fen = (EditText) dialogView.findViewById(R.id.fen);
-        Button buttonSubmit = (Button) dialogView.findViewById(R.id.button_submit);
-        Button buttonCancel = (Button) dialogView.findViewById(R.id.button_cancel);
+        final EditText fen = dialogView.findViewById(R.id.fen);
+        Button buttonSubmit = dialogView.findViewById(R.id.button_submit);
+        Button buttonCancel = dialogView.findViewById(R.id.button_cancel);
 
         buttonCancel.setOnClickListener(view12 -> dialogBuilder.dismiss());
         buttonSubmit.setOnClickListener(view1 -> {

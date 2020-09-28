@@ -45,9 +45,9 @@ public class PGNValidator {
 
         List<String> moveList = new ArrayList<>();
 
-        for (int i = 0; i < movesArray.length; i++) {
-            if(movesArray[i] != null)
-                moveList.add(movesArray[i]);
+        for (String move : movesArray) {
+            if (move != null)
+                moveList.add(move);
         }
 
         String[] results = Move.activity.getApplicationContext().getResources().getStringArray(R.array.pgn_results);

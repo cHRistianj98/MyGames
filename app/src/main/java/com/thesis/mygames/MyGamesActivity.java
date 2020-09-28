@@ -1,6 +1,5 @@
 package com.thesis.mygames;
 
-import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,7 +8,6 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
@@ -17,7 +15,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 public class MyGamesActivity extends ListActivity {
-    public static final String TAG = "MyGamesActivity";
+    //public static final String TAG = "MyGamesActivity";
 
     private SQLiteDatabase db;
     private Cursor cursor;
@@ -26,34 +24,9 @@ public class MyGamesActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_my_games);
         listGames = getListView();
         new GamesAsyncTask().execute();
     }
-
-    //            Cursor cursor = db.query("GAME",
-//                    new String[] {"event", "site", "date", "round", "white_firstname",
-//                    "white_lastname", "black_firstname", "black_lastname", "result",
-//                    "white_elo", "black_elo", "moves"},
-//                    "_id = ?",
-//                    new String[] {"1"},
-//                    null, null, null);
-
-
-//            if(cursor.moveToFirst()) {
-//                String date = cursor.getString(2);
-//                String whiteFirstName = cursor.getString(4);
-//                String whiteLastName = cursor.getString(5);
-//                String blackFirstName = cursor.getString(6);
-//                String blackLastName = cursor.getString(7);
-//                String result = cursor.getString(8);
-//                Integer whiteElo = cursor.getInt(9);
-//                Integer blackElo = cursor.getInt(10);
-//                String moves = cursor.getString(11);
-//                String[] tab = {whiteLastName + " " + result + " " + blackLastName, "0"};
-//
-//            }
-
 
     @Override
     public void onDestroy() {

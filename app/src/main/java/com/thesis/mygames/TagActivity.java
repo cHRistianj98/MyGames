@@ -24,8 +24,7 @@ import java.util.Calendar;
 import java.util.regex.Pattern;
 
 public class TagActivity extends AppCompatActivity {
-
-    public static final String TAG = "TagActivity";
+    //public static final String TAG = "TagActivity";
     public static final String MOVES = "moves";
 
     private SQLiteDatabase db;
@@ -70,29 +69,29 @@ public class TagActivity extends AppCompatActivity {
     }
 
     private void initializeWidgets() {
-        event = (EditText) findViewById(R.id.event);
-        site = (EditText) findViewById(R.id.site);
-        round = (EditText) findViewById(R.id.round);
-        whiteLastName = (EditText) findViewById(R.id.white_lastname);
-        whiteFirstName = (EditText) findViewById(R.id.white_firstname);
-        blackLastName = (EditText) findViewById(R.id.black_lastname);
-        blackFirstName = (EditText) findViewById(R.id.black_firstname);
-        whiteElo = (EditText) findViewById(R.id.white_elo);
-        blackElo = (EditText) findViewById(R.id.black_elo);
+        event = findViewById(R.id.event);
+        site = findViewById(R.id.site);
+        round = findViewById(R.id.round);
+        whiteLastName = findViewById(R.id.white_lastname);
+        whiteFirstName = findViewById(R.id.white_firstname);
+        blackLastName = findViewById(R.id.black_lastname);
+        blackFirstName = findViewById(R.id.black_firstname);
+        whiteElo = findViewById(R.id.white_elo);
+        blackElo = findViewById(R.id.black_elo);
 
-        tilEvent = (TextInputLayout) findViewById(R.id.text_input_layout_event);
-        tilSite = (TextInputLayout) findViewById(R.id.text_input_layout_site);
-        tilRound = (TextInputLayout) findViewById(R.id.text_input_layout_round);
-        tilWhiteLastName = (TextInputLayout) findViewById(R.id.text_input_layout_white_lastname);
-        tilWhiteFirstName = (TextInputLayout) findViewById(R.id.text_input_layout_white_firstname);
-        tilBlackLastName = (TextInputLayout) findViewById(R.id.text_input_layout_black_lastname);
-        tilBlackFirstName = (TextInputLayout) findViewById(R.id.text_input_layout_black_firstname);
-        tilWhiteElo = (TextInputLayout) findViewById(R.id.text_input_layout_white_elo);
-        tilBlackELo = (TextInputLayout) findViewById(R.id.text_input_layout_black_elo);
+        tilEvent = findViewById(R.id.text_input_layout_event);
+        tilSite = findViewById(R.id.text_input_layout_site);
+        tilRound = findViewById(R.id.text_input_layout_round);
+        tilWhiteLastName = findViewById(R.id.text_input_layout_white_lastname);
+        tilWhiteFirstName = findViewById(R.id.text_input_layout_white_firstname);
+        tilBlackLastName = findViewById(R.id.text_input_layout_black_lastname);
+        tilBlackFirstName = findViewById(R.id.text_input_layout_black_firstname);
+        tilWhiteElo = findViewById(R.id.text_input_layout_white_elo);
+        tilBlackELo = findViewById(R.id.text_input_layout_black_elo);
 
-        date = (TextView) findViewById(R.id.date);
-        result = (Spinner) findViewById(R.id.result);
-        saveButton = (Button) findViewById(R.id.save_button);
+        date = findViewById(R.id.date);
+        result = findViewById(R.id.result);
+        saveButton = findViewById(R.id.save_button);
     }
 
     public void addNewGameToDatabase(View view) {

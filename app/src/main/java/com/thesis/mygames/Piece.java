@@ -2,6 +2,8 @@ package com.thesis.mygames;
 
 import android.widget.ImageButton;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public abstract class Piece {
@@ -55,7 +57,8 @@ public abstract class Piece {
         this.square = square;
     }
 
-        @Override
+    @NotNull
+    @Override
     public String toString() {
         return "Piece{" +
                 "field=" + square +

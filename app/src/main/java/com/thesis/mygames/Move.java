@@ -104,7 +104,6 @@ public class Move {
         else if(lastMove.wasCastling) {
             Square endRookSquare = lastMove.castledRook.getSquare();
 
-            int id = endRookSquare.getId() % 8;
             if(endRookSquare.getId() % 8 == 5) {
                 endRookSquare.setPiece(null);
                 b[endRookSquare.getId()].setImageResource(0);

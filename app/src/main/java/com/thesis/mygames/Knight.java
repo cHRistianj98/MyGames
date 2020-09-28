@@ -8,11 +8,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class Knight extends Piece {
-
-    public Knight(boolean color) {
-        super(color);
-    }
-
     public Knight(Square square, boolean color, int icon) {
         super(square, color, icon);
     }

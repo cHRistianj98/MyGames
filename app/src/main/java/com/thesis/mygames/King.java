@@ -1,9 +1,6 @@
 package com.thesis.mygames;
 
-import android.os.Build;
 import android.widget.ImageButton;
-
-import androidx.annotation.RequiresApi;
 
 import java.util.*;
 
@@ -75,7 +72,7 @@ public class King extends Piece {
         return validId;
     }
 
-    public List<Square> checkValidFields(List<Square> possibleSquares) {
+    public void checkValidFields(List<Square> possibleSquares) {
 
         validId.clear();
         validId = getEveryPossibilities();
@@ -88,7 +85,6 @@ public class King extends Piece {
         validId.clear();
         attackedSquares.clear();
 
-        return possibleSquares;
     }
 
     @Override
@@ -113,7 +109,7 @@ public class King extends Piece {
                 toRemove.add(validId.get(i));}
 
             if(Chessboard.getSquares(validId.get(i)).getPiece() != null && Chessboard.getSquares(validId.get(i)).getPiece().getColor() != this.getColor()) {
-                Piece p = Chessboard.getSquares(validId.get(i)).getPiece();
+               // Piece p = Chessboard.getSquares(validId.get(i)).getPiece();
                 if(this.getColor()) {
                     for(Piece pi : Chessboard.blackPieces) {
                         if(pi == null)

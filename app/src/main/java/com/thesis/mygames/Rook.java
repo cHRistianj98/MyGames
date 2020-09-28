@@ -1,9 +1,6 @@
 package com.thesis.mygames;
 
-import android.os.Build;
 import android.widget.ImageButton;
-
-import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +9,6 @@ import static com.thesis.mygames.Chessboard.getSquares;
 public class Rook extends Piece {
 
     private boolean wasMoved = false;
-
-    public Rook(boolean color){
-        super(color);
-    }
 
     public Rook(Square square, boolean color, int icon) {
         super(square, color, icon);

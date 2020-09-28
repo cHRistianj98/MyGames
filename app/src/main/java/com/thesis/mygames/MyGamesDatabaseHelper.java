@@ -2,11 +2,8 @@ package com.thesis.mygames;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 class MyGamesDatabaseHelper extends SQLiteOpenHelper {

@@ -1,10 +1,6 @@
 package com.thesis.mygames;
 
-import android.view.View;
 import android.widget.ImageButton;
-
-
-
 import java.util.List;
 
 public class Turn {
@@ -30,13 +26,10 @@ public class Turn {
             if(p == null)
                 continue;
 
-            Chessboard.b[p.getSquare().getId()].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    List<Square> list = p.action(Chessboard.b);
-                    Move move = new Move(p);
-                    move.addListeners(list);
-                }
+            Chessboard.b[p.getSquare().getId()].setOnClickListener(v -> {
+                List<Square> list = p.action(Chessboard.b);
+                Move move = new Move(p);
+                move.addListeners(list);
             });
         }
     }

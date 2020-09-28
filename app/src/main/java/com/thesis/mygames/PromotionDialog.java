@@ -41,24 +41,9 @@ public class PromotionDialog extends DialogFragment {
         final String[] list = getActivity().getResources().getStringArray(R.array.pieces);
 
         builder.setTitle("Wybierz figurę")
-                .setSingleChoiceItems(list, 0, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        position = i;
-                    }
-                })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        mListener.onPositiveButtonClicked(list, position);
-                    }
-                })
-                .setNegativeButton("Cofnij", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        mListener.onNegativeButtonClicked();
-                    }
-                });
+                .setSingleChoiceItems(list, 0, (dialog, i) -> position = i)
+                .setPositiveButton("Ok", (dialog, i) -> mListener.onPositiveButtonClicked(list, position))
+                .setNegativeButton("Cofnij", (dialog, i) -> mListener.onNegativeButtonClicked());
 
         return builder.create();
     }

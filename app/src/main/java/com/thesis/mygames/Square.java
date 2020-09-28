@@ -10,10 +10,6 @@ public class Square implements Comparable<Square> {
     private Piece piece;
     String name;
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
     }

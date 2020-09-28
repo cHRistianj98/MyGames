@@ -1,22 +1,19 @@
 package com.thesis.mygames;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.thesis.mygames.Chessboard.*;
 
 public class FENFormat {
-
     public static String generateFENFromPosition() {
-        StringBuilder fen = new StringBuilder();
-        fen.append(getFenPosition()).append(" ").
-                append(whoseMove()).append(" ").
-                append(getCastlingInformation()).append(" ").
-                append(getEnPassantPossibility()).append(" ").
-                append(getNumberOfHalfMoves()).append(" ").
-                append(getFullMoveNumber());
-
-        return fen.toString();
+        return getFenPosition() + " " +
+                whoseMove() + " " +
+                getCastlingInformation() + " " +
+                getEnPassantPossibility() + " " +
+                getNumberOfHalfMoves() + " " +
+                getFullMoveNumber();
     }
 
     public static String getFenPosition() {
@@ -142,16 +139,16 @@ public class FENFormat {
             return false;
         }
 
-        String[] ranks = matcher.group(2).split("/");
+        String[] ranks = Objects.requireNonNull(matcher.group(2)).split("/");
         for (String rank : ranks) {
             if (!verifyRank(rank))
                 return false;
         }
-        if (!verifyRank(matcher.group(4))) {
+        if (!verifyRank(Objects.requireNonNull(matcher.group(4)))) {
             return false;
         }
 
-        if (!matcher.group(1).contains("k") || !matcher.group(1).contains("K")) {
+        if (!Objects.requireNonNull(matcher.group(1)).contains("k") || !Objects.requireNonNull(matcher.group(1)).contains("K")) {
             return false;
         }
 
@@ -408,7 +405,6 @@ public class FENFormat {
     }
 
     public static void setCastlingInformation(String fen) {
-
         if((whitePieces.get(12)) != null)((King) whitePieces.get(12)).setWasMoved(true);
         if((whitePieces.get(15)) != null)((Rook) whitePieces.get(15)).setWasMoved(true);
         if((whitePieces.get(8)) != null)((Rook) whitePieces.get(8)).setWasMoved(true);
