@@ -18,7 +18,6 @@ public class Chessboard {
     public static Square enPassantPossible = null;
     public static int numberOfHalfMoves = 0;
     public static int fullMoveNumber = 0;
-    //public static GameState gameState = GameState.NORMAL;
     public static StringBuilder PGNTagGenerator = new StringBuilder();
     public static StringBuilder PGNMoveGenerator = new StringBuilder();
 
@@ -124,7 +123,6 @@ public class Chessboard {
     public static void addPiece(Piece piece, int id, int icon) {
         Chessboard.b[id].setImageResource(icon);
         Chessboard.getSquares(id).setPiece(piece);
-
     }
 
     public static int getSquareColor(int i) {
@@ -189,7 +187,6 @@ public class Chessboard {
         enPassantPossible = null;
         numberOfHalfMoves = 0;
         fullMoveNumber = 0;
-        //public static GameState gameState = GameState.NORMAL;
         PGNTagGenerator = new StringBuilder();
         PGNMoveGenerator = new StringBuilder();
     }

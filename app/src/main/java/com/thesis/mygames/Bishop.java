@@ -7,10 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Bishop extends Piece {
-
-    public Bishop(boolean color){
-        super(color);
-    }
     public Bishop(Square square, boolean color, int icon) {
         super(square, color, icon);
     }

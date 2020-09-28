@@ -41,6 +41,13 @@
         <item>Wygrały czarne (0-1)</item>
     </string-array>
 
+    <string-array name="pgn_results">
+        <item>1-0</item>
+        <item>1/2-1/2</item>
+        <item>0-1</item>
+        <item>*</item>
+    </string-array>
+
     <string name="about_app">
         Aplikacja bardzo dobra pozdrawiam
     </string>
