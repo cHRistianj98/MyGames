@@ -96,8 +96,10 @@ public class PGNFormat {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void loadGameFromPgn(String pgn) {
-        if(!isPgnValid(pgn))
+
+        if(!isPgnValid(pgn)) {
             throw new IllegalArgumentException("Code in PGN format is wrong!");
+        }
 
         StringBuilder moveSection = new StringBuilder();
 
@@ -279,7 +281,8 @@ public class PGNFormat {
     }
 
     public static boolean isPgnValid(String pgn) {
-        return true;
+        PGNValidator validator = new PGNValidator();
+        return validator.validate(pgn);
     }
 
     public static String getPieceName(String moveNotation) {

@@ -6,14 +6,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.pm.FeatureGroupInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -30,6 +27,14 @@ import static com.thesis.mygames.Chessboard.*;
 public class MainActivity extends AppCompatActivity implements PromotionDialog.SingleChoiceListener{
     public static final String EXTRA_GAME_ID = "id";
     public static final String EXTRA_MOVES = "moves";
+
+    public static String EVENT = null;
+    public static String SITE = null;
+    public static int ROUND = 0;
+    public static String WHITE = null;
+    public static String BLACK = null;
+    public static String DATE = null;
+    public static String RESULT = null;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -245,4 +250,5 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
         dialogBuilder.setView(dialogView);
         dialogBuilder.show();
     }
+
 }
