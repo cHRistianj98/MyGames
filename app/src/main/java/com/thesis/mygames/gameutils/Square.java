@@ -1,11 +1,10 @@
-package com.thesis.mygames;
+package com.thesis.mygames.gameutils;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 public class Square implements Comparable<Square> {
-
     private int id;
     private Piece piece;
     String name;

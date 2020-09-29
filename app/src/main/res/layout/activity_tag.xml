@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="5dp"
-        tools:context=".TagActivity">
+        tools:context=".activities.TagActivity">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_layout_event"

@@ -1,4 +1,4 @@
-package com.thesis.mygames;
+package com.thesis.mygames.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -19,12 +19,19 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.thesis.mygames.formats.FENFormat;
+import com.thesis.mygames.gameutils.Move;
+import com.thesis.mygames.formats.PGNFormat;
+import com.thesis.mygames.gameutils.Piece;
+import com.thesis.mygames.androidutils.PromotionDialog;
+import com.thesis.mygames.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.thesis.mygames.Chessboard.*;
+import static com.thesis.mygames.gameutils.Chessboard.*;
 
-public class MainActivity extends AppCompatActivity implements PromotionDialog.SingleChoiceListener{
+public class MainActivity extends AppCompatActivity implements PromotionDialog.SingleChoiceListener {
     public static final String EXTRA_GAME_ID = "id";
     public static final String EXTRA_MOVES = "moves";
 
@@ -250,5 +257,4 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
         dialogBuilder.setView(dialogView);
         dialogBuilder.show();
     }
-
 }

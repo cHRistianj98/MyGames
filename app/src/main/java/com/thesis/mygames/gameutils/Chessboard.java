@@ -1,6 +1,14 @@
-package com.thesis.mygames;
+package com.thesis.mygames.gameutils;
 
 import android.widget.ImageButton;
+
+import com.thesis.mygames.R;
+import com.thesis.mygames.pieces.Bishop;
+import com.thesis.mygames.pieces.King;
+import com.thesis.mygames.pieces.Knight;
+import com.thesis.mygames.pieces.Pawn;
+import com.thesis.mygames.pieces.Queen;
+import com.thesis.mygames.pieces.Rook;
 
 import java.util.ArrayList;
 import java.util.List;

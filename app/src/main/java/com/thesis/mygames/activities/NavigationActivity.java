@@ -1,10 +1,14 @@
-package com.thesis.mygames;
+package com.thesis.mygames.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.thesis.mygames.R;
+import com.thesis.mygames.activities.MainActivity;
+import com.thesis.mygames.activities.MyGamesActivity;
 
 public class NavigationActivity extends AppCompatActivity {
 

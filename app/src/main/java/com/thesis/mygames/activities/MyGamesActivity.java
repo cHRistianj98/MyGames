@@ -1,4 +1,6 @@
-package com.thesis.mygames;
+package com.thesis.mygames.activities;
+
+import com.thesis.mygames.androidutils.MyGamesDatabaseHelper;
 
 import android.app.ListActivity;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package com.thesis.mygames;
+package com.thesis.mygames.androidutils;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,6 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.thesis.mygames.R;
 
 import org.jetbrains.annotations.NotNull;
 

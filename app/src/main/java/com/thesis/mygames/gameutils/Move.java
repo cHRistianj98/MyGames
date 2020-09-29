@@ -1,14 +1,25 @@
-package com.thesis.mygames;
+package com.thesis.mygames.gameutils;
 
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.thesis.mygames.androidutils.MyApplication;
+import com.thesis.mygames.formats.PGNFormat;
+import com.thesis.mygames.androidutils.PromotionDialog;
+import com.thesis.mygames.R;
+import com.thesis.mygames.pieces.Bishop;
+import com.thesis.mygames.pieces.King;
+import com.thesis.mygames.pieces.Knight;
+import com.thesis.mygames.pieces.Pawn;
+import com.thesis.mygames.pieces.Queen;
+import com.thesis.mygames.pieces.Rook;
+
 import java.util.Arrays;
 import java.util.List;
 
-import static com.thesis.mygames.Chessboard.*;
+import static com.thesis.mygames.gameutils.Chessboard.*;
 
 public class Move {
     public static AppCompatActivity activity;

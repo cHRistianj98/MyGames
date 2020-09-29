@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
-        tools:context=".MainActivity">
+        tools:context=".activities.MainActivity">
 
         <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -19,7 +19,7 @@
             android:padding="5dp"
             android:columnCount="8"
             android:rowCount="8"
-            tools:context=".MainActivity">
+            tools:context=".activities.MainActivity">
 
         </GridLayout>
 

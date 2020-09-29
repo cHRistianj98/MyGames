@@ -1,4 +1,4 @@
-package com.thesis.mygames;
+package com.thesis.mygames.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.thesis.mygames.androidutils.MyGamesDatabaseHelper;
+import com.thesis.mygames.R;
 
 import java.util.Calendar;
 import java.util.regex.Pattern;

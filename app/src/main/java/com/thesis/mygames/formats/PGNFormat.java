@@ -1,8 +1,15 @@
-package com.thesis.mygames;
+package com.thesis.mygames.formats;
 
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+
+import com.thesis.mygames.R;
+import com.thesis.mygames.gameutils.Chessboard;
+import com.thesis.mygames.gameutils.Move;
+import com.thesis.mygames.gameutils.Piece;
+import com.thesis.mygames.gameutils.Square;
+import com.thesis.mygames.pieces.Pawn;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +18,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import static com.thesis.mygames.Chessboard.*;
+import static com.thesis.mygames.gameutils.Chessboard.*;
 
 public class PGNFormat {
     public static void generatePgnTags(String event, String site, String date, int round, String whiteLastName,
@@ -166,8 +173,8 @@ public class PGNFormat {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static int getMovedPiece(String move, int index) throws Exception {
 
-        String []classes = { "com.thesis.mygames.Knight", "com.thesis.mygames.Rook", "com.thesis.mygames.Bishop",
-                             "com.thesis.mygames.Queen", "com.thesis.mygames.King", "com.thesis.mygames.Pawn" };
+        String []classes = { "com.thesis.mygames.pieces.Knight", "com.thesis.mygames.pieces.Rook", "com.thesis.mygames.pieces.Bishop",
+                             "com.thesis.mygames.pieces.Queen", "com.thesis.mygames.pieces.King", "com.thesis.mygames.pieces.Pawn" };
         String myClass;
         switch(move.charAt(0)) {
             case 'O': return 12;

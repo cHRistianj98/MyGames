@@ -1,4 +1,4 @@
-package com.thesis.mygames;
+package com.thesis.mygames.androidutils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
-class MyGamesDatabaseHelper extends SQLiteOpenHelper {
+public class MyGamesDatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "my_games";
     private static final int DB_VERSION = 1;
 

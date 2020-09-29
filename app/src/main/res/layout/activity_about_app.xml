@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".AboutAppActivity">
+    tools:context=".activities.AboutAppActivity">
 
     <TextView
         android:id="@+id/about_app"
