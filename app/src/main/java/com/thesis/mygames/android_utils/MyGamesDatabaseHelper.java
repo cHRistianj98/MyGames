@@ -1,4 +1,4 @@
-package com.thesis.mygames.androidutils;
+package com.thesis.mygames.android_utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -29,20 +29,6 @@ public class MyGamesDatabaseHelper extends SQLiteOpenHelper {
                 + "white_elo INTEGER, "
                 + "black_elo INTEGER, "
                 + "moves TEXT);");
-
-//       insertGame(db,
-//               "",
-//               "",
-//               "",
-//               1,
-//               "Jan",
-//               "Wojtyla",
-//               "Marcin",
-//               "Najman",
-//               "1-0",
-//               1000,
-//               1000,
-//               "1. e2 e7");
     }
 
     @Override

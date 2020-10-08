@@ -2,16 +2,16 @@ package com.thesis.mygames.pieces;
 
 import android.widget.ImageButton;
 
-import com.thesis.mygames.gameutils.Chessboard;
-import com.thesis.mygames.gameutils.Piece;
-import com.thesis.mygames.gameutils.Square;
+import com.thesis.mygames.game_utils.Chessboard;
+import com.thesis.mygames.game_utils.Piece;
+import com.thesis.mygames.game_utils.Square;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.thesis.mygames.gameutils.Chessboard.getSquares;
+import static com.thesis.mygames.game_utils.Chessboard.getSquares;
 
 public class Queen extends Piece {
     public Queen(Square square, boolean color, int icon) {

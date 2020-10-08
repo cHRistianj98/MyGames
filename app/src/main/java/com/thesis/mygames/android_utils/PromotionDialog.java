@@ -1,9 +1,8 @@
-package com.thesis.mygames.androidutils;
+package com.thesis.mygames.android_utils;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,7 +14,6 @@ import com.thesis.mygames.R;
 import org.jetbrains.annotations.NotNull;
 
 public class PromotionDialog extends DialogFragment {
-
     private int position = 0;
 
     public interface SingleChoiceListener{

@@ -5,10 +5,10 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.thesis.mygames.R;
-import com.thesis.mygames.gameutils.Chessboard;
-import com.thesis.mygames.gameutils.Move;
-import com.thesis.mygames.gameutils.Piece;
-import com.thesis.mygames.gameutils.Square;
+import com.thesis.mygames.game_utils.Chessboard;
+import com.thesis.mygames.game_utils.Move;
+import com.thesis.mygames.game_utils.Piece;
+import com.thesis.mygames.game_utils.Square;
 import com.thesis.mygames.pieces.Pawn;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import static com.thesis.mygames.gameutils.Chessboard.*;
+import static com.thesis.mygames.game_utils.Chessboard.*;
 
 public class PGNFormat {
     public static void generatePgnTags(String event, String site, String date, int round, String whiteLastName,
@@ -58,7 +58,7 @@ public class PGNFormat {
         if(number == 0)
             return "[Round \"?\"]";
 
-        return String.format("[Round \"%d\"]", number);
+        return "[Round \"" + number + "\"]";
     }
 
     public static String generateWhiteTag(String lastName, String firstName) {
@@ -103,7 +103,6 @@ public class PGNFormat {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void loadGameFromPgn(String pgn) {
-
         if(!isPgnValid(pgn)) {
             throw new IllegalArgumentException("Code in PGN format is wrong!");
         }

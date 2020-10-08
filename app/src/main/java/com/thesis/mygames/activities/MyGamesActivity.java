@@ -1,6 +1,6 @@
 package com.thesis.mygames.activities;
 
-import com.thesis.mygames.androidutils.MyGamesDatabaseHelper;
+import com.thesis.mygames.android_utils.MyGamesDatabaseHelper;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CursorAdapter;
@@ -16,9 +17,10 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 public class MyGamesActivity extends ListActivity {
     //public static final String TAG = "MyGamesActivity";
-
     private SQLiteDatabase db;
     private Cursor cursor;
     ListView listGames;
@@ -48,6 +50,7 @@ public class MyGamesActivity extends ListActivity {
                         blackLastName, result;
         private int round;
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected Boolean doInBackground(Integer... ids) {
             int id = ids[0];

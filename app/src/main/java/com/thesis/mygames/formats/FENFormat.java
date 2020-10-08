@@ -1,9 +1,9 @@
 package com.thesis.mygames.formats;
 
-import com.thesis.mygames.gameutils.Move;
-import com.thesis.mygames.gameutils.Piece;
-import com.thesis.mygames.gameutils.Square;
-import com.thesis.mygames.gameutils.Turn;
+import com.thesis.mygames.game_utils.Move;
+import com.thesis.mygames.game_utils.Piece;
+import com.thesis.mygames.game_utils.Square;
+import com.thesis.mygames.game_utils.Turn;
 import com.thesis.mygames.pieces.Bishop;
 import com.thesis.mygames.pieces.King;
 import com.thesis.mygames.pieces.Knight;
@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.thesis.mygames.gameutils.Chessboard.*;
+import static com.thesis.mygames.game_utils.Chessboard.*;
 
 public class FENFormat {
     public static String generateFENFromPosition() {

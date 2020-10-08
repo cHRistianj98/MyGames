@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MyGames</string>
 
-    <!--Pawn Promotion-->
+    <!-- Pawn Promotion -->
     <string-array name="pieces">
         <item>Hetman</item>
         <item>Wieża</item>
@@ -9,14 +9,17 @@
         <item>Skoczek</item>
     </string-array>
 
+    <!-- activity_navigation -->
     <string name="new_game_button_text">Dodaj nową partię</string>
     <string name="my_games_button_text">Moje gry</string>
     <string name="about_app_text">O aplikacji</string>
 
+    <!-- activity_main -->
     <string name="next_move_text">Next!</string>
     <string name="undo_move_text">Undo!</string>
     <string name="save_text">Save!</string>
 
+    <!-- activity_tag -->
     <string name="event_hint">Nazwa turnieju</string>
     <string name="site_hint">Nazwa lokacji</string>
     <string name="date_hint">Podaj datę partii</string>
@@ -27,14 +30,15 @@
     <string name="black_firstname_hint">imię grającego czarnymi</string>
     <string name="white_elo_hint">ranking grającego białymi</string>
     <string name="black_elo_hint">ranking grającego czarnymi</string>
-    <string name="result_label">Rezultat</string>
-    <string name="save_button_label">Ok</string>
+    <string name="result_label">Rezultat*:</string>
+    <string name="save_button_label">Zapisz partię</string>
     <string name="event_error">nazwa turnieju może zawierać tylko znaki alfanumeryczne</string>
     <string name="site_error">nazwa lokacji może zawierać tylko znaki alfanumeryczne</string>
     <string name="lastname_error">Nazwisko lub login mogą się składać jedynie ze znaków alfanumerycznych</string>
     <string name="empty_lastname_error">pole nazwisko/login zawodnika nie może być puste</string>
     <string name="firstname_error">Imię może się składać jedynie z polskich znaków</string>
-
+    <string name="info_about_activity_tag">Podaj dodatkowe informacje dotyczące rozgrywki. Pierwsze 3 pola są
+            obowiązkowe natomiast reszta jest opcjonalna.</string>
     <string-array name="results">
         <item>Wygrały białe (1-0)</item>
         <item>Remis (1/2-1/2)</item>
@@ -52,10 +56,16 @@
         Aplikacja bardzo dobra pozdrawiam
     </string>
 
-    <!-- fen_dialog.xml-->
+    <!-- fen_dialog.xml && -->
     <string name="label_select_fen">Podaj kod w formacie FEN</string>
     <string name="label_submit">Ok</string>
     <string name="label_cancel">Cofnij</string>
 
     <string name="label_select_pgn">Podaj kod w formacie PGN</string>
+    
+    <!-- bottom_navigation_menu -->
+    <string name="text_label1">do przodu</string>
+    <string name="text_label2">cofanie</string>
+    <string name="text_label3">formaty</string>
+    <string name="text_label4">zapisz</string>
 </resources>

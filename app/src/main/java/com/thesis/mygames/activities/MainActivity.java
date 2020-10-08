@@ -13,24 +13,27 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.thesis.mygames.formats.FENFormat;
-import com.thesis.mygames.gameutils.Move;
+import com.thesis.mygames.game_utils.Move;
 import com.thesis.mygames.formats.PGNFormat;
-import com.thesis.mygames.gameutils.Piece;
-import com.thesis.mygames.androidutils.PromotionDialog;
+import com.thesis.mygames.game_utils.Piece;
+import com.thesis.mygames.android_utils.PromotionDialog;
 import com.thesis.mygames.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.thesis.mygames.gameutils.Chessboard.*;
+import static com.thesis.mygames.game_utils.Chessboard.*;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends AppCompatActivity implements PromotionDialog.SingleChoiceListener {
     public static final String EXTRA_GAME_ID = "id";
     public static final String EXTRA_MOVES = "moves";
@@ -38,10 +41,7 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
     public static String EVENT = null;
     public static String SITE = null;
     public static int ROUND = 0;
-    public static String WHITE = null;
-    public static String BLACK = null;
     public static String DATE = null;
-    //public static String RESULT = null;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -69,8 +69,10 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
                 params.width = (height - 290) / 8;
                 params.height = (height - 290) / 8;
             } else {
-                params.width = (width - 40) / 8;
-                params.height = (width - 40) / 8;
+//                params.width = (width - 40) / 8;
+//                params.height = (width - 40) / 8;
+                params.width = (width - 2)  / 8;
+                params.height = (width - 2) / 8;
             }
 
             b[i].setLayoutParams(params);
@@ -78,27 +80,14 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
             layout.addView(b[i]);
         }
 
-        Button nextButton = findViewById(R.id.next_move);
-        nextButton.setOnClickListener(v -> Move.makeNextMove());
+        init();
+        Move.activity = this;
 
-        Button undoButton = findViewById(R.id.undo_move);
-        undoButton.setOnClickListener(v -> Move.makeUndoMove());
-
-        Button save = findViewById(R.id.save);
-        save.setOnClickListener(v -> {
-            Intent intent = new Intent(this, TagActivity.class);
-            intent.putExtra(TagActivity.MOVES, PGNMoveGenerator.toString());
-            startActivity(intent);
-        });
-
-        Button fen = findViewById(R.id.fen_button);
-        fen.setOnClickListener(v -> loadPositionFromFen());
+        BottomNavigationView navigation = findViewById(R.id.bottom_navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         TextView moves = findViewById(R.id.moves);
         moves.setMovementMethod(new ScrollingMovementMethod());
-
-        init();
-        Move.activity = this;
 
         String movesFromDatabase = getIntent().getStringExtra(EXTRA_MOVES);
         int idFromDatabase = getIntent().getIntExtra(EXTRA_GAME_ID, 0);
@@ -161,12 +150,36 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
         }
     }
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = item -> {
+                switch (item.getItemId()) {
+                    case R.id.next_menu:
+                        Move.makeNextMove();
+                        return true;
+                    case R.id.undo_menu:
+                        Move.makeUndoMove();
+                        return true;
+                    case R.id.format_menu:
+                        showFormatOptions(null);
+                        return true;
+                    case R.id.save_menu:
+                        Intent intent = new Intent(this, TagActivity.class);
+                        intent.putExtra(TagActivity.MOVES, PGNMoveGenerator.toString());
+                        intent.putExtra("event", EVENT);
+                        intent.putExtra("site", SITE);
+                        intent.putExtra("round", ROUND);
+                        intent.putExtra("date", DATE);
+                        startActivity(intent);
+                        return true;
+                }
+                return false;
+            };
+
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("moves", PGNMoveGenerator.toString());
     }
-
 
     @Override
     public void onPositiveButtonClicked(String[] list, int position) {
@@ -178,6 +191,23 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
     @Override
     public void onNegativeButtonClicked() {
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void showFormatOptions(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final String[] labels = {"Udostępnij PGN", "Wczytaj PGN", "Udostępnij FEN", "Wczytaj FEN"};
+        builder.setItems(labels, (dialog, position) -> {
+            switch (position) {
+                case 0: sharePgn(); break;
+                case 1: loadGameFromPgn(); break;
+                case 2: shareFen(); break;
+                case 3: loadPositionFromFen(); break;
+            }
+        });
+
+        AlertDialog formatAlertDialog = builder.create();
+        formatAlertDialog.show();
     }
 
     public void loadPositionFromFen() {
@@ -203,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
         dialogBuilder.show();
     }
 
-    public void shareFen(View view) {
+    public void shareFen() {
         String fen = FENFormat.generateFENFromPosition();
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
@@ -211,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
         startActivity(intent);
     }
 
-    public void sharePgn(View view) {
+    public void sharePgn() {
         PGNFormat.generatePgnTags(
                 getIntent().getStringExtra("event"),
                 getIntent().getStringExtra("site"),
@@ -235,14 +265,14 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void loadGameFromPgn(View view) {
+    public void loadGameFromPgn() {
         final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.pgn_dialog, null);
 
-        final EditText pgn = (EditText) dialogView.findViewById(R.id.pgn);
-        Button buttonSubmit = (Button) dialogView.findViewById(R.id.pgn_button_submit);
-        Button buttonCancel = (Button) dialogView.findViewById(R.id.pgn_button_cancel);
+        final EditText pgn = dialogView.findViewById(R.id.pgn);
+        Button buttonSubmit = dialogView.findViewById(R.id.pgn_button_submit);
+        Button buttonCancel = dialogView.findViewById(R.id.pgn_button_cancel);
 
         buttonCancel.setOnClickListener(view12 -> dialogBuilder.dismiss());
         buttonSubmit.setOnClickListener(view1 -> {

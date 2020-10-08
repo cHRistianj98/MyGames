@@ -12,14 +12,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.thesis.mygames.androidutils.MyGamesDatabaseHelper;
+import com.thesis.mygames.android_utils.MyGamesDatabaseHelper;
 import com.thesis.mygames.R;
 
 import java.util.Calendar;
@@ -33,19 +32,18 @@ public class TagActivity extends AppCompatActivity {
 
     private EditText event, site, round, whiteLastName, whiteFirstName, blackLastName, blackFirstName,
              whiteElo, blackElo;
-    private TextInputLayout tilEvent, tilSite, tilRound, tilWhiteLastName, tilWhiteFirstName,
-                    tilBlackLastName, tilBlackFirstName, tilWhiteElo, tilBlackELo;
+    private TextInputLayout tilEvent, tilSite, tilWhiteLastName, tilWhiteFirstName,
+                    tilBlackLastName, tilBlackFirstName;
     private TextView date;
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private Spinner result;
-    private Button saveButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag);
         initializeWidgets();
+        addOptionalTextFromPgn();
 
         date.setOnClickListener(v -> {
             Calendar cal = Calendar.getInstance();
@@ -80,20 +78,22 @@ public class TagActivity extends AppCompatActivity {
         blackFirstName = findViewById(R.id.black_firstname);
         whiteElo = findViewById(R.id.white_elo);
         blackElo = findViewById(R.id.black_elo);
+        date = findViewById(R.id.date);
+        result = findViewById(R.id.result);
 
         tilEvent = findViewById(R.id.text_input_layout_event);
         tilSite = findViewById(R.id.text_input_layout_site);
-        tilRound = findViewById(R.id.text_input_layout_round);
         tilWhiteLastName = findViewById(R.id.text_input_layout_white_lastname);
         tilWhiteFirstName = findViewById(R.id.text_input_layout_white_firstname);
         tilBlackLastName = findViewById(R.id.text_input_layout_black_lastname);
         tilBlackFirstName = findViewById(R.id.text_input_layout_black_firstname);
-        tilWhiteElo = findViewById(R.id.text_input_layout_white_elo);
-        tilBlackELo = findViewById(R.id.text_input_layout_black_elo);
+    }
 
-        date = findViewById(R.id.date);
-        result = findViewById(R.id.result);
-        saveButton = findViewById(R.id.save_button);
+    private void addOptionalTextFromPgn() {
+        event.setText(getIntent().getStringExtra("event"));
+        site.setText(getIntent().getStringExtra("site"));
+        round.setText(getIntent().getStringExtra("round"));
+        date.setText(getIntent().getStringExtra("date"));
     }
 
     public void addNewGameToDatabase(View view) {
@@ -209,6 +209,7 @@ public class TagActivity extends AppCompatActivity {
                 toast.show();
             }
 
+            db.close();
             Intent intent = new Intent(TagActivity.this, MyGamesActivity.class);
             startActivity(intent);
         }

@@ -1,13 +1,13 @@
-package com.thesis.mygames.gameutils;
+package com.thesis.mygames.game_utils;
 
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import com.thesis.mygames.androidutils.MyApplication;
+import com.thesis.mygames.android_utils.MyApplication;
 import com.thesis.mygames.formats.PGNFormat;
-import com.thesis.mygames.androidutils.PromotionDialog;
+import com.thesis.mygames.android_utils.PromotionDialog;
 import com.thesis.mygames.R;
 import com.thesis.mygames.pieces.Bishop;
 import com.thesis.mygames.pieces.King;
@@ -19,7 +19,7 @@ import com.thesis.mygames.pieces.Rook;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.thesis.mygames.gameutils.Chessboard.*;
+import static com.thesis.mygames.game_utils.Chessboard.*;
 
 public class Move {
     public static AppCompatActivity activity;
@@ -237,7 +237,8 @@ public class Move {
         }
 
         moveIndicator--;
-        setTurn();
+        Turn.disableBlackPieces();
+        Turn.disableWhitePieces();
     }
 
     public void makeMove(int endSquareId, Square f, int startSquareId) {
@@ -290,15 +291,15 @@ public class Move {
         else if (piece instanceof Rook)
             ((Rook) piece).setWasMoved(true);
 
-        enPassantPossible = getEnPassantPossibleSquare();
-        setTurn();
-
         moveList.add(this);
         if(!wasPawnPromotion)
             PGNFormat.generatePgnMoves();
 
         TextView textView = activity.findViewById(R.id.moves);
         textView.setText(PGNMoveGenerator.toString());
+
+        enPassantPossible = getEnPassantPossibleSquare();
+        setTurn();
     }
 
     public void makeMoveFromPgn(int endSquareId, Square f, int startSquareId, String selectedPieceFromPgn) {
@@ -350,15 +351,15 @@ public class Move {
         else if (piece instanceof Rook)
             ((Rook) piece).setWasMoved(true);
 
-        enPassantPossible = getEnPassantPossibleSquare();
-        setTurn();
-
         moveList.add(this);
         if(!wasPawnPromotion)
             PGNFormat.generatePgnMoves();
 
         TextView textView = activity.findViewById(R.id.moves);
         textView.setText(PGNMoveGenerator.toString());
+
+        enPassantPossible = getEnPassantPossibleSquare();
+        setTurn();
     }
 
     private void removeUnnecessaryActionListeners() {
@@ -677,7 +678,6 @@ public class Move {
             }
         }
         return 0;
-
     }
 
     public Square getEnPassantPossibleSquare() {

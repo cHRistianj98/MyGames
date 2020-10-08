@@ -3,8 +3,7 @@
     package="com.thesis.mygames">
 
     <application
-        android:name=".androidutils.MyApplication"
-        android:allowBackup="true"
+        android:name=".android_utils.MyApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"

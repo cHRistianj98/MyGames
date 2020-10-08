@@ -1,4 +1,4 @@
-package com.thesis.mygames.gameutils;
+package com.thesis.mygames.game_utils;
 
 import android.widget.ImageButton;
 
@@ -13,11 +13,13 @@ public class Turn {
             if(p == null)
                 continue;
 
-            Chessboard.b[p.getSquare().getId()].setOnClickListener(v -> {
-                List<Square> list = p.action(Chessboard.b);
-                Move move = new Move(p);
-                move.addListeners(list);
-            });
+            if(Chessboard.moveList.size() - 1 == Chessboard.moveIndicator) {
+                Chessboard.b[p.getSquare().getId()].setOnClickListener(v -> {
+                    List<Square> list = p.action(Chessboard.b);
+                    Move move = new Move(p);
+                    move.addListeners(list);
+                });
+            }
         }
     }
 
@@ -27,11 +29,13 @@ public class Turn {
             if(p == null)
                 continue;
 
-            Chessboard.b[p.getSquare().getId()].setOnClickListener(v -> {
-                List<Square> list = p.action(Chessboard.b);
-                Move move = new Move(p);
-                move.addListeners(list);
-            });
+            if(Chessboard.moveList.size() - 1 == Chessboard.moveIndicator) {
+                Chessboard.b[p.getSquare().getId()].setOnClickListener(v -> {
+                    List<Square> list = p.action(Chessboard.b);
+                    Move move = new Move(p);
+                    move.addListeners(list);
+                });
+            }
         }
     }
 

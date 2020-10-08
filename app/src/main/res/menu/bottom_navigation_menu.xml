@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/format_menu"
+        android:enabled="true"
+        android:icon="@drawable/ic_formats"
+        android:title="@string/text_label3"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/undo_menu"
+        android:enabled="true"
+        android:icon="@drawable/ic_keyboard_arrow_undo"
+        android:title="@string/text_label2"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/next_menu"
+        android:enabled="true"
+        android:icon="@drawable/ic_keyboard_arrow_next"
+        android:title="@string/text_label1"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/save_menu"
+        android:enabled="true"
+        android:icon="@drawable/ic_save"
+        android:title="@string/text_label4"
+        app:showAsAction="never"/>
+</menu>

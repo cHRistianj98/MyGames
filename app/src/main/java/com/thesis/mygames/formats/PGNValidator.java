@@ -2,7 +2,7 @@ package com.thesis.mygames.formats;
 
 import com.thesis.mygames.R;
 import com.thesis.mygames.activities.MainActivity;
-import com.thesis.mygames.gameutils.Move;
+import com.thesis.mygames.game_utils.Move;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,9 +83,6 @@ public class PGNValidator {
             case 'S': MainActivity.SITE = getProperty(line); break;
             case 'R': MainActivity.ROUND = Integer.parseInt(getProperty(line)); break;
             case 'D': MainActivity.DATE = getProperty(line); break;
-            case 'W': MainActivity.WHITE = getProperty(line); break;
-            case 'B': MainActivity.BLACK = getProperty(line); break;
-           // default: MainActivity.RESULT = getProperty(line); break;
         }
     }
 

@@ -1,4 +1,4 @@
-package com.thesis.mygames.gameutils;
+package com.thesis.mygames.game_utils;
 
 import android.widget.ImageButton;
 
