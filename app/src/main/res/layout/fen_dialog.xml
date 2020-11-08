@@ -14,12 +14,13 @@
         android:padding="10dp"
         android:text="@string/label_select_fen" />
 
+
     <EditText
         android:id="@+id/fen"
         android:layout_width="match_parent"
-        android:layout_below="@id/select_fen_text_view"
-        android:textIsSelectable="true"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/select_fen_text_view" />
+
 
     <Button
         android:id="@+id/button_submit"

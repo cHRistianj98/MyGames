@@ -13,7 +13,6 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.Button;
@@ -22,16 +21,16 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.thesis.mygames.formats.FENFormat;
-import com.thesis.mygames.game_utils.Move;
+import com.thesis.mygames.game.Move;
 import com.thesis.mygames.formats.PGNFormat;
-import com.thesis.mygames.game_utils.Piece;
-import com.thesis.mygames.android_utils.PromotionDialog;
+import com.thesis.mygames.game.Piece;
+import com.thesis.mygames.android.PromotionDialog;
 import com.thesis.mygames.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.thesis.mygames.game_utils.Chessboard.*;
+import static com.thesis.mygames.game.Chessboard.*;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends AppCompatActivity implements PromotionDialog.SingleChoiceListener {
@@ -50,36 +49,29 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
         setContentView(R.layout.activity_main);
 
         GridLayout layout = findViewById(R.id.buttonContainerGridLayout);
-
         layout.setColumnCount(8);
         layout.setRowCount(8);
-
         resetChessboard();
         for (int i = 0; i < 64 ; i++) {
             b[i] = new ImageButton(this);
             b[i].setId(i);
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             int height = displayMetrics.heightPixels;
             int width = displayMetrics.widthPixels;
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             int orientation = getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 params.width = (height - 290) / 8;
                 params.height = (height - 290) / 8;
             } else {
-//                params.width = (width - 40) / 8;
-//                params.height = (width - 40) / 8;
                 params.width = (width - 2)  / 8;
                 params.height = (width - 2) / 8;
             }
-
             b[i].setLayoutParams(params);
             b[i].setBackground( getResources().getDrawable( getSquareColor(i)));
             layout.addView(b[i]);
         }
-
         init();
         Move.activity = this;
 
@@ -88,6 +80,12 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
 
         TextView moves = findViewById(R.id.moves);
         moves.setMovementMethod(new ScrollingMovementMethod());
+
+//        int movesHeight = screenHeight - gridLayoutHeight - 56 - 10;
+//
+//        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) moves.getLayoutParams();
+//        params.height = movesHeight;
+//        moves.setLayoutParams(params);
 
         String movesFromDatabase = getIntent().getStringExtra(EXTRA_MOVES);
         int idFromDatabase = getIntent().getIntExtra(EXTRA_GAME_ID, 0);
@@ -216,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
         View dialogView = inflater.inflate(R.layout.fen_dialog, null);
 
         final EditText fen = dialogView.findViewById(R.id.fen);
+        fen.setClickable(true);
         Button buttonSubmit = dialogView.findViewById(R.id.button_submit);
         Button buttonCancel = dialogView.findViewById(R.id.button_cancel);
 
@@ -231,6 +230,7 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
 
         dialogBuilder.setView(dialogView);
         dialogBuilder.show();
+
     }
 
     public void shareFen() {

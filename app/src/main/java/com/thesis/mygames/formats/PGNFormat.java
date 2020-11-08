@@ -5,10 +5,10 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.thesis.mygames.R;
-import com.thesis.mygames.game_utils.Chessboard;
-import com.thesis.mygames.game_utils.Move;
-import com.thesis.mygames.game_utils.Piece;
-import com.thesis.mygames.game_utils.Square;
+import com.thesis.mygames.game.Chessboard;
+import com.thesis.mygames.game.Move;
+import com.thesis.mygames.game.Piece;
+import com.thesis.mygames.game.Square;
 import com.thesis.mygames.pieces.Pawn;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import static com.thesis.mygames.game_utils.Chessboard.*;
+import static com.thesis.mygames.game.Chessboard.*;
 
 public class PGNFormat {
     public static void generatePgnTags(String event, String site, String date, int round, String whiteLastName,
@@ -186,25 +186,44 @@ public class PGNFormat {
         }
 
         List<Piece> pieces = index % 2 == 0 ? whitePieces : blackPieces;
-        Integer []possiblePieces = pieces.stream()
-                .filter(p -> {
-                    try {
-                        return isBelongToClass(p, myClass);
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    return false;
-                })
-                .filter(p -> p.possibleFieldsToMoveCheck().contains(getSquares(getSquareId(getEndSquareName(move)))))
-                .map(Piece::getId)
-                .toArray(Integer[]::new);
+        List<Integer> possPieces = new ArrayList<>();
+        for ( Piece p : pieces) {
+            if(!isBelongToClass(p,myClass))
+                continue;
+            if(!p.possibleSquaresToMoveIncludingCheck().contains(getSquares(getSquareId(getEndSquareName(move)))))
+                continue;
+            possPieces.add(p.getId());
+        }
+//        Integer []possiblePieces = pieces.stream()
+//                .filter(p -> {
+//                    try {
+//                        return isBelongToClass(p, myClass);
+//                    } catch (ClassNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                    return false;
+//                })
+//                .filter(p -> p.possibleFieldsToMoveCheck().contains(getSquares(getSquareId(getEndSquareName(move)))))
+//                .map(Piece::getId)
+//                .toArray(Integer[]::new);
 
-        if(possiblePieces.length == 1)
-            return possiblePieces[0];
+//        if(possiblePieces.length == 1)
+//            return possiblePieces[0];
 
-        else if (possiblePieces.length > 1){
+
+//        else if (possiblePieces.length > 1){
+//            List<Integer> listOfSquaresWherePieceCanBe = getRangeOfPossibleSquareId(move);
+//            for (Integer possiblePiece : possiblePieces) {
+//                if (listOfSquaresWherePieceCanBe.contains(pieces.get(possiblePiece).getSquare().getId()))
+//                    return possiblePiece;
+//            }
+//        }
+        if(possPieces.size() == 1)
+            return possPieces.get(0);
+
+        else if (possPieces.size() > 1){
             List<Integer> listOfSquaresWherePieceCanBe = getRangeOfPossibleSquareId(move);
-            for (Integer possiblePiece : possiblePieces) {
+            for (Integer possiblePiece : possPieces) {
                 if (listOfSquaresWherePieceCanBe.contains(pieces.get(possiblePiece).getSquare().getId()))
                     return possiblePiece;
             }

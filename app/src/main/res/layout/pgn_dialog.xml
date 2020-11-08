@@ -22,8 +22,7 @@
             android:id="@+id/pgn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/select_pgn_text_view"
-            android:textIsSelectable="true" />
+            android:layout_below="@id/select_pgn_text_view" />
 
         <Button
             android:id="@+id/pgn_button_submit"

@@ -1,4 +1,4 @@
-package com.thesis.mygames.android_utils;
+package com.thesis.mygames.android;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

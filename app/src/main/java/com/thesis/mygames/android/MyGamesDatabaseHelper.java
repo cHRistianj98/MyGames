@@ -1,4 +1,4 @@
-package com.thesis.mygames.android_utils;
+package com.thesis.mygames.android;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -2,9 +2,9 @@ package com.thesis.mygames.pieces;
 
 import android.widget.ImageButton;
 
-import com.thesis.mygames.game_utils.Chessboard;
-import com.thesis.mygames.game_utils.Piece;
-import com.thesis.mygames.game_utils.Square;
+import com.thesis.mygames.game.Chessboard;
+import com.thesis.mygames.game.Piece;
+import com.thesis.mygames.game.Square;
 
 import java.util.*;
 
@@ -92,7 +92,7 @@ public class King extends Piece {
     }
 
     @Override
-    public List<Integer> getMyPiecesBlocked() {
+    public List<Integer> getMyBlockingPieces() {
         List<Integer> toRemove = new ArrayList<>();
         List<Integer> validId;
 
@@ -118,7 +118,7 @@ public class King extends Piece {
                     for(Piece pi : Chessboard.blackPieces) {
                         if(pi == null)
                             continue;
-                        List<Integer> tmpPieces = pi.getMyPiecesBlocked();
+                        List<Integer> tmpPieces = pi.getMyBlockingPieces();
                         if(tmpPieces.contains(validId.get(i))) {
                             toRemove.add(validId.get(i));
                         }
@@ -127,7 +127,7 @@ public class King extends Piece {
                     for(Piece pi : Chessboard.whitePieces) {
                         if(pi == null)
                             continue;
-                        List<Integer> tmpPieces = pi.getMyPiecesBlocked();
+                        List<Integer> tmpPieces = pi.getMyBlockingPieces();
                         if(tmpPieces.contains(validId.get(i))) {
                             toRemove.add(validId.get(i));
                         }
@@ -165,7 +165,7 @@ public class King extends Piece {
                 if(p == null)
                     continue;
 
-                possibilities.addAll(p.possibleFieldsToMoveCheck());
+                possibilities.addAll(p.possibleSquaresToMoveIncludingCheck());
                 if(!possibilities.isEmpty())
                     return false;
             }
@@ -174,7 +174,7 @@ public class King extends Piece {
                 if(p == null)
                     continue;
 
-                possibilities.addAll(p.possibleFieldsToMoveCheck());
+                possibilities.addAll(p.possibleSquaresToMoveIncludingCheck());
                 if(!possibilities.isEmpty())
                     return false;
             }
@@ -232,7 +232,7 @@ public class King extends Piece {
                     attackedSquares.addAll(possibleSquares);
                     continue;
                 }
-                attackedSquares.addAll(p.possibleFieldsToMove());
+                attackedSquares.addAll(p.possibleSquaresToMove());
             }
 
         } else {
@@ -252,7 +252,7 @@ public class King extends Piece {
                     attackedSquares.addAll(possibleSquares);
                     continue;
                 }
-                attackedSquares.addAll(p.possibleFieldsToMove());
+                attackedSquares.addAll(p.possibleSquaresToMove());
             }
 
         }
@@ -260,7 +260,7 @@ public class King extends Piece {
     }
 
     @Override
-    public List<Square> possibleFieldsToMove() {
+    public List<Square> possibleSquaresToMove() {
         List<Square> possibleSquares = new ArrayList<>();
         checkValidFields(possibleSquares);
         Collections.sort(possibleSquares);
@@ -268,8 +268,8 @@ public class King extends Piece {
     }
 
     @Override
-    public List<Square> possibleFieldsToMoveCheck() {
-        List<Square> possibleSquares = this.possibleFieldsToMove();
+    public List<Square> possibleSquaresToMoveIncludingCheck() {
+        List<Square> possibleSquares = this.possibleSquaresToMove();
         List<Square> possibleSquareDuringCheck = new ArrayList<>();
 
         Piece piece = null;
@@ -390,7 +390,7 @@ public class King extends Piece {
         List<Square> list = null;
 
         try {
-            list = this.possibleFieldsToMoveCheck();
+            list = this.possibleSquaresToMoveIncludingCheck();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

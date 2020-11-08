@@ -1,13 +1,13 @@
-package com.thesis.mygames.game_utils;
+package com.thesis.mygames.game;
 
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import com.thesis.mygames.android_utils.MyApplication;
+import com.thesis.mygames.android.MyApplication;
 import com.thesis.mygames.formats.PGNFormat;
-import com.thesis.mygames.android_utils.PromotionDialog;
+import com.thesis.mygames.android.PromotionDialog;
 import com.thesis.mygames.R;
 import com.thesis.mygames.pieces.Bishop;
 import com.thesis.mygames.pieces.King;
@@ -19,7 +19,7 @@ import com.thesis.mygames.pieces.Rook;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.thesis.mygames.game_utils.Chessboard.*;
+import static com.thesis.mygames.game.Chessboard.*;
 
 public class Move {
     public static AppCompatActivity activity;
@@ -364,7 +364,7 @@ public class Move {
 
     private void removeUnnecessaryActionListeners() {
         removeCurrentActionListener(piece);
-        removePossibleActionListeners(piece.possibleFieldsToMove());
+        removePossibleActionListeners(piece.possibleSquaresToMove());
     }
 
     public void removeCurrentActionListener(Piece p) {
@@ -651,7 +651,7 @@ public class Move {
                 if (piece.getId() == p.getId())
                     continue;
                 if (piece.getClass().equals(p.getClass())) {
-                    List<Integer> possibleSquaresId = p.getMyPiecesBlocked();
+                    List<Integer> possibleSquaresId = p.getMyBlockingPieces();
                     if (possibleSquaresId.contains(endSquare.getId())) {
                         if (getSquareLetter(startSquare.getId()).equals(getSquareLetter(p.getSquare().getId())))
                             return 1;
@@ -667,7 +667,7 @@ public class Move {
                 if (piece.getId() == p.getId())
                     continue;
                 if (piece.getClass().equals(p.getClass())) {
-                    List<Integer> possibleSquaresId = p.getMyPiecesBlocked();
+                    List<Integer> possibleSquaresId = p.getMyBlockingPieces();
                     if (possibleSquaresId.contains(endSquare.getId())) {
                         if (getSquareLetter(startSquare.getId()).equals(getSquareLetter(p.getSquare().getId())))
                             return 1;

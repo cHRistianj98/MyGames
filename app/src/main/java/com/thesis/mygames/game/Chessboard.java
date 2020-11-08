@@ -1,4 +1,4 @@
-package com.thesis.mygames.game_utils;
+package com.thesis.mygames.game;
 
 import android.widget.ImageButton;
 
@@ -72,8 +72,6 @@ public class Chessboard {
             squares[i] = new Square(i, null);
             squares[i].setName(getSquareName(i));
         }
-
-        ///////////////////WHITE PIECES/////////////////////
 
         for (int i = 48; i <= 55; i++)
             whitePieces.add(new Pawn(Chessboard.getSquares(i), true, i - 48, whiteIcons[i - 48]));

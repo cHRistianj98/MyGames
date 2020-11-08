@@ -2,13 +2,13 @@ package com.thesis.mygames.pieces;
 
 import android.widget.ImageButton;
 
-import com.thesis.mygames.game_utils.Chessboard;
-import com.thesis.mygames.game_utils.Piece;
-import com.thesis.mygames.game_utils.Square;
+import com.thesis.mygames.game.Chessboard;
+import com.thesis.mygames.game.Piece;
+import com.thesis.mygames.game.Square;
 
 import java.util.ArrayList;
 import java.util.List;
-import static com.thesis.mygames.game_utils.Chessboard.getSquares;
+import static com.thesis.mygames.game.Chessboard.getSquares;
 
 public class Rook extends Piece {
 
@@ -23,7 +23,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public List<Integer> getMyPiecesBlocked() {
+    public List<Integer> getMyBlockingPieces() {
         List<Integer> toRemove = new ArrayList<>();
 
         getBlockingPieceOnRightSide(toRemove);
@@ -83,7 +83,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public List<Square> possibleFieldsToMove(){
+    public List<Square> possibleSquaresToMove(){
         List<Square> possibleSquares = new ArrayList<>();
 
         getPossibleHorizontalSquaresToRight(possibleSquares);
@@ -153,8 +153,8 @@ public class Rook extends Piece {
     }
 
     @Override
-    public List<Square> possibleFieldsToMoveCheck() {
-        List<Square> everyPossibleSquares = this.possibleFieldsToMove();
+    public List<Square> possibleSquaresToMoveIncludingCheck() {
+        List<Square> everyPossibleSquares = this.possibleSquaresToMove();
         List<Square> possibleSquares = new ArrayList<>();
 
         Piece piece = null;
@@ -226,7 +226,7 @@ public class Rook extends Piece {
         List<Square> list = null;
 
         try {
-            list = this.possibleFieldsToMoveCheck();
+            list = this.possibleSquaresToMoveIncludingCheck();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

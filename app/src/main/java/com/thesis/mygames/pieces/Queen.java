@@ -2,16 +2,16 @@ package com.thesis.mygames.pieces;
 
 import android.widget.ImageButton;
 
-import com.thesis.mygames.game_utils.Chessboard;
-import com.thesis.mygames.game_utils.Piece;
-import com.thesis.mygames.game_utils.Square;
+import com.thesis.mygames.game.Chessboard;
+import com.thesis.mygames.game.Piece;
+import com.thesis.mygames.game.Square;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.thesis.mygames.game_utils.Chessboard.getSquares;
+import static com.thesis.mygames.game.Chessboard.getSquares;
 
 public class Queen extends Piece {
     public Queen(Square square, boolean color, int icon) {
@@ -23,7 +23,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public List<Square> possibleFieldsToMove(){
+    public List<Square> possibleSquaresToMove(){
         List<Square> possibleSquares = new ArrayList<>();
 
         getPossibleHorizontalSquaresToRight(possibleSquares);
@@ -124,8 +124,8 @@ public class Queen extends Piece {
     }
 
     @Override
-    public List<Square> possibleFieldsToMoveCheck() {
-        List<Square> possibleSquares = this.possibleFieldsToMove();
+    public List<Square> possibleSquaresToMoveIncludingCheck() {
+        List<Square> possibleSquares = this.possibleSquaresToMove();
         List<Square> possibleSquareDuringCheck = new ArrayList<>();
 
         Piece piece = null;
@@ -175,7 +175,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public List<Integer> getMyPiecesBlocked() {
+    public List<Integer> getMyBlockingPieces() {
         List<Integer> toRemove = new ArrayList<>();
 
         int currField = this.square.getId();
@@ -331,7 +331,7 @@ public class Queen extends Piece {
         List<Square> list = null;
 
         try {
-            list = this.possibleFieldsToMoveCheck();
+            list = this.possibleSquaresToMoveIncludingCheck();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

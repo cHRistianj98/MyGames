@@ -2,7 +2,7 @@ package com.thesis.mygames.formats;
 
 import com.thesis.mygames.R;
 import com.thesis.mygames.activities.MainActivity;
-import com.thesis.mygames.game_utils.Move;
+import com.thesis.mygames.game.Move;
 
 import java.util.ArrayList;
 import java.util.Arrays;

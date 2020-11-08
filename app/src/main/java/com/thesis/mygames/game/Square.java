@@ -1,4 +1,4 @@
-package com.thesis.mygames.game_utils;
+package com.thesis.mygames.game;
 
 import org.jetbrains.annotations.NotNull;
 

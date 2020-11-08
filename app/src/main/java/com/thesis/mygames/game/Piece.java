@@ -1,9 +1,7 @@
-package com.thesis.mygames.game_utils;
+package com.thesis.mygames.game;
 
 import android.widget.ImageButton;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 public abstract class Piece {
@@ -69,7 +67,7 @@ public abstract class Piece {
     }
 
     public abstract List<Square> action(ImageButton[]b);
-    public abstract List<Square> possibleFieldsToMove();
-    public abstract List<Square> possibleFieldsToMoveCheck();
-    public abstract List<Integer> getMyPiecesBlocked();
+    public abstract List<Square> possibleSquaresToMove();
+    public abstract List<Square> possibleSquaresToMoveIncludingCheck();
+    public abstract List<Integer> getMyBlockingPieces();
 }

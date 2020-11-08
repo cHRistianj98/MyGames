@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.thesis.mygames.android_utils.MyGamesDatabaseHelper;
+import com.thesis.mygames.android.MyGamesDatabaseHelper;
 import com.thesis.mygames.R;
 
 import java.util.Calendar;

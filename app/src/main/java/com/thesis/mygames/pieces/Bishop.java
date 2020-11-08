@@ -2,9 +2,9 @@ package com.thesis.mygames.pieces;
 
 import android.widget.ImageButton;
 
-import com.thesis.mygames.game_utils.Chessboard;
-import com.thesis.mygames.game_utils.Piece;
-import com.thesis.mygames.game_utils.Square;
+import com.thesis.mygames.game.Chessboard;
+import com.thesis.mygames.game.Piece;
+import com.thesis.mygames.game.Square;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +19,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<Integer> getMyPiecesBlocked() {
+    public List<Integer> getMyBlockingPieces() {
         List<Integer> toRemove = new ArrayList<>();
 
         List<Integer> squaresOnBorders = Arrays.asList( 0, 1, 2, 3, 4, 5, 6, 7,
@@ -50,7 +50,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<Square> possibleFieldsToMove(){
+    public List<Square> possibleSquaresToMove(){
         List<Square> possibleSquares = new ArrayList<>();
         List<Integer> squaresOnBorders = Arrays.asList( 0, 1, 2, 3, 4, 5, 6, 7,
                 15, 23, 31, 39, 47, 55,
@@ -82,8 +82,8 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<Square> possibleFieldsToMoveCheck() {
-        List<Square> possibleSquares = this.possibleFieldsToMove();
+    public List<Square> possibleSquaresToMoveIncludingCheck() {
+        List<Square> possibleSquares = this.possibleSquaresToMove();
         List<Square> possibleSquareDuringCheck = new ArrayList<>();
 
         Piece piece = null;
@@ -137,7 +137,7 @@ public class Bishop extends Piece {
         List<Square> list = null;
 
         try {
-            list = this.possibleFieldsToMoveCheck();
+            list = this.possibleSquaresToMoveIncludingCheck();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
