@@ -326,15 +326,4 @@ public class Queen extends Piece {
         return toRemove;
     }
 
-    @Override
-    public List<Square> action(ImageButton[]b) {
-        List<Square> list = null;
-
-        try {
-            list = this.possibleSquaresToMoveIncludingCheck();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return list;
-    }
 }

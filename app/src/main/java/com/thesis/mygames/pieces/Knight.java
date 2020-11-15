@@ -206,15 +206,4 @@ public class Knight extends Piece {
         return possibleSquareDuringCheck;
     }
 
-    @Override
-    public List<Square> action(ImageButton[]b) {
-        List<Square> list = null;
-
-        try {
-            list = this.possibleSquaresToMoveIncludingCheck();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return list;
-    }
 }

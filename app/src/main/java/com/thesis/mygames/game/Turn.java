@@ -15,7 +15,8 @@ public class Turn {
 
             if(Chessboard.moveList.size() - 1 == Chessboard.moveIndicator) {
                 Chessboard.b[p.getSquare().getId()].setOnClickListener(v -> {
-                    List<Square> list = p.action(Chessboard.b);
+                    //List<Square> list = p.action(Chessboard.b);
+                    List<Square> list = p.possibleSquaresToMoveIncludingCheck();
                     Move move = new Move(p);
                     move.addListeners(list);
                 });
@@ -31,7 +32,8 @@ public class Turn {
 
             if(Chessboard.moveList.size() - 1 == Chessboard.moveIndicator) {
                 Chessboard.b[p.getSquare().getId()].setOnClickListener(v -> {
-                    List<Square> list = p.action(Chessboard.b);
+                    //List<Square> list = p.action(Chessboard.b);
+                    List<Square> list = p.possibleSquaresToMoveIncludingCheck();
                     Move move = new Move(p);
                     move.addListeners(list);
                 });

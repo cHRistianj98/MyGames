@@ -152,10 +152,10 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
             = item -> {
                 switch (item.getItemId()) {
                     case R.id.next_menu:
-                        Move.makeNextMove();
+                        Move.nextMove();
                         return true;
                     case R.id.undo_menu:
-                        Move.makeUndoMove();
+                        Move.undoMove();
                         return true;
                     case R.id.format_menu:
                         showFormatOptions(null);

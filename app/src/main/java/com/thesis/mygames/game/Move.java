@@ -42,7 +42,7 @@ public class Move {
         this.piece = piece;
     }
 
-    public static void makeNextMove() {
+    public static void nextMove() {
         if(moveList.size() == moveIndicator + 1)
             return;
 
@@ -55,7 +55,7 @@ public class Move {
         move.nextMoveHandler(endSquare.getId(), endSquare, startSquareId);
     }
 
-    public static void makeUndoMove() {
+    public static void undoMove() {
         if (moveIndicator == -1)
             return;
 
@@ -280,7 +280,7 @@ public class Move {
         if (wasPawnPromotion)
             pawnPromotion();
 
-        chessNotation(wasCapture, wasPawnPromotion, ((King) blackPieces.get(12)).isCheck() ||
+        generateChessNotation(wasCapture, wasPawnPromotion, ((King) blackPieces.get(12)).isCheck() ||
                 ((King) whitePieces.get(12)).isCheck());
 
         moveIndicator++;
@@ -340,7 +340,7 @@ public class Move {
         if (wasPawnPromotion)
             simulatePawnPromotionFromPgn(selectedPieceFromPgn);
 
-        chessNotation(wasCapture, wasPawnPromotion, ((King) blackPieces.get(12)).isCheck() ||
+        generateChessNotation(wasCapture, wasPawnPromotion, ((King) blackPieces.get(12)).isCheck() ||
                 ((King) whitePieces.get(12)).isCheck());
 
         moveIndicator++;
@@ -556,7 +556,7 @@ public class Move {
         pieces.set(pawnId, newPieceAfterPawnPromotion);
     }
 
-    public void chessNotation(boolean wasCapture, boolean wasPawnPromotion, boolean wasCheck) {
+    public void generateChessNotation(boolean wasCapture, boolean wasPawnPromotion, boolean wasCheck) {
         StringBuilder move = new StringBuilder();
         if (piece instanceof Pawn) {
             if (wasCapture) {

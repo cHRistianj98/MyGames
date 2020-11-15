@@ -66,7 +66,6 @@ public abstract class Piece {
                 '}';
     }
 
-    public abstract List<Square> action(ImageButton[]b);
     public abstract List<Square> possibleSquaresToMove();
     public abstract List<Square> possibleSquaresToMoveIncludingCheck();
     public abstract List<Integer> getMyBlockingPieces();

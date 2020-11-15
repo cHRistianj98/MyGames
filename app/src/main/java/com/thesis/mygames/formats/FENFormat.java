@@ -27,7 +27,7 @@ public class FENFormat {
                 getFullMoveNumber();
     }
 
-    public static String getFenPosition() {
+    private static String getFenPosition() {
         StringBuilder fen = new StringBuilder();
         Square s;
         int counter = 0;
@@ -58,7 +58,7 @@ public class FENFormat {
         return fen.toString();
     }
 
-    public static String generateLetterBasedOnPiece(Piece p) {
+    private static String generateLetterBasedOnPiece(Piece p) {
         if(p.getColor()) {
             if(p instanceof Pawn) return "P";
             else if(p instanceof Rook) return "R";
@@ -77,12 +77,12 @@ public class FENFormat {
         return "";
     }
 
-    public static String whoseMove() {
+    private static String whoseMove() {
         if(Turn.whiteTurn) return "w";
         else return "b";
     }
 
-    public static String getCastlingInformation() {
+    private static String getCastlingInformation() {
         StringBuilder fen = new StringBuilder();
 
         if(!((King) whitePieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(15)).isWasMoved())
@@ -100,14 +100,14 @@ public class FENFormat {
             return fen.toString();
     }
 
-    public static String getEnPassantPossibility() {
+    private static String getEnPassantPossibility() {
         if(enPassantPossible == null)
             return "-";
         else
             return getSquareName(enPassantPossible.getId());
     }
 
-    public static String getNumberOfHalfMoves() {
+    private static String getNumberOfHalfMoves() {
         int counter = 0;
         for (Move move : moveList) {
             if(move.getNotation().startsWith("a") || move.getNotation().startsWith("b") || move.getNotation().startsWith("c") ||
@@ -121,7 +121,7 @@ public class FENFormat {
         return Integer.toString(counter);
     }
 
-    public static String getFullMoveNumber() {
+    private static String getFullMoveNumber() {
         int listSize = moveList.size();
 
         return listSize % 2 == 0 ? Integer.toString((listSize + 2) / 2) : Integer.toString((listSize + 1) / 2);
@@ -143,7 +143,7 @@ public class FENFormat {
         setFullMoveNumber(fen);
     }
 
-    public static boolean isFenValid(String fen) {
+    private static boolean isFenValid(String fen) {
         Pattern pattern = Pattern.compile("((([prnbqkPRNBQK12345678]*/){7})([prnbqkPRNBQK12345678]*)) (w|b) ((K?Q?k?q?)|\\-) (([abcdefgh][36])|\\-) (\\d*) (\\d*)");
         Matcher matcher = pattern.matcher(fen);
         if (!matcher.matches()) {
@@ -159,11 +159,7 @@ public class FENFormat {
             return false;
         }
 
-        if (!Objects.requireNonNull(matcher.group(1)).contains("k") || !Objects.requireNonNull(matcher.group(1)).contains("K")) {
-            return false;
-        }
-
-        return true;
+        return Objects.requireNonNull(matcher.group(1)).contains("k") && Objects.requireNonNull(matcher.group(1)).contains("K");
     }
 
     private static boolean verifyRank(String rank) {
@@ -178,27 +174,27 @@ public class FENFormat {
         return count == 8;
     }
 
-    public static void clearPieces() {
+    private static void clearPieces() {
         for (int i = 0; i < 64; i++) {
             getSquares(i).setPiece(null);
             b[i].setImageResource(0);
         }
     }
 
-    public static void removeActionListeners() {
+    private static void removeActionListeners() {
         for (int i = 0; i < 64; i++) {
             b[i].setOnClickListener(null);
         }
     }
 
-    public static void setObjectsOnNull() {
+    private static void setObjectsOnNull() {
         for (int i = 0; i < 16; i++) {
             whitePieces.set(i, null);
             blackPieces.set(i, null);
         }
     }
 
-    public static void setNewObjects(String fen) {
+    private static void setNewObjects(String fen) {
         char sign;
         for (int i = 0; i < fen.length() ; i++) {
             sign = fen.charAt(i);
@@ -213,12 +209,12 @@ public class FENFormat {
         }
     }
 
-    public static boolean isPiece(char s) {
+    private static boolean isPiece(char s) {
         return s == 'p' || s == 'P' || s == 'r' || s == 'R' || s == 'n' || s == 'N' ||
                 s == 'b' || s == 'B' || s == 'q' || s == 'Q' || s == 'k' || s == 'K';
     }
 
-    public static void objectFactory(char s, String fen, int i) {
+    private static void objectFactory(char s, String fen, int i) {
         switch (s) {
             case 'p': createObject(new Pawn(getSquares(getSquareIdFromFen(fen, i)),false, blackIcons[8])); break;
             case 'P': createObject(new Pawn(getSquares(getSquareIdFromFen(fen, i)),true, whiteIcons[0])); break;
@@ -235,7 +231,7 @@ public class FENFormat {
         }
     }
 
-    public static void createObject(Piece p) {
+    private static void createObject(Piece p) {
         p.setId(assignId(p));
         if (p.getColor()) {
             whitePieces.set(p.getId(), p);
@@ -245,7 +241,7 @@ public class FENFormat {
         getSquares(p.getSquare().getId()).setPiece(p);
     }
 
-    public static int assignId(Piece p) {
+    private static int assignId(Piece p) {
 
         if (p.getColor()) {
             if(p instanceof Pawn) {
@@ -373,7 +369,7 @@ public class FENFormat {
         return 1000;
     }
 
-    public static int getSquareIdFromFen(String fen, int id) {
+    private static int getSquareIdFromFen(String fen, int id) {
         char sign;
         int counter = 0;
         for (int i = 0; i < id ; i++) {
@@ -391,7 +387,7 @@ public class FENFormat {
         return counter;
     }
 
-    public static void setIcons() {
+    private static void setIcons() {
         for (Piece p : whitePieces) {
             if(p == null)
                 continue;
@@ -404,7 +400,7 @@ public class FENFormat {
         }
     }
 
-    public static void setTurn(String fen) {
+    private static void setTurn(String fen) {
         int index = fen.indexOf(" ");
         if(fen.charAt(index + 1) == 'w') {
             Turn.enableWhitePieces();
@@ -415,7 +411,7 @@ public class FENFormat {
         }
     }
 
-    public static void setCastlingInformation(String fen) {
+    private static void setCastlingInformation(String fen) {
         if((whitePieces.get(12)) != null)((King) whitePieces.get(12)).setWasMoved(true);
         if((whitePieces.get(15)) != null)((Rook) whitePieces.get(15)).setWasMoved(true);
         if((whitePieces.get(8)) != null)((Rook) whitePieces.get(8)).setWasMoved(true);
@@ -454,7 +450,7 @@ public class FENFormat {
         }
     }
 
-    public static void setEnPassantPossible(String fen) {
+    private static void setEnPassantPossible(String fen) {
         int lastIndex = fen.lastIndexOf(" ");
         lastIndex = fen.substring(0, lastIndex).lastIndexOf(" ");
         lastIndex = fen.substring(0, lastIndex).lastIndexOf(" ");
@@ -473,7 +469,7 @@ public class FENFormat {
         enPassantPossible = getSquares(getSquareId(squareName.toString()));
     }
 
-    public static void setNumberOfHalfMoves(String fen) {
+    private static void setNumberOfHalfMoves(String fen) {
         int lastIndex = fen.lastIndexOf(" ");
         lastIndex = fen.substring(0, lastIndex).lastIndexOf(" ");
         StringBuilder toConvert = new StringBuilder();
@@ -487,7 +483,7 @@ public class FENFormat {
         numberOfHalfMoves = Integer.parseInt(toConvert.toString());
     }
 
-    public static void setFullMoveNumber(String fen) {
+    private static void setFullMoveNumber(String fen) {
         String []fenSplitted = fen.split(" ");
         moveList.clear();
         fullMoveNumber = Integer.parseInt(fenSplitted[5]);

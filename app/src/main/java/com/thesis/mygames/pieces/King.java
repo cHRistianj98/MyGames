@@ -384,16 +384,4 @@ public class King extends Piece {
     public void setWasMoved(boolean wasMoved) {
         this.wasMoved = wasMoved;
     }
-
-    @Override
-    public List<Square> action(ImageButton[]b) {
-        List<Square> list = null;
-
-        try {
-            list = this.possibleSquaresToMoveIncludingCheck();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return list;
-    }
 }
