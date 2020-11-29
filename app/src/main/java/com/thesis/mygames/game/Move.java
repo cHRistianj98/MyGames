@@ -103,6 +103,11 @@ public class Move {
 
         else if(lastMove.wasCapture) {
             lastMove.endSquare.setPiece(lastMove.capturedPiece);
+            List<Piece> pieces = lastMove.piece.color ? blackPieces : whitePieces;
+            pieces.set(getSquares(lastMove.endSquare.getId()).getPiece().getId(), lastMove.capturedPiece);
+            lastMove.capturedPiece.setSquare(lastMove.endSquare);
+            b[lastMove.endSquare.getId()].setImageResource(lastMove.capturedPiece.getIcon());
+
             if(lastMove.piece.color) {
                 blackPieces.set(getSquares(lastMove.endSquare.getId()).getPiece().getId(), lastMove.capturedPiece);
             } else {
@@ -471,12 +476,12 @@ public class Move {
         int endSquareId = endSquare.getId();
 
         String nextMoveNotation = moveList.get(moveIndicator + 1).notation;
-        char lastSign = nextMoveNotation.charAt(nextMoveNotation.length() - 1);
+        char lastChar = nextMoveNotation.charAt(nextMoveNotation.length() - 1);
 
-        if(lastSign == '+' || lastSign == '#') {
-            lastSign = nextMoveNotation.charAt(nextMoveNotation.length() - 2);
+        if(lastChar == '+' || lastChar == '#') {
+            lastChar = nextMoveNotation.charAt(nextMoveNotation.length() - 2);
         }
-        if(lastSign == 'Q' || lastSign == 'R' || lastSign == 'B' || lastSign == 'N') {
+        if(lastChar == 'Q' || lastChar == 'R' || lastChar == 'B' || lastChar == 'N') {
             setSelectedPiece(moveList.get(moveIndicator + 1).selectedPiece);
         }
 

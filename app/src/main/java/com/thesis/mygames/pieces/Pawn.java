@@ -1,7 +1,5 @@
 package com.thesis.mygames.pieces;
 
-import android.widget.ImageButton;
-
 import com.thesis.mygames.game.Chessboard;
 import com.thesis.mygames.game.Piece;
 import com.thesis.mygames.game.Square;

@@ -1,5 +1,8 @@
 package com.thesis.mygames;
 
+import com.thesis.mygames.game.Piece;
+import com.thesis.mygames.pieces.Pawn;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -12,6 +15,9 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
+        String s = "ala";
+        Class c = s.getClass();
+        System.out.println(c.getName());
         assertEquals(4, 2 + 2);
     }
 }

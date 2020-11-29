@@ -97,7 +97,7 @@ public class PGNFormat {
             PGNMoveGenerator.append(moveList.size()/2 + 1).
                     append(". ").append(moveList.get(moveList.size() - 1).getNotation()).append(" ");
         } else {
-           PGNMoveGenerator.append(moveList.get(moveList.size() - 1).getNotation()).append(" ");
+            PGNMoveGenerator.append(moveList.get(moveList.size() - 1).getNotation()).append(" ");
         }
     }
 
@@ -130,14 +130,13 @@ public class PGNFormat {
         String moves = moveSection.toString();
         moves = moves.trim();
         String []movesArray = moves.split(" ");
-
+        Pattern moveNumberPattern = Pattern.compile("[1-9][0-9]?[0-9]?[0-9]?\\.");
         for (int i = 0; i < movesArray.length; i++) {
-            if(i%3 == 0)
+            if(moveNumberPattern.matcher(movesArray[i]).matches()) {
                 movesArray[i] = null;
+            }
         }
-
         List<String> moveList = new ArrayList<>();
-
         for (String move : movesArray) {
             if (move != null)
                 moveList.add(move);
@@ -305,6 +304,7 @@ public class PGNFormat {
         return possibilities;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static boolean isPgnValid(String pgn) {
         PGNValidator validator = new PGNValidator();
         return validator.validate(pgn);

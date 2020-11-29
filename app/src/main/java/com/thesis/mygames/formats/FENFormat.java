@@ -11,6 +11,7 @@ import com.thesis.mygames.pieces.Pawn;
 import com.thesis.mygames.pieces.Queen;
 import com.thesis.mygames.pieces.Rook;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,7 +19,7 @@ import java.util.regex.Pattern;
 import static com.thesis.mygames.game.Chessboard.*;
 
 public class FENFormat {
-    public static String generateFENFromPosition() {
+    public static String generateFenFromPosition() {
         return getFenPosition() + " " +
                 whoseMove() + " " +
                 getCastlingInformation() + " " +
@@ -144,22 +145,22 @@ public class FENFormat {
     }
 
     private static boolean isFenValid(String fen) {
-        Pattern pattern = Pattern.compile("((([prnbqkPRNBQK12345678]*/){7})([prnbqkPRNBQK12345678]*)) (w|b) ((K?Q?k?q?)|\\-) (([abcdefgh][36])|\\-) (\\d*) (\\d*)");
-        Matcher matcher = pattern.matcher(fen);
-        if (!matcher.matches()) {
+        Pattern fenPattern = Pattern.compile("((([prnbqkPRNBQK12345678]*/){7})([prnbqkPRNBQK12345678]*)) (w|b) ((K?Q?k?q?)|\\-) (([abcdefgh][36])|\\-) (\\d*) (\\d*)");
+        Matcher fenMatcher = fenPattern.matcher(fen);
+        if (!fenMatcher.matches()) {
             return false;
         }
 
-        String[] ranks = Objects.requireNonNull(matcher.group(2)).split("/");
+        String[] ranks = Objects.requireNonNull(fenMatcher.group(2)).split("/");
         for (String rank : ranks) {
             if (!verifyRank(rank))
                 return false;
         }
-        if (!verifyRank(Objects.requireNonNull(matcher.group(4)))) {
+        if (!verifyRank(Objects.requireNonNull(fenMatcher.group(4)))) {
             return false;
         }
 
-        return Objects.requireNonNull(matcher.group(1)).contains("k") && Objects.requireNonNull(matcher.group(1)).contains("K");
+        return Objects.requireNonNull(fenMatcher.group(1)).contains("k") && Objects.requireNonNull(fenMatcher.group(1)).contains("K");
     }
 
     private static boolean verifyRank(String rank) {
@@ -198,14 +199,12 @@ public class FENFormat {
         char sign;
         for (int i = 0; i < fen.length() ; i++) {
             sign = fen.charAt(i);
-
-            if(sign == ' ')
+            if(sign == ' ') {
                 break;
-
+            }
             if(isPiece(sign)) {
                 objectFactory(sign, fen, i);
             }
-
         }
     }
 
@@ -242,131 +241,190 @@ public class FENFormat {
     }
 
     private static int assignId(Piece p) {
+        List<Piece> pieces = p.getColor() ? whitePieces : blackPieces;
 
-        if (p.getColor()) {
-            if(p instanceof Pawn) {
+        switch(p.getClass().getSimpleName()) {
+            case "Pawn":
                 for (int i = 0; i < 8; i++) {
-                    if(whitePieces.get(i) == null) {
+                    if(pieces.get(i) == null) {
                         return i;
                     }
                 }
-            }
+                break;
 
-            else if(p instanceof Rook) {
-                if(whitePieces.get(8) == null) return 8;
-                if(whitePieces.get(15) == null) return 15;
+            case "Rook":
+                if(pieces.get(8) == null) return 8;
+                if(pieces.get(15) == null) return 15;
                 else {
                     for (int i = 0; i < 8; i++) {
-                        if(whitePieces.get(i) == null) {
+                        if(pieces.get(i) == null) {
                             return i;
                         }
                     }
                 }
-            }
+                break;
 
-            else if(p instanceof Knight) {
-                if(whitePieces.get(9) == null) return 9;
-                if(whitePieces.get(14) == null) return 14;
+            case "Knight":
+                if(pieces.get(9) == null) return 9;
+                if(pieces.get(14) == null) return 14;
                 else {
                     for (int i = 0; i < 8; i++) {
-                        if(whitePieces.get(i) == null) {
+                        if(pieces.get(i) == null) {
                             return i;
                         }
                     }
                 }
-            }
-
-            else if(p instanceof Bishop) {
-                if(whitePieces.get(10) == null) return 10;
-                if(whitePieces.get(13) == null) return 13;
+                break;
+            case "Bishop":
+                if(pieces.get(10) == null) return 10;
+                if(pieces.get(13) == null) return 13;
                 else {
                     for (int i = 0; i < 8; i++) {
-                        if(whitePieces.get(i) == null) {
+                        if(pieces.get(i) == null) {
                             return i;
                         }
                     }
                 }
-            }
-
-            else if(p instanceof Queen) {
-                if(whitePieces.get(11) == null) return 11;
+                break;
+            case "Queen":
+                if(pieces.get(11) == null) return 11;
                 else {
                     for (int i = 0; i < 8; i++) {
-                        if(whitePieces.get(i) == null) {
+                        if(pieces.get(i) == null) {
                             return i;
                         }
                     }
                 }
-            }
-
-            else if(p instanceof King) {
+                break;
+            case "King":
                 return 12;
-            }
-
-        } else {
-            if(p instanceof Pawn) {
-                for (int i = 0; i < 8; i++) {
-                    if(blackPieces.get(i) == null) {
-                        return i;
-                    }
-                }
-            }
-
-            else if(p instanceof Rook) {
-                if(blackPieces.get(8) == null) return 8;
-                if(blackPieces.get(15) == null) return 15;
-                else {
-                    for (int i = 0; i < 8; i++) {
-                        if(blackPieces.get(i) == null) {
-                            return i;
-                        }
-                    }
-                }
-            }
-
-            else if(p instanceof Knight) {
-                if(blackPieces.get(9) == null) return 9;
-                if(blackPieces.get(14) == null) return 14;
-                else {
-                    for (int i = 0; i < 8; i++) {
-                        if(blackPieces.get(i) == null) {
-                            return i;
-                        }
-                    }
-                }
-            }
-
-            else if(p instanceof Bishop) {
-                if(blackPieces.get(10) == null) return 10;
-                if(blackPieces.get(13) == null) return 13;
-                else {
-                    for (int i = 0; i < 8; i++) {
-                        if(blackPieces.get(i) == null) {
-                            return i;
-                        }
-                    }
-                }
-            }
-
-            else if(p instanceof Queen) {
-                if(blackPieces.get(11) == null) return 11;
-                else {
-                    for (int i = 0; i < 8; i++) {
-                        if(blackPieces.get(i) == null) {
-                            return i;
-                        }
-                    }
-                }
-            }
-
-            else if(p instanceof King) {
-                return 12;
-            }
         }
-        System.out.println(p.getClass());
+        return -1;
 
-       //throw new Exception("There is no valid Id for this piece!");
-        return 1000;
+
+//        if (p.getColor()) {
+//            if(p instanceof Pawn) {
+//                for (int i = 0; i < 8; i++) {
+//                    if(whitePieces.get(i) == null) {
+//                        return i;
+//                    }
+//                }
+//            }
+//
+//            else if(p instanceof Rook) {
+//                if(whitePieces.get(8) == null) return 8;
+//                if(whitePieces.get(15) == null) return 15;
+//                else {
+//                    for (int i = 0; i < 8; i++) {
+//                        if(whitePieces.get(i) == null) {
+//                            return i;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            else if(p instanceof Knight) {
+//                if(whitePieces.get(9) == null) return 9;
+//                if(whitePieces.get(14) == null) return 14;
+//                else {
+//                    for (int i = 0; i < 8; i++) {
+//                        if(whitePieces.get(i) == null) {
+//                            return i;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            else if(p instanceof Bishop) {
+//                if(whitePieces.get(10) == null) return 10;
+//                if(whitePieces.get(13) == null) return 13;
+//                else {
+//                    for (int i = 0; i < 8; i++) {
+//                        if(whitePieces.get(i) == null) {
+//                            return i;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            else if(p instanceof Queen) {
+//                if(whitePieces.get(11) == null) return 11;
+//                else {
+//                    for (int i = 0; i < 8; i++) {
+//                        if(whitePieces.get(i) == null) {
+//                            return i;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            else if(p instanceof King) {
+//                return 12;
+//            }
+//
+//        } else {
+//            if(p instanceof Pawn) {
+//                for (int i = 0; i < 8; i++) {
+//                    if(blackPieces.get(i) == null) {
+//                        return i;
+//                    }
+//                }
+//            }
+//
+//            else if(p instanceof Rook) {
+//                if(blackPieces.get(8) == null) return 8;
+//                if(blackPieces.get(15) == null) return 15;
+//                else {
+//                    for (int i = 0; i < 8; i++) {
+//                        if(blackPieces.get(i) == null) {
+//                            return i;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            else if(p instanceof Knight) {
+//                if(blackPieces.get(9) == null) return 9;
+//                if(blackPieces.get(14) == null) return 14;
+//                else {
+//                    for (int i = 0; i < 8; i++) {
+//                        if(blackPieces.get(i) == null) {
+//                            return i;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            else if(p instanceof Bishop) {
+//                if(blackPieces.get(10) == null) return 10;
+//                if(blackPieces.get(13) == null) return 13;
+//                else {
+//                    for (int i = 0; i < 8; i++) {
+//                        if(blackPieces.get(i) == null) {
+//                            return i;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            else if(p instanceof Queen) {
+//                if(blackPieces.get(11) == null) return 11;
+//                else {
+//                    for (int i = 0; i < 8; i++) {
+//                        if(blackPieces.get(i) == null) {
+//                            return i;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            else if(p instanceof King) {
+//                return 12;
+//            }
+//        }
+//        System.out.println(p.getClass());
+//
+//        return 1000;
     }
 
     private static int getSquareIdFromFen(String fen, int id) {

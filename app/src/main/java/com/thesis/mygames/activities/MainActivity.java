@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
     }
 
     public void shareFen() {
-        String fen = FENFormat.generateFENFromPosition();
+        String fen = FENFormat.generateFenFromPosition();
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, fen);

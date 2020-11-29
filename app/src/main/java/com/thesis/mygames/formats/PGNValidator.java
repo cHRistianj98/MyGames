@@ -1,5 +1,9 @@
 package com.thesis.mygames.formats;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.thesis.mygames.R;
 import com.thesis.mygames.activities.MainActivity;
 import com.thesis.mygames.game.Move;
@@ -13,6 +17,7 @@ import java.util.regex.Pattern;
 
 public class PGNValidator {
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public boolean validate(String pgn) {
         StringBuilder moveSection = new StringBuilder();
 
@@ -42,9 +47,11 @@ public class PGNValidator {
         moves = moves.trim();
         String []movesArray = moves.split(" ");
 
+        Pattern moveNumberPattern = Pattern.compile("[1-9][0-9]?[0-9]?[0-9]?\\.");
         for (int i = 0; i < movesArray.length; i++) {
-            if(i%3 == 0)
+            if(moveNumberPattern.matcher(movesArray[i]).matches()) {
                 movesArray[i] = null;
+            }
         }
 
         List<String> moveList = new ArrayList<>();
@@ -58,7 +65,7 @@ public class PGNValidator {
         if(Arrays.asList(results[0], results[1], results[2], results[3]).contains(moveList.get(moveList.size() - 1)))
             moveList.remove(moveList.size() - 1);
 
-        final String SINGLE_HIT_STRING_PATTERN = "([a-hA-H]+[1-8]{1}[=][QRBN]{1}[\\+|#]?|" + // promotion
+        final String chessNotationPattern = "([a-hA-H]+[1-8]{1}[=][QRBN]{1}[\\+|#]?|" + // promotion
                 "[a-hrnqkA-HRNQK]{1}[1-8]{1}[\\+]?|" + // one letter / one number pattern
                 // : simple hit
                 "[a-hA-H]{1}[1-8]?[a-hA-H]{1,3}?[1-8]{1}[\\+|#]?|" + // complex hit
@@ -66,7 +73,7 @@ public class PGNValidator {
                 "[O]+[\\-][O]+[\\+|#]?|" + // kingside castling hit
                 "[a-hpA-HP]{1}[\\-][a-hpA-HP]{1}[\\+|#]?|" + //
                 "[RNBQK]?[a-hp]?[1-8]?[x]?[a-hp][1-8][\\+|#]?)";
-        Pattern movePattern = Pattern.compile(SINGLE_HIT_STRING_PATTERN);
+        Pattern movePattern = Pattern.compile(chessNotationPattern);
         Matcher moveMatcher;
         for (String move : moveList) {
             moveMatcher = movePattern.matcher(move);
@@ -77,6 +84,7 @@ public class PGNValidator {
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void saveTagProperty(String line) {
         switch (line.charAt(1)) {
             case 'E': MainActivity.EVENT = getProperty(line); break;

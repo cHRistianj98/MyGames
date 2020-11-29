@@ -209,7 +209,7 @@ public class TagActivity extends AppCompatActivity {
                 toast.show();
             }
 
-            db.close();
+            if(db != null) db.close();
             Intent intent = new Intent(TagActivity.this, MyGamesActivity.class);
             startActivity(intent);
         }

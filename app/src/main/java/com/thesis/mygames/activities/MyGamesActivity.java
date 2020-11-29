@@ -35,8 +35,8 @@ public class MyGamesActivity extends ListActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        cursor.close();
-        db.close();
+        if(cursor != null) cursor.close();
+        if(db != null) db.close();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MyGamesActivity extends ListActivity {
         new ShowGameAsyncTask().execute((int)id);
     }
 
-
+    //po kliknięciu do wczytania partii
     private class ShowGameAsyncTask extends AsyncTask<Integer, Void, Boolean> {
         private String moves, event, site, date, whiteFirstName, whiteLastName, blackFirstName,
                         blackLastName, result;
@@ -57,38 +57,85 @@ public class MyGamesActivity extends ListActivity {
             SQLiteOpenHelper myGamesDatabaseHelper = new MyGamesDatabaseHelper(MyGamesActivity.this);
             try {
                 db = myGamesDatabaseHelper.getReadableDatabase();
-                Cursor singleCursor = db.query("GAME",
+
+                Cursor gameCursor = db.query("GAMES",
                         new String[] {
                                 "_id",
-                                "moves",
-                                "event",
-                                "site",
                                 "date",
                                 "round",
-                                "white_firstname",
-                                "white_lastname",
-                                "black_firstname",
-                                "black_lastname",
-                                "result"
+                                "result",
+                                "moves",
+                                "white_player_id",
+                                "black_player_id",
+                                "event_id",
                         },
                         "_id = ?",
                         new String[] { Integer.toString(id) },
                         null, null, null
-                        );
+                );
 
-                if(singleCursor.moveToFirst()) {
-                    moves = singleCursor.getString(1);
-                    event = singleCursor.getString(2);
-                    site = singleCursor.getString(3);
-                    date = singleCursor.getString(4);
-                    round = singleCursor.getInt(5);
-                    whiteFirstName = singleCursor.getString(6);
-                    whiteLastName = singleCursor.getString(7);
-                    blackFirstName = singleCursor.getString(8);
-                    blackLastName = singleCursor.getString(9);
-                    result = singleCursor.getString(10);
+                int whitePlayerId = 0, blackPlayerId = 0, eventId = 0;
+                if(gameCursor.moveToFirst()) {
+                    date = gameCursor.getString(1);
+                    round = gameCursor.getInt(2);
+                    result = gameCursor.getString(3);
+                    moves = gameCursor.getString(4);
+                    whitePlayerId = gameCursor.getInt(5);
+                    blackPlayerId = gameCursor.getInt(6);
+                    eventId = gameCursor.getInt(7);
                 }
-                singleCursor.close();
+                gameCursor.close();
+
+                Cursor whiteCursor = db.query("WHITE_PLAYERS",
+                        new String[] {
+                                "_id",
+                                "first_name",
+                                "last_name",
+                        },
+                        "_id = ?",
+                        new String[] { Integer.toString(whitePlayerId) },
+                        null, null, null
+                );
+
+                if(whiteCursor.moveToFirst()) {
+                    whiteFirstName = whiteCursor.getString(1);
+                    whiteLastName = whiteCursor.getString(2);
+                }
+                whiteCursor.close();
+
+                Cursor blackCursor = db.query("BLACK_PLAYERS",
+                        new String[] {
+                                "_id",
+                                "first_name",
+                                "last_name",
+                        },
+                        "_id = ?",
+                        new String[] { Integer.toString(blackPlayerId) },
+                        null, null, null
+                );
+
+                if(blackCursor.moveToFirst()) {
+                    blackFirstName = blackCursor.getString(1);
+                    blackLastName = blackCursor.getString(2);
+                }
+                blackCursor.close();
+
+                Cursor eventCursor = db.query("EVENTS",
+                        new String[] {
+                                "_id",
+                                "name",
+                                "site"
+                        },
+                        "_id = ?",
+                        new String[] { Integer.toString(eventId) },
+                        null, null, null
+                );
+
+                if(eventCursor.moveToFirst()) {
+                    event = eventCursor.getString(1);
+                    site = eventCursor.getString(2);
+                }
+                eventCursor.close();
 
                 Intent intent = new Intent(MyGamesActivity.this, MainActivity.class);
                 intent.putExtra(MainActivity.EXTRA_GAME_ID, id);
@@ -119,22 +166,24 @@ public class MyGamesActivity extends ListActivity {
             }
         }
     }
-
+    //do pokazania listy partii
     private class GamesAsyncTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... voids) {
             SQLiteOpenHelper myGamesDatabaseHelper = new MyGamesDatabaseHelper(MyGamesActivity.this);
             try {
                 db = myGamesDatabaseHelper.getReadableDatabase();
-                String concatenatedColumns = "white_lastname ||'  '|| result ||'  '|| black_lastname";
+                String columns = "list_view";
 
-                cursor = db.query("GAME", new String[]{"_id", concatenatedColumns},
-                        null, null, null, null, null);
+                cursor = db.rawQuery(
+                     "SELECT * FROM my_games_view",
+                     null
+                );
 
                 CursorAdapter listAdapter = new SimpleCursorAdapter(MyGamesActivity.this,
                         android.R.layout.simple_list_item_activated_1,
                         cursor,
-                        new String[] { concatenatedColumns },
+                        new String[] { columns },
                         new int[] { android.R.id.text1 },
                         0);
 
