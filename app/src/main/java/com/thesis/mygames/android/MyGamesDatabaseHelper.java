@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 public class MyGamesDatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "my_games";
-    private static final int DB_VERSION = 5;
+    private static final int DB_VERSION = 7;
 
     public MyGamesDatabaseHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -61,7 +61,7 @@ public class MyGamesDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if(DB_VERSION > 4) {
+        if(DB_VERSION > 6) {
             this.onCreate(db);
         }
     }

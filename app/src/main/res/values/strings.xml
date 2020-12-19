@@ -37,8 +37,7 @@
     <string name="lastname_error">Nazwisko lub login mogą się składać jedynie ze znaków alfanumerycznych</string>
     <string name="empty_lastname_error">pole nazwisko/login zawodnika nie może być puste</string>
     <string name="firstname_error">Imię może się składać jedynie z polskich znaków</string>
-    <string name="info_about_activity_tag">Podaj dodatkowe informacje dotyczące rozgrywki. Pierwsze 3 pola są
-            obowiązkowe natomiast reszta jest opcjonalna.</string>
+    <string name="info_about_activity_tag">Uzupełnij informacje</string>
     <string-array name="results">
         <item>Wygrały białe (1-0)</item>
         <item>Remis (1/2-1/2)</item>
@@ -56,7 +55,7 @@
         Aplikacja bardzo dobra pozdrawiam
     </string>
 
-    <!-- fen_dialog.xml && -->
+    <!-- fen_dialog.xml -->
     <string name="label_select_fen">Podaj kod w formacie FEN</string>
     <string name="label_submit">Ok</string>
     <string name="label_cancel">Cofnij</string>

@@ -196,4 +196,18 @@ public class Chessboard {
         PGNTagGenerator = new StringBuilder();
         PGNMoveGenerator = new StringBuilder();
     }
+
+    public static void clearChessboardForPgn() {
+        squares = new Square[64];
+        whitePieces = new ArrayList<>();
+        blackPieces = new ArrayList<>();
+        moveList = new ArrayList<>();
+        moveIndicator = -1;
+
+        enPassantPossible = null;
+        numberOfHalfMoves = 0;
+        fullMoveNumber = 0;
+        PGNTagGenerator = new StringBuilder();
+        PGNMoveGenerator = new StringBuilder();
+    }
 }

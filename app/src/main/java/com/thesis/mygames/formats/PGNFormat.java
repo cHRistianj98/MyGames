@@ -1,10 +1,12 @@
 package com.thesis.mygames.formats;
 
 import android.os.Build;
+import android.widget.ImageButton;
 
 import androidx.annotation.RequiresApi;
 
 import com.thesis.mygames.R;
+import com.thesis.mygames.activities.MainActivity;
 import com.thesis.mygames.game.Chessboard;
 import com.thesis.mygames.game.Move;
 import com.thesis.mygames.game.Piece;
@@ -103,6 +105,8 @@ public class PGNFormat {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void loadGameFromPgn(String pgn) {
+        clearChessboardForPgn();
+        init();
         if(!isPgnValid(pgn)) {
             throw new IllegalArgumentException("Code in PGN format is wrong!");
         }
@@ -193,30 +197,7 @@ public class PGNFormat {
                 continue;
             possPieces.add(p.getId());
         }
-//        Integer []possiblePieces = pieces.stream()
-//                .filter(p -> {
-//                    try {
-//                        return isBelongToClass(p, myClass);
-//                    } catch (ClassNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                    return false;
-//                })
-//                .filter(p -> p.possibleFieldsToMoveCheck().contains(getSquares(getSquareId(getEndSquareName(move)))))
-//                .map(Piece::getId)
-//                .toArray(Integer[]::new);
 
-//        if(possiblePieces.length == 1)
-//            return possiblePieces[0];
-
-
-//        else if (possiblePieces.length > 1){
-//            List<Integer> listOfSquaresWherePieceCanBe = getRangeOfPossibleSquareId(move);
-//            for (Integer possiblePiece : possiblePieces) {
-//                if (listOfSquaresWherePieceCanBe.contains(pieces.get(possiblePiece).getSquare().getId()))
-//                    return possiblePiece;
-//            }
-//        }
         if(possPieces.size() == 1)
             return possPieces.get(0);
 

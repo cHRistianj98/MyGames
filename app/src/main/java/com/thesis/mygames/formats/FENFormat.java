@@ -1,5 +1,9 @@
 package com.thesis.mygames.formats;
 
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.thesis.mygames.R;
 import com.thesis.mygames.game.Move;
 import com.thesis.mygames.game.Piece;
 import com.thesis.mygames.game.Square;
@@ -11,6 +15,7 @@ import com.thesis.mygames.pieces.Pawn;
 import com.thesis.mygames.pieces.Queen;
 import com.thesis.mygames.pieces.Rook;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -132,6 +137,7 @@ public class FENFormat {
         if(!isFenValid(fen))
             throw new IllegalArgumentException("Code in FEN format is wrong!");
 
+        clearMoveList();
         clearPieces();
         removeActionListeners();
         setObjectsOnNull();
@@ -161,6 +167,20 @@ public class FENFormat {
         }
 
         return Objects.requireNonNull(fenMatcher.group(1)).contains("k") && Objects.requireNonNull(fenMatcher.group(1)).contains("K");
+    }
+
+    private static void clearMoveList() {
+        moveList = new ArrayList<>();
+        moveIndicator = -1;
+
+        enPassantPossible = null;
+        numberOfHalfMoves = 0;
+        fullMoveNumber = 0;
+        PGNTagGenerator = new StringBuilder();
+        PGNMoveGenerator = new StringBuilder();
+
+        TextView textView = Move.activity.findViewById(R.id.moves);
+        textView.setText(PGNMoveGenerator.toString());
     }
 
     private static boolean verifyRank(String rank) {
@@ -300,131 +320,6 @@ public class FENFormat {
                 return 12;
         }
         return -1;
-
-
-//        if (p.getColor()) {
-//            if(p instanceof Pawn) {
-//                for (int i = 0; i < 8; i++) {
-//                    if(whitePieces.get(i) == null) {
-//                        return i;
-//                    }
-//                }
-//            }
-//
-//            else if(p instanceof Rook) {
-//                if(whitePieces.get(8) == null) return 8;
-//                if(whitePieces.get(15) == null) return 15;
-//                else {
-//                    for (int i = 0; i < 8; i++) {
-//                        if(whitePieces.get(i) == null) {
-//                            return i;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            else if(p instanceof Knight) {
-//                if(whitePieces.get(9) == null) return 9;
-//                if(whitePieces.get(14) == null) return 14;
-//                else {
-//                    for (int i = 0; i < 8; i++) {
-//                        if(whitePieces.get(i) == null) {
-//                            return i;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            else if(p instanceof Bishop) {
-//                if(whitePieces.get(10) == null) return 10;
-//                if(whitePieces.get(13) == null) return 13;
-//                else {
-//                    for (int i = 0; i < 8; i++) {
-//                        if(whitePieces.get(i) == null) {
-//                            return i;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            else if(p instanceof Queen) {
-//                if(whitePieces.get(11) == null) return 11;
-//                else {
-//                    for (int i = 0; i < 8; i++) {
-//                        if(whitePieces.get(i) == null) {
-//                            return i;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            else if(p instanceof King) {
-//                return 12;
-//            }
-//
-//        } else {
-//            if(p instanceof Pawn) {
-//                for (int i = 0; i < 8; i++) {
-//                    if(blackPieces.get(i) == null) {
-//                        return i;
-//                    }
-//                }
-//            }
-//
-//            else if(p instanceof Rook) {
-//                if(blackPieces.get(8) == null) return 8;
-//                if(blackPieces.get(15) == null) return 15;
-//                else {
-//                    for (int i = 0; i < 8; i++) {
-//                        if(blackPieces.get(i) == null) {
-//                            return i;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            else if(p instanceof Knight) {
-//                if(blackPieces.get(9) == null) return 9;
-//                if(blackPieces.get(14) == null) return 14;
-//                else {
-//                    for (int i = 0; i < 8; i++) {
-//                        if(blackPieces.get(i) == null) {
-//                            return i;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            else if(p instanceof Bishop) {
-//                if(blackPieces.get(10) == null) return 10;
-//                if(blackPieces.get(13) == null) return 13;
-//                else {
-//                    for (int i = 0; i < 8; i++) {
-//                        if(blackPieces.get(i) == null) {
-//                            return i;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            else if(p instanceof Queen) {
-//                if(blackPieces.get(11) == null) return 11;
-//                else {
-//                    for (int i = 0; i < 8; i++) {
-//                        if(blackPieces.get(i) == null) {
-//                            return i;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            else if(p instanceof King) {
-//                return 12;
-//            }
-//        }
-//        System.out.println(p.getClass());
-//
-//        return 1000;
     }
 
     private static int getSquareIdFromFen(String fen, int id) {

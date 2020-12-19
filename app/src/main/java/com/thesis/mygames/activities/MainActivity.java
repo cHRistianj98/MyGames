@@ -81,12 +81,6 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
         TextView moves = findViewById(R.id.moves);
         moves.setMovementMethod(new ScrollingMovementMethod());
 
-//        int movesHeight = screenHeight - gridLayoutHeight - 56 - 10;
-//
-//        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) moves.getLayoutParams();
-//        params.height = movesHeight;
-//        moves.setLayoutParams(params);
-
         String movesFromDatabase = getIntent().getStringExtra(EXTRA_MOVES);
         int idFromDatabase = getIntent().getIntExtra(EXTRA_GAME_ID, 0);
 

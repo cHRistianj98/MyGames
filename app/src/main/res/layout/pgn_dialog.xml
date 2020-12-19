@@ -25,19 +25,43 @@
             android:layout_below="@id/select_pgn_text_view" />
 
         <Button
+            android:id="@+id/pgn_button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="30dp"
+            android:layout_toStartOf="@+id/pgnCenterPoint"
+            android:layout_below="@id/pgn"
+            android:text="@string/label_cancel"
+            android:textColor="#fff"
+            android:shadowColor="#A8A8A8"
+            android:shadowRadius="11"
+            android:background="@drawable/custom_button"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/pgnCenterPoint"
+            android:text=""
+            android:layout_width="40dip"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+        <Button
             android:id="@+id/pgn_button_submit"
             android:layout_width="wrap_content"
             android:layout_below="@+id/pgn"
-            android:layout_height="wrap_content"
-            android:text="@string/label_submit" />
+            android:layout_height="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/pgnCenterPoint"
+            android:text="@string/label_submit"
+            android:textColor="#fff"
+            android:shadowColor="#A8A8A8"
+            android:shadowRadius="11"
+            android:background="@drawable/custom_button"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
 
-        <Button
-            android:id="@+id/pgn_button_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_toEndOf="@id/pgn_button_submit"
-            android:layout_below="@id/pgn"
-            android:text="@string/label_cancel" />
     </RelativeLayout>
 </ScrollView>

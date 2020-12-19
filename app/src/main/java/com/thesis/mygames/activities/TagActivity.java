@@ -20,9 +20,12 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 import com.thesis.mygames.android.MyGamesDatabaseHelper;
 import com.thesis.mygames.R;
+import com.thesis.mygames.game.Move;
 
 import java.util.Calendar;
 import java.util.regex.Pattern;
+
+import static com.thesis.mygames.game.Chessboard.PGNMoveGenerator;
 
 public class TagActivity extends AppCompatActivity {
     //public static final String TAG = "TagActivity";

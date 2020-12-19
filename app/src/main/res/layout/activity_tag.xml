@@ -13,7 +13,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textStyle="bold|italic"
             android:text="@string/info_about_activity_tag"
             android:layout_marginBottom="10dp"/>
 
@@ -43,25 +46,25 @@
                 android:hint="@string/black_lastname_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
+
+        <TextView
+            android:id="@+id/result_label"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="@string/result_label" />
 
-            <TextView
-                android:id="@+id/result_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/result_label" />
-
-            <Spinner
-                android:id="@+id/result"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/results"
-                android:layout_marginBottom="20dp"/>
-        </LinearLayout>
+        <Spinner
+            android:id="@+id/result"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/results"
+            android:layout_marginBottom="20dp"/>
+<!--        </LinearLayout>-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_layout_event"
@@ -167,8 +170,15 @@
             android:id="@+id/save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/tag_custom_button"
             android:layout_gravity="center"
             android:text="@string/save_button_label"
             android:onClick="addNewGameToDatabase" />
+
     </LinearLayout>
 </ScrollView>
