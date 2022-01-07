@@ -52,7 +52,7 @@
     </string-array>
 
     <string name="about_app">
-        Aplikacja bardzo dobra pozdrawiam
+        Na podstawie ruchów wykonywanych przez użytkownika na interaktywnej szachownicy zaimplementowanej w aplikacji, generowany jest zapis partii w szachowej notacji algebraicznej. Po wprowadzeniu wszystkich ruchów danej partii można zapisać jej przebieg do bazy danych. Aplikacja ma na celu służyć szachistom do kolekcjonowania swoich partii oraz do możliwości podzielenia się ich przebiegiem z innymi graczami.
     </string>
 
     <!-- fen_dialog.xml -->
@@ -67,4 +67,5 @@
     <string name="text_label2">cofanie</string>
     <string name="text_label3">formaty</string>
     <string name="text_label4">zapisz</string>
+    <string name="author">Autor: Krystian Kania</string>
 </resources>

@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:text="@string/about_app_text"
         android:layout_gravity="center"
+        android:onClick="showAboutAppActivity"
         android:textColor="#fff"
         android:shadowColor="#A8A8A8"
         android:shadowRadius="11"

@@ -8,10 +8,18 @@
     tools:context=".activities.AboutAppActivity">
 
     <TextView
+        android:id="@+id/author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/author"
+        android:textSize="20sp"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
         android:id="@+id/about_app"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/about_app"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
 
 </LinearLayout>
