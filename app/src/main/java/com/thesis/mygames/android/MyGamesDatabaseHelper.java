@@ -18,15 +18,6 @@ public class MyGamesDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String view = "CREATE VIEW my_games_view AS\n" +
-                "SELECT GAMES._id AS _id, WHITE_PLAYERS.last_name ||'  '|| GAMES.result ||'  '|| BLACK_PLAYERS.last_name AS list_view\n" +
-                "FROM GAMES\n" +
-                "INNER JOIN WHITE_PLAYERS ON GAMES.white_player_id = WHITE_PLAYERS._id\n" +
-                "INNER JOIN BLACK_PLAYERS ON GAMES.black_player_id = BLACK_PLAYERS._id;";
-
-        db.execSQL("DROP VIEW IF EXISTS my_games_view;");
-        db.execSQL(view);
-
         db.execSQL("CREATE TABLE GAMES (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "date TEXT, "
                 + "round INTEGER, "
@@ -57,6 +48,14 @@ public class MyGamesDatabaseHelper extends SQLiteOpenHelper {
                 + "rating INTEGER);"
         );
 
+        String view = "CREATE VIEW my_games_view AS\n" +
+                "SELECT GAMES._id AS _id, WHITE_PLAYERS.last_name ||'  '|| GAMES.result ||'  '|| BLACK_PLAYERS.last_name AS list_view\n" +
+                "FROM GAMES\n" +
+                "INNER JOIN WHITE_PLAYERS ON GAMES.white_player_id = WHITE_PLAYERS._id\n" +
+                "INNER JOIN BLACK_PLAYERS ON GAMES.black_player_id = BLACK_PLAYERS._id;";
+
+        db.execSQL("DROP VIEW IF EXISTS my_games_view;");
+        db.execSQL(view);
     }
 
     @Override
