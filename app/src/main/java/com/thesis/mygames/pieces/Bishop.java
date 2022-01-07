@@ -1,7 +1,5 @@
 package com.thesis.mygames.pieces;
 
-import android.widget.ImageButton;
-
 import com.thesis.mygames.game.Chessboard;
 import com.thesis.mygames.game.Piece;
 import com.thesis.mygames.game.Square;
@@ -30,20 +28,20 @@ public class Bishop extends Piece {
         int squareId;
         int []diffBetweenSquares = new int[]{-9, -7, 7, 9};
 
-        for(int d : diffBetweenSquares) {
+        for (int d : diffBetweenSquares) {
             squareId = this.square.getId();
             do {
                 if ((d == -9 || d == 7) && squareId % 8 == 0) break;
                 if ((d == -7 || d == 9) && squareId % 8 == 7) break;
                 squareId += d;
-                if(squareId < 0 || squareId > 63) break;
-                if(Chessboard.getSquares(squareId).getPiece() != null && this.getColor() != Chessboard.getSquares(squareId).getPiece().getColor())
+                if (squareId < 0 || squareId > 63) break;
+                if (Chessboard.getSquares(squareId).getPiece() != null && this.getColor() != Chessboard.getSquares(squareId).getPiece().getColor())
                     break;
-                if(Chessboard.getSquares(squareId).getPiece() != null && this.getColor() == Chessboard.getSquares(squareId).getPiece().getColor()) {
+                if (Chessboard.getSquares(squareId).getPiece() != null && this.getColor() == Chessboard.getSquares(squareId).getPiece().getColor()) {
                     toRemove.add(squareId);
                     break;
                 }
-                if(squaresOnBorders.contains(squareId)) break;
+                if (squaresOnBorders.contains(squareId)) break;
             } while(true);
         }
         return toRemove;
@@ -59,7 +57,7 @@ public class Bishop extends Piece {
         int squareId;
         int []diffBetweenSquares = new int[]{-9, -7, 7, 9};
 
-        for(int d : diffBetweenSquares) {
+        for (int d : diffBetweenSquares) {
             squareId = this.square.getId();
             do {
                 if ((d == -9 || d == 7) && squareId % 8 == 0) break;
@@ -91,16 +89,16 @@ public class Bishop extends Piece {
         boolean wasPiece;
         int pieceId = 0;
 
-        for(Square s : possibleSquares) {
+        for (Square s : possibleSquares) {
             wasPiece = false;
             Chessboard.getSquares(square.getId()).setPiece(null);
             this.setSquare(s);
 
-            if(Chessboard.getSquares(s.getId()).getPiece() != null) {
+            if (Chessboard.getSquares(s.getId()).getPiece() != null) {
                 piece = Chessboard.getSquares(s.getId()).getPiece();
                 pieceId = Chessboard.getSquares(s.getId()).getPiece().getId();
                 wasPiece = true;
-                if(this.getColor()) {
+                if (this.getColor()) {
                     Chessboard.blackPieces.set(pieceId, null);
                 } else {
                     Chessboard.whitePieces.set(pieceId, null);
@@ -108,16 +106,16 @@ public class Bishop extends Piece {
                 Chessboard.getSquares(s.getId()).setPiece(null);
             }
             Chessboard.getSquares(s.getId()).setPiece(this);
-            if(this.getColor()) {
-                if(!(((King)Chessboard.whitePieces.get(12)).isCheck()))
+            if (this.getColor()) {
+                if (!(((King)Chessboard.whitePieces.get(12)).isCheck()))
                     possibleSquareDuringCheck.add(s);
             } else {
-                if(!(((King)Chessboard.blackPieces.get(12)).isCheck()))
+                if (!(((King)Chessboard.blackPieces.get(12)).isCheck()))
                     possibleSquareDuringCheck.add(s);
             }
 
-            if(wasPiece) {
-                if(this.getColor()) {
+            if (wasPiece) {
+                if (this.getColor()) {
                     Chessboard.blackPieces.set(pieceId, piece);
                 } else {
                     Chessboard.whitePieces.set(pieceId, piece);
@@ -131,5 +129,4 @@ public class Bishop extends Piece {
         }
         return possibleSquareDuringCheck;
     }
-
 }

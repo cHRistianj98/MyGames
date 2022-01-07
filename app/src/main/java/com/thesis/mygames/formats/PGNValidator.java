@@ -27,16 +27,18 @@ public class PGNValidator {
             line = line.trim();
             Pattern compiledTagPattern = Pattern.compile("\\[.*\\]");
 
-            if(compiledTagPattern.matcher(line).matches()) {
-                Pattern compiledSpecificTagPattern = Pattern.compile("\\[(Event|Site|Round|Date|White|Black) \".+\"\\]");
+            if (compiledTagPattern.matcher(line).matches()) {
+                Pattern compiledSpecificTagPattern = Pattern.compile(
+                        "\\[(Event|Site|Round|Date|White|Black) \".+\"\\]");
                 Matcher tagMatcher = compiledSpecificTagPattern.matcher(line);
-                if(tagMatcher.matches()) {
+                if (tagMatcher.matches()) {
                     saveTagProperty(line);
                 }
                 continue;
             }
 
-            Pattern compiledMoveSection = Pattern.compile("(.+ )+(1\\-0)?(1\\\\2\\-1\\\\2)?(0\\-1)?");
+            Pattern compiledMoveSection = Pattern.compile(
+                    "(.+ )+(1\\-0)?(1\\\\2\\-1\\\\2)?(0\\-1)?");
             if(compiledMoveSection.matcher(line + " ").matches()) {
                 moveSection.append(line);
             }
@@ -49,7 +51,7 @@ public class PGNValidator {
 
         Pattern moveNumberPattern = Pattern.compile("[1-9][0-9]?[0-9]?[0-9]?\\.");
         for (int i = 0; i < movesArray.length; i++) {
-            if(moveNumberPattern.matcher(movesArray[i]).matches()) {
+            if (moveNumberPattern.matcher(movesArray[i]).matches()) {
                 movesArray[i] = null;
             }
         }
@@ -61,8 +63,11 @@ public class PGNValidator {
                 moveList.add(move);
         }
 
-        String[] results = Move.activity.getApplicationContext().getResources().getStringArray(R.array.pgn_results);
-        if(Arrays.asList(results[0], results[1], results[2], results[3]).contains(moveList.get(moveList.size() - 1)))
+        String[] results = Move.activity.getApplicationContext()
+                .getResources()
+                .getStringArray(R.array.pgn_results);
+        if (Arrays.asList(results[0], results[1], results[2], results[3])
+                .contains(moveList.get(moveList.size() - 1)))
             moveList.remove(moveList.size() - 1);
 
         final String chessNotationPattern = "([a-hA-H]+[1-8]{1}[=][QRBN]{1}[\\+|#]?|" + // promotion
@@ -73,11 +78,12 @@ public class PGNValidator {
                 "[O]+[\\-][O]+[\\+|#]?|" + // kingside castling hit
                 "[a-hpA-HP]{1}[\\-][a-hpA-HP]{1}[\\+|#]?|" + //
                 "[RNBQK]?[a-hp]?[1-8]?[x]?[a-hp][1-8][\\+|#]?)";
+
         Pattern movePattern = Pattern.compile(chessNotationPattern);
         Matcher moveMatcher;
         for (String move : moveList) {
             moveMatcher = movePattern.matcher(move);
-            if(!moveMatcher.matches()) {
+            if (!moveMatcher.matches()) {
                 return false;
             }
         }

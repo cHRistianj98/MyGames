@@ -13,7 +13,6 @@ public class MyGamesDatabaseHelper extends SQLiteOpenHelper {
 
     public MyGamesDatabaseHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        //super(context, null, null, DB_VERSION);
     }
 
     @Override
@@ -65,14 +64,26 @@ public class MyGamesDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public static void insertGame(SQLiteDatabase db, String event, String site, String date, Integer round, String whiteFirstName,
-                           String whiteLastName, String blackFirstName, String blackLastName, String result, Integer whiteElo,
-                           Integer blackElo, String moves) {
+    public static void insertGame(
+            SQLiteDatabase db,
+            String event,
+            String site,
+            String date,
+            Integer round,
+            String whiteFirstName,
+            String whiteLastName,
+            String blackFirstName,
+            String blackLastName,
+            String result,
+            Integer whiteElo,
+            Integer blackElo,
+            String moves) {
+
         int whitePlayerId = getPlayerId(db, whiteFirstName, whiteLastName, whiteElo, true);
         int blackPlayerId = getPlayerId(db, blackFirstName, blackLastName, blackElo, false);
         int eventId = getEventId(db, event, site);
 
-        if(whitePlayerId == 0) {
+        if (whitePlayerId == 0) {
             ContentValues whitePlayerValues = new ContentValues();
             whitePlayerValues.put("first_name", whiteFirstName);
             whitePlayerValues.put("last_name", whiteLastName);
@@ -81,8 +92,7 @@ public class MyGamesDatabaseHelper extends SQLiteOpenHelper {
             whitePlayerId = getPlayerId(db, whiteFirstName, whiteLastName, whiteElo, true);
         }
 
-
-        if(blackPlayerId == 0) {
+        if (blackPlayerId == 0) {
             ContentValues blackPlayerValues = new ContentValues();
             blackPlayerValues.put("first_name", blackFirstName);
             blackPlayerValues.put("last_name", blackLastName);
@@ -91,7 +101,7 @@ public class MyGamesDatabaseHelper extends SQLiteOpenHelper {
             blackPlayerId = getPlayerId(db, blackFirstName, blackLastName, blackElo, false);
         }
 
-        if(eventId == 0) {
+        if (eventId == 0) {
             ContentValues eventValues = new ContentValues();
             eventValues.put("name", event);
             eventValues.put("site", site);
@@ -124,12 +134,12 @@ public class MyGamesDatabaseHelper extends SQLiteOpenHelper {
                 null, null, null
         );
 
-        if(playerCursor.getCount() < 1) {
+        if (playerCursor.getCount() < 1) {
             playerCursor.close();
             return 0;
         }
 
-        if(playerCursor.moveToFirst()) {
+        if (playerCursor.moveToFirst()) {
             int playerId;
             playerId = playerCursor.getInt(0);
             playerCursor.close();
@@ -152,12 +162,12 @@ public class MyGamesDatabaseHelper extends SQLiteOpenHelper {
                 null, null, null
         );
 
-        if(eventCursor.getCount() < 1) {
+        if (eventCursor.getCount() < 1) {
             eventCursor.close();
             return 0;
         }
 
-        if(eventCursor.moveToFirst()) {
+        if (eventCursor.moveToFirst()) {
             int eventId;
             eventId = eventCursor.getInt(0);
             eventCursor.close();

@@ -39,11 +39,14 @@ public class PromotionDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         final String[] list = getActivity().getResources().getStringArray(R.array.pieces);
+        String choosePiece = "Wybierz figurę";
+        String ok = "Ok";
+        String cancel = "Cofnij";
 
-        builder.setTitle("Wybierz figurę")
+        builder.setTitle(choosePiece)
                 .setSingleChoiceItems(list, 0, (dialog, i) -> position = i)
-                .setPositiveButton("Ok", (dialog, i) -> mListener.onPositiveButtonClicked(list, position))
-                .setNegativeButton("Cofnij", (dialog, i) -> mListener.onNegativeButtonClicked());
+                .setPositiveButton(ok, (dialog, i) -> mListener.onPositiveButtonClicked(list, position))
+                .setNegativeButton(cancel, (dialog, i) -> mListener.onNegativeButtonClicked());
 
         return builder.create();
     }

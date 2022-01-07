@@ -1,7 +1,5 @@
 package com.thesis.mygames.pieces;
 
-import android.widget.ImageButton;
-
 import com.thesis.mygames.game.Chessboard;
 import com.thesis.mygames.game.Piece;
 import com.thesis.mygames.game.Square;
@@ -51,14 +49,14 @@ public class King extends Piece {
             default:
                 if (Arrays.asList( 15, 23, 31, 39, 47, 55 ).contains(id)) {
                     for (Integer i : toCheck) {
-                        if(i >= 0 && i < 64)
+                        if (i >= 0 && i < 64)
                             validId.add(i);
                     }
                     validId.removeAll(Arrays.asList(id - 7, id + 1, id + 9));
                 }
-                else if(Arrays.asList( 8, 16, 24, 32, 40, 48 ).contains(id)) {
+                else if (Arrays.asList( 8, 16, 24, 32, 40, 48 ).contains(id)) {
                     for (Integer i : toCheck) {
-                        if(i >= 0 && i < 64)
+                        if (i >= 0 && i < 64)
                             validId.add(i);
                     }
                     validId.removeAll(Arrays.asList(id - 9, id - 1, id + 7));
@@ -66,7 +64,7 @@ public class King extends Piece {
 
                 else {
                     for (Integer i : toCheck) {
-                        if(i >= 0 && i < 64)
+                        if (i >= 0 && i < 64)
                             validId.add(i);
                     }
                 }
@@ -98,7 +96,7 @@ public class King extends Piece {
 
         validId = getEveryPossibilities();
         for (int i = 0; i < validId.size(); i++) {
-            if(Chessboard.getSquares(validId.get(i)).getPiece() != null && Chessboard.getSquares(validId.get(i)).getPiece().getColor() == this.getColor())
+            if (Chessboard.getSquares(validId.get(i)).getPiece() != null && Chessboard.getSquares(validId.get(i)).getPiece().getColor() == this.getColor())
                 toRemove.add(validId.get(i));
         }
 
@@ -109,26 +107,25 @@ public class King extends Piece {
 
     public void checkIfCheckOnPossibleFields() {
         for (int i = 0; i < validId.size(); i++) {
-            if(attackedSquares.contains(Chessboard.getSquares(validId.get(i)))) {
+            if (attackedSquares.contains(Chessboard.getSquares(validId.get(i)))) {
                 toRemove.add(validId.get(i));}
 
-            if(Chessboard.getSquares(validId.get(i)).getPiece() != null && Chessboard.getSquares(validId.get(i)).getPiece().getColor() != this.getColor()) {
-               // Piece p = Chessboard.getSquares(validId.get(i)).getPiece();
-                if(this.getColor()) {
-                    for(Piece pi : Chessboard.blackPieces) {
-                        if(pi == null)
+            if (Chessboard.getSquares(validId.get(i)).getPiece() != null && Chessboard.getSquares(validId.get(i)).getPiece().getColor() != this.getColor()) {
+                if (this.getColor()) {
+                    for (Piece pi : Chessboard.blackPieces) {
+                        if (pi == null)
                             continue;
                         List<Integer> tmpPieces = pi.getMyBlockingPieces();
-                        if(tmpPieces.contains(validId.get(i))) {
+                        if (tmpPieces.contains(validId.get(i))) {
                             toRemove.add(validId.get(i));
                         }
                     }
                 } else {
-                    for(Piece pi : Chessboard.whitePieces) {
-                        if(pi == null)
+                    for (Piece pi : Chessboard.whitePieces) {
+                        if (pi == null)
                             continue;
                         List<Integer> tmpPieces = pi.getMyBlockingPieces();
-                        if(tmpPieces.contains(validId.get(i))) {
+                        if (tmpPieces.contains(validId.get(i))) {
                             toRemove.add(validId.get(i));
                         }
                     }
@@ -141,14 +138,14 @@ public class King extends Piece {
 
     public void checkIfMyPieceOnValidFields() {
         for (int i = 0; i < validId.size(); i++) {
-            if(Chessboard.getSquares(validId.get(i)).getPiece() != null && Chessboard.getSquares(validId.get(i)).getPiece().getColor() == this.getColor())
+            if (Chessboard.getSquares(validId.get(i)).getPiece() != null && Chessboard.getSquares(validId.get(i)).getPiece().getColor() == this.getColor())
                 toRemove.add(validId.get(i));
         }
     }
 
     public boolean isCheck() {
         attackedFieldsFun();
-        if(attackedSquares.contains(this.square)) {
+        if (attackedSquares.contains(this.square)) {
             attackedSquares.clear();
             return true;
         } else {
@@ -160,59 +157,28 @@ public class King extends Piece {
     public boolean isCheckmate() {
         List<Square> possibilities = new ArrayList<>();
 
-        if(this.getColor()) {
+        if (this.getColor()) {
             for (Piece p : Chessboard.whitePieces) {
-                if(p == null)
+                if (p == null)
                     continue;
 
                 possibilities.addAll(p.possibleSquaresToMoveIncludingCheck());
-                if(!possibilities.isEmpty())
+                if (!possibilities.isEmpty())
                     return false;
             }
         } else {
             for (Piece p : Chessboard.blackPieces) {
-                if(p == null)
+                if (p == null)
                     continue;
 
                 possibilities.addAll(p.possibleSquaresToMoveIncludingCheck());
-                if(!possibilities.isEmpty())
+                if (!possibilities.isEmpty())
                     return false;
             }
         }
 
         return true;
     }
-
-//    public boolean isStalemate() {
-//        List<Square> possibilities = new ArrayList<>();
-//
-//        if(Chessboard.gameState == GameState.CHECK || Chessboard.gameState == GameState.CHECKMATE) {
-//            System.out.println(possibilities);
-//            return false;
-//        }
-//
-//        if(this.getColor() && Chessboard.gameState == GameState.NORMAL) {
-//            for (Piece p : Chessboard.whitePieces) {
-//                if(p == null)
-//                    continue;
-//                possibilities.addAll(p.possibleFieldsToMove());
-//                if(possibilities.size() > 0) {
-//                    return false;
-//                }
-//            }
-//        }
-//
-//        if(!this.getColor() && Chessboard.gameState == GameState.NORMAL){
-//            for (Piece p : Chessboard.blackPieces) {
-//                if(p == null)
-//                    continue;
-//                possibilities.addAll(p.possibleFieldsToMove());
-//                if(possibilities.size() > 0)
-//                    return false;
-//            }
-//        }
-//        return true;
-//    }
 
     public void attackedFieldsFun() {
         if(this.getColor()) {
@@ -254,9 +220,7 @@ public class King extends Piece {
                 }
                 attackedSquares.addAll(p.possibleSquaresToMove());
             }
-
         }
-
     }
 
     @Override
@@ -277,16 +241,16 @@ public class King extends Piece {
         boolean wasPiece;
         int pieceId = 0;
 
-        for(Square s : possibleSquares) {
+        for (Square s : possibleSquares) {
             wasPiece = false;
             Chessboard.getSquares(square.getId()).setPiece(null);
             this.setSquare(s);
 
-            if(Chessboard.getSquares(s.getId()).getPiece() != null) {
+            if (Chessboard.getSquares(s.getId()).getPiece() != null) {
                 piece = Chessboard.getSquares(s.getId()).getPiece();
                 pieceId = Chessboard.getSquares(s.getId()).getPiece().getId();
                 wasPiece = true;
-                if(this.getColor()) {
+                if (this.getColor()) {
                     Chessboard.blackPieces.set(pieceId, null);
                 } else {
                     Chessboard.whitePieces.set(pieceId, null);
@@ -294,16 +258,16 @@ public class King extends Piece {
                 Chessboard.getSquares(s.getId()).setPiece(null);
             }
             Chessboard.getSquares(s.getId()).setPiece(this);
-            if(this.getColor()) {
-                if(!(((King)Chessboard.whitePieces.get(12)).isCheck()))
+            if (this.getColor()) {
+                if (!(((King)Chessboard.whitePieces.get(12)).isCheck()))
                     possibleSquareDuringCheck.add(s);
             } else {
-                if(!(((King)Chessboard.blackPieces.get(12)).isCheck()))
+                if (!(((King)Chessboard.blackPieces.get(12)).isCheck()))
                     possibleSquareDuringCheck.add(s);
             }
 
-            if(wasPiece) {
-                if(this.getColor()) {
+            if (wasPiece) {
+                if (this.getColor()) {
                     Chessboard.blackPieces.set(pieceId, piece);
                 } else {
                     Chessboard.whitePieces.set(pieceId, piece);
@@ -316,11 +280,11 @@ public class King extends Piece {
             Chessboard.getSquares(square.getId()).setPiece(this);
         }
 
-        if(isShortCastlePossible()) {
+        if (isShortCastlePossible()) {
             possibleSquareDuringCheck.add(Chessboard.getSquares(square.getId() + 2));
         }
 
-        if(isLongCastlePossible()) {
+        if (isLongCastlePossible()) {
             possibleSquareDuringCheck.add(Chessboard.getSquares(square.getId() - 2));
         }
 
@@ -328,7 +292,7 @@ public class King extends Piece {
     }
 
     public boolean isShortCastlePossible() {
-        if(wasMoved ||
+        if (wasMoved ||
                 isCheck() ||
                 isSquareAttacked(Chessboard.getSquares(getSquare().getId() + 1)) ||
                 Chessboard.getSquares(getSquare().getId() + 1).getPiece() != null ||
@@ -337,12 +301,12 @@ public class King extends Piece {
                 )
             return false;
 
-        if(this.getColor()) {
+        if (this.getColor()) {
             if(((Rook)Chessboard.whitePieces.get(15)).isWasMoved()) {
                 return false;
             }
         }
-        if(!this.getColor()) {
+        if (!this.getColor()) {
             return !((Rook) Chessboard.blackPieces.get(15)).isWasMoved();
         }
 
@@ -360,12 +324,12 @@ public class King extends Piece {
         )
             return false;
 
-        if(this.getColor()) {
+        if (this.getColor()) {
             if(((Rook)Chessboard.whitePieces.get(8)).isWasMoved()) {
                 return false;
             }
         }
-        if(!this.getColor()) {
+        if (!this.getColor()) {
             return !((Rook) Chessboard.blackPieces.get(8)).isWasMoved();
         }
 

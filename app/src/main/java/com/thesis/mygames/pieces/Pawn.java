@@ -23,7 +23,7 @@ public class Pawn extends Piece {
         List<Integer> toRemove = new ArrayList<>();
 
         //////////////////////////////WHITE///////////////////////////////////////////
-        if( this.getColor() ) {
+        if ( this.getColor() ) {
             Square leftPieceToTake = (square.getId() - 9 < 0) ? null : Chessboard.getSquares(square.getId() - 9);
             Square rightPieceToTake = (square.getId() - 7 < 0) ? null : Chessboard.getSquares(square.getId() - 7);
             if (rightPieceToTake != null && rightPieceToTake.getPiece() != null && rightPieceToTake.getPiece().getColor()
@@ -52,7 +52,7 @@ public class Pawn extends Piece {
     public List<Square> possibleTakingToMove() {
         List<Square> possibleTaking = new ArrayList<>();
 
-        if(this.getColor()) {
+        if (this.getColor()) {
             Square leftPieceToTake = (square.getId() - 9 < 0) ? null : Chessboard.getSquares(square.getId() - 9);
             Square rightPieceToTake = (square.getId() - 7 < 0) ? null : Chessboard.getSquares(square.getId() - 7);
             if (leftPieceToTake != null && !Arrays.asList(8, 16, 24, 32, 40, 48).contains(square.getId()))
@@ -77,7 +77,7 @@ public class Pawn extends Piece {
         List<Square> possibleSquares = new ArrayList<>();
 
         //////////////////////////////WHITE///////////////////////////////////////////
-        if( this.getColor() ) {
+        if (this.getColor()) {
             Square oneUpSquare = (square.getId() - 8 < 0) ? null : Chessboard.getSquares(square.getId() - 8);
             Square twoUpSquare = (square.getId() - 16 < 0) ? null : Chessboard.getSquares(square.getId() - 16);
             Square leftPieceToTake = (square.getId() - 9 < 0) ? null : Chessboard.getSquares(square.getId() - 9);
@@ -90,13 +90,13 @@ public class Pawn extends Piece {
             if (rightPieceToTake != null && rightPieceToTake.getPiece() != null && !rightPieceToTake.getPiece().getColor()
                     && !Arrays.asList(15, 23, 31, 39, 47, 55).contains(square.getId()))
                 possibleSquares.add(rightPieceToTake);
-            else if(rightPieceToTake != null && rightPieceToTake.equals(Chessboard.enPassantPossible)) {
+            else if (rightPieceToTake != null && rightPieceToTake.equals(Chessboard.enPassantPossible)) {
                 possibleSquares.add(rightPieceToTake);
             }
             if (leftPieceToTake != null && leftPieceToTake.getPiece() != null && !leftPieceToTake.getPiece().getColor()
                     && !Arrays.asList(8, 16, 24, 32, 40, 48).contains(square.getId()))
                 possibleSquares.add(leftPieceToTake);
-            else if(leftPieceToTake != null && leftPieceToTake.equals(Chessboard.enPassantPossible)) {
+            else if (leftPieceToTake != null && leftPieceToTake.equals(Chessboard.enPassantPossible)) {
                 possibleSquares.add(leftPieceToTake);
             }
         }
@@ -114,13 +114,13 @@ public class Pawn extends Piece {
             if (rightPieceToTakeBlack != null && rightPieceToTakeBlack.getPiece() != null && rightPieceToTakeBlack.getPiece().getColor()
                     && !Arrays.asList(8, 16, 24, 32, 40, 48).contains(square.getId()))
                 possibleSquares.add(rightPieceToTakeBlack);
-            else if(rightPieceToTakeBlack != null && rightPieceToTakeBlack.equals(Chessboard.enPassantPossible)) {
+            else if (rightPieceToTakeBlack != null && rightPieceToTakeBlack.equals(Chessboard.enPassantPossible)) {
                 possibleSquares.add(rightPieceToTakeBlack);
             }
             if (leftPieceToTakeBlack != null && leftPieceToTakeBlack.getPiece() != null && leftPieceToTakeBlack.getPiece().getColor()
                     && !Arrays.asList(15, 23, 31, 39, 47, 55).contains(square.getId()))
                 possibleSquares.add(leftPieceToTakeBlack);
-            else if(leftPieceToTakeBlack != null && leftPieceToTakeBlack.equals(Chessboard.enPassantPossible)) {
+            else if (leftPieceToTakeBlack != null && leftPieceToTakeBlack.equals(Chessboard.enPassantPossible)) {
                 possibleSquares.add(leftPieceToTakeBlack);
             }
         }
@@ -138,16 +138,16 @@ public class Pawn extends Piece {
         boolean wasPiece;
         int pieceId = 0;
 
-        for(Square s : possibleSquares) {
+        for (Square s : possibleSquares) {
             wasPiece = false;
             Chessboard.getSquares(square.getId()).setPiece(null);
             this.setSquare(s);
 
-            if(Chessboard.getSquares(s.getId()).getPiece() != null) {
+            if (Chessboard.getSquares(s.getId()).getPiece() != null) {
                 piece = Chessboard.getSquares(s.getId()).getPiece();
                 pieceId = Chessboard.getSquares(s.getId()).getPiece().getId();
                 wasPiece = true;
-                if(this.getColor()) {
+                if (this.getColor()) {
                     Chessboard.blackPieces.set(pieceId, null);
                 } else {
                     Chessboard.whitePieces.set(pieceId, null);
@@ -155,16 +155,16 @@ public class Pawn extends Piece {
                 Chessboard.getSquares(s.getId()).setPiece(null);
             }
             Chessboard.getSquares(s.getId()).setPiece(this);
-            if(this.getColor()) {
-                if(!(((King)Chessboard.whitePieces.get(12)).isCheck()))
+            if (this.getColor()) {
+                if (!(((King)Chessboard.whitePieces.get(12)).isCheck()))
                     possibleSquareDuringCheck.add(s);
             } else {
-                if(!(((King)Chessboard.blackPieces.get(12)).isCheck()))
+                if (!(((King)Chessboard.blackPieces.get(12)).isCheck()))
                     possibleSquareDuringCheck.add(s);
             }
 
-            if(wasPiece) {
-                if(this.getColor()) {
+            if (wasPiece) {
+                if (this.getColor()) {
                     Chessboard.blackPieces.set(pieceId, piece);
                 } else {
                     Chessboard.whitePieces.set(pieceId, piece);
@@ -178,5 +178,4 @@ public class Pawn extends Piece {
         }
         return possibleSquareDuringCheck;
     }
-
 }

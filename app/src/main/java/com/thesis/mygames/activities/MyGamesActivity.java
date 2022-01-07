@@ -20,7 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 public class MyGamesActivity extends ListActivity {
-    //public static final String TAG = "MyGamesActivity";
+    public static final String TAG = "MyGamesActivity";
     private SQLiteDatabase db;
     private Cursor cursor;
     ListView listGames;
@@ -160,12 +160,15 @@ public class MyGamesActivity extends ListActivity {
         @Override
         protected void onPostExecute(Boolean success) {
             if(!success) {
-                Toast toast = Toast.makeText(MyGamesActivity.this, "Baza danych jest obecnie niedostępna",
+                String errorMessage = "Baza danych jest obecnie niedostępna";
+                Toast toast = Toast.makeText(MyGamesActivity.this,
+                        errorMessage,
                         Toast.LENGTH_SHORT);
                 toast.show();
             }
         }
     }
+
     //do pokazania listy partii
     private class GamesAsyncTask extends AsyncTask<Void, Void, Boolean> {
         @Override

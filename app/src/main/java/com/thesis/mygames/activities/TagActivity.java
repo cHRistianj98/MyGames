@@ -20,15 +20,13 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 import com.thesis.mygames.android.MyGamesDatabaseHelper;
 import com.thesis.mygames.R;
-import com.thesis.mygames.game.Move;
 
 import java.util.Calendar;
 import java.util.regex.Pattern;
 
-import static com.thesis.mygames.game.Chessboard.PGNMoveGenerator;
 
 public class TagActivity extends AppCompatActivity {
-    //public static final String TAG = "TagActivity";
+    public static final String TAG = "TagActivity";
     public static final String MOVES = "moves";
 
     private SQLiteDatabase db;
@@ -108,7 +106,9 @@ public class TagActivity extends AppCompatActivity {
 
     private class Validator {
         public boolean validate() {
-            return isEventValid() && isSiteValid() && isNameValid(whiteLastName, tilWhiteLastName)
+            return isEventValid()
+                    && isSiteValid()
+                    && isNameValid(whiteLastName, tilWhiteLastName)
                     && isNameValid(blackLastName, tilBlackLastName)
                     && isFirstNameValid(whiteFirstName, tilWhiteFirstName)
                     && isFirstNameValid(blackFirstName, tilBlackFirstName);

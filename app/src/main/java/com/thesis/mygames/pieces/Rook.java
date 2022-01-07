@@ -1,7 +1,5 @@
 package com.thesis.mygames.pieces;
 
-import android.widget.ImageButton;
-
 import com.thesis.mygames.game.Chessboard;
 import com.thesis.mygames.game.Piece;
 import com.thesis.mygames.game.Square;
@@ -36,35 +34,35 @@ public class Rook extends Piece {
 
     private void getBlockingPieceOnRightSide(List<Integer> toRemove) {
         int squareId = this.square.getId();
-        if(squareId % 8 == 7) return;
+        if (squareId % 8 == 7) return;
         for (int i = squareId + 1; i < 64; i++) {
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) return;
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) {
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) return;
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) {
                 toRemove.add(i);
                 return;
             }
-            if(i % 8 == 7) return;
+            if (i % 8 == 7) return;
         }
     }
 
     private void getBlockingPieceOnLeftSide(List<Integer> toRemove) {
         int squareId = this.square.getId();
-        if(squareId % 8 == 0) return;
+        if (squareId % 8 == 0) return;
         for (int i = squareId - 1; i >= 0; i--) {
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) return;
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) {
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) return;
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) {
                 toRemove.add(i);
                 return;
             }
-            if(i % 8 == 0) return;
+            if (i % 8 == 0) return;
         }
     }
 
     private void getBlockingPieceOnTopSide(List<Integer> toRemove) {
         int squareId = this.square.getId();
         for (int i = squareId - 8; i >= 0 ; i = i - 8) {
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) break;
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) {
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) break;
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) {
                 toRemove.add(i);
                 break;
             }
@@ -74,8 +72,8 @@ public class Rook extends Piece {
     private void getBlockingPieceOnBottomSide(List<Integer> toRemove) {
         int squareId = this.square.getId();
         for (int i = squareId + 8; i < 64 ; i = i + 8) {
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) break;
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) {
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) break;
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) {
                 toRemove.add(getSquares(i).getId());
                 break;
             }
@@ -96,15 +94,15 @@ public class Rook extends Piece {
 
     private void getPossibleHorizontalSquaresToRight(List<Square> possibleSquares) {
         int squareId = this.square.getId();
-        if(squareId % 8 == 7) return;
+        if (squareId % 8 == 7) return;
         for (int i = squareId + 1; i < 64; i++) {
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
                 possibleSquares.add(getSquares(i));
                 return;
             }
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) return;
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) return;
             possibleSquares.add(getSquares(i));
-            if(i % 8 == 7) {
+            if (i % 8 == 7) {
                 possibleSquares.add(getSquares(i));
                 return;
             }
@@ -113,15 +111,15 @@ public class Rook extends Piece {
 
     private void getPossibleHorizontalSquaresToLeft(List<Square> possibleSquares) {
         int squareId = this.square.getId();
-        if(squareId % 8 == 0) return;
+        if (squareId % 8 == 0) return;
         for (int i = squareId - 1; i >= 0; i--) {
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
                 possibleSquares.add(getSquares(i));
                 return;
             }
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) return;
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) return;
             possibleSquares.add(getSquares(i));
-            if(i % 8 == 0) {
+            if (i % 8 == 0) {
                 possibleSquares.add(getSquares(i));
                 return;
             }
@@ -131,11 +129,11 @@ public class Rook extends Piece {
     private void getPossibleVerticalSquaresToUp(List<Square> possibleSquares) {
         int squareId = this.square.getId();
         for (int i = squareId - 8; i >= 0 ; i = i - 8) {
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
                 possibleSquares.add(getSquares(i));
                 break;
             }
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) break;
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) break;
             possibleSquares.add(getSquares(i));
         }
     }
@@ -143,11 +141,11 @@ public class Rook extends Piece {
     private void getPossibleVerticalSquaresToDown(List<Square> possibleSquares) {
         int squareId = this.square.getId();
         for (int i = squareId + 8; i < 64 ; i = i + 8) {
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
                 possibleSquares.add(getSquares(i));
                 break;
             }
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) break;
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) break;
             possibleSquares.add(getSquares(i));
         }
     }
@@ -162,18 +160,18 @@ public class Rook extends Piece {
         boolean wasPiece;
         int pieceId = 0;
 
-        for(Square s : everyPossibleSquares) {
+        for (Square s : everyPossibleSquares) {
             wasPiece = false;
             Chessboard.getSquares(square.getId()).setPiece(null);
             this.setSquare(s);
-            if(Chessboard.getSquares(s.getId()).getPiece() != null) {
+            if (Chessboard.getSquares(s.getId()).getPiece() != null) {
                 piece = Chessboard.getSquares(s.getId()).getPiece();
                 pieceId = Chessboard.getSquares(s.getId()).getPiece().getId();
                 wasPiece = true;
                 simulateObjectDeletion(s.getId(), pieceId);
             }
             simulateMoveOnSquare(s, possibleSquares);
-            if(wasPiece)
+            if (wasPiece)
                 simulateReturnCapturedPieceOnSquare(pieceId, piece, s);
             else
                 Chessboard.getSquares(s.getId()).setPiece(null);
@@ -195,17 +193,17 @@ public class Rook extends Piece {
 
     private void simulateMoveOnSquare(Square s, List<Square> possibleSquares) {
         Chessboard.getSquares(s.getId()).setPiece(this);
-        if(this.getColor()) {
-            if(!(((King)Chessboard.whitePieces.get(12)).isCheck()))
+        if (this.getColor()) {
+            if (!(((King)Chessboard.whitePieces.get(12)).isCheck()))
                 possibleSquares.add(s);
         } else {
-            if(!(((King)Chessboard.blackPieces.get(12)).isCheck()))
+            if (!(((King)Chessboard.blackPieces.get(12)).isCheck()))
                 possibleSquares.add(s);
         }
     }
 
     private void simulateReturnCapturedPieceOnSquare(int pieceId, Piece piece, Square s) {
-        if(this.getColor()) {
+        if (this.getColor()) {
             Chessboard.blackPieces.set(pieceId, piece);
         } else {
             Chessboard.whitePieces.set(pieceId, piece);

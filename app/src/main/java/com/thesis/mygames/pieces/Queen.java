@@ -1,7 +1,5 @@
 package com.thesis.mygames.pieces;
 
-import android.widget.ImageButton;
-
 import com.thesis.mygames.game.Chessboard;
 import com.thesis.mygames.game.Piece;
 import com.thesis.mygames.game.Square;
@@ -38,15 +36,15 @@ public class Queen extends Piece {
 
     private void getPossibleHorizontalSquaresToRight(List<Square> possibleSquares) {
         int squareId = this.square.getId();
-        if(squareId % 8 == 7) return;
+        if (squareId % 8 == 7) return;
         for (int i = squareId + 1; i < 64; i++) {
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
                 possibleSquares.add(getSquares(i));
                 return;
             }
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) return;
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) return;
             possibleSquares.add(getSquares(i));
-            if(i % 8 == 7) {
+            if (i % 8 == 7) {
                 possibleSquares.add(getSquares(i));
                 return;
             }
@@ -55,15 +53,15 @@ public class Queen extends Piece {
 
     private void getPossibleHorizontalSquaresToLeft(List<Square> possibleSquares) {
         int squareId = this.square.getId();
-        if(squareId % 8 == 0) return;
+        if (squareId % 8 == 0) return;
         for (int i = squareId - 1; i >= 0; i--) {
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
                 possibleSquares.add(getSquares(i));
                 return;
             }
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) return;
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) return;
             possibleSquares.add(getSquares(i));
-            if(i % 8 == 0) {
+            if (i % 8 == 0) {
                 possibleSquares.add(getSquares(i));
                 return;
             }
@@ -73,11 +71,11 @@ public class Queen extends Piece {
     private void getPossibleVerticalSquaresToUp(List<Square> possibleSquares) {
         int squareId = this.square.getId();
         for (int i = squareId - 8; i >= 0 ; i = i - 8) {
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
                 possibleSquares.add(getSquares(i));
                 break;
             }
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) break;
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) break;
             possibleSquares.add(getSquares(i));
         }
     }
@@ -85,11 +83,11 @@ public class Queen extends Piece {
     private void getPossibleVerticalSquaresToDown(List<Square> possibleSquares) {
         int squareId = this.square.getId();
         for (int i = squareId + 8; i < 64 ; i = i + 8) {
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() != this.getColor()) {
                 possibleSquares.add(getSquares(i));
                 break;
             }
-            if(getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) break;
+            if (getSquares(i).getPiece() != null && getSquares(i).getPiece().getColor() == this.getColor()) break;
             possibleSquares.add(getSquares(i));
         }
     }
@@ -138,7 +136,7 @@ public class Queen extends Piece {
             Chessboard.getSquares(square.getId()).setPiece(null);
             this.setSquare(s);
 
-            if(Chessboard.getSquares(s.getId()).getPiece() != null) {
+            if (Chessboard.getSquares(s.getId()).getPiece() != null) {
                 piece = Chessboard.getSquares(s.getId()).getPiece();
                 pieceId = Chessboard.getSquares(s.getId()).getPiece().getId();
                 wasPiece = true;
@@ -150,16 +148,16 @@ public class Queen extends Piece {
                 Chessboard.getSquares(s.getId()).setPiece(null);
             }
             Chessboard.getSquares(s.getId()).setPiece(this);
-            if(this.getColor()) {
-                if(!(((King)Chessboard.whitePieces.get(12)).isCheck()))
+            if (this.getColor()) {
+                if (!(((King)Chessboard.whitePieces.get(12)).isCheck()))
                     possibleSquareDuringCheck.add(s);
             } else {
-                if(!(((King)Chessboard.blackPieces.get(12)).isCheck()))
+                if (!(((King)Chessboard.blackPieces.get(12)).isCheck()))
                     possibleSquareDuringCheck.add(s);
             }
 
-            if(wasPiece) {
-                if(this.getColor()) {
+            if (wasPiece) {
+                if (this.getColor()) {
                     Chessboard.blackPieces.set(pieceId, piece);
                 } else {
                     Chessboard.whitePieces.set(pieceId, piece);
@@ -181,60 +179,60 @@ public class Queen extends Piece {
         int currField = this.square.getId();
 
         for (int i = currField + 1; i < 64; i++) {
-            if(currField % 8 == 7)
+            if (currField % 8 == 7)
                 break;
-            if(Chessboard.getSquares(currField + 1).getPiece() != null && Chessboard.getSquares(currField+1).getPiece().getColor() != this.getColor())
+            if (Chessboard.getSquares(currField + 1).getPiece() != null && Chessboard.getSquares(currField+1).getPiece().getColor() != this.getColor())
                 break;
-            if(Chessboard.getSquares(currField + 1).getPiece() != null && Chessboard.getSquares(currField+1).getPiece().getColor() == this.getColor()) {
+            if (Chessboard.getSquares(currField + 1).getPiece() != null && Chessboard.getSquares(currField+1).getPiece().getColor() == this.getColor()) {
                 toRemove.add(currField+1);
                 break;
             }
-            if(currField != 62 && Chessboard.getSquares(i+1).getPiece() != null && Chessboard.getSquares(i+1).getPiece().getColor() != this.getColor())
+            if (currField != 62 && Chessboard.getSquares(i+1).getPiece() != null && Chessboard.getSquares(i+1).getPiece().getColor() != this.getColor())
                 break;
-            if(currField != 62 && Chessboard.getSquares(i+1).getPiece() != null && Chessboard.getSquares(i+1).getPiece().getColor() == this.getColor()) {
+            if (currField != 62 && Chessboard.getSquares(i+1).getPiece() != null && Chessboard.getSquares(i+1).getPiece().getColor() == this.getColor()) {
                 toRemove.add(i+1);
                 break;
             }
-            if((currField + 1) % 8 == 7)
+            if ((currField + 1) % 8 == 7)
                 break;
-            if((i+1) % 8 == 7)
+            if ((i+1) % 8 == 7)
                 break;
         }
 
         for (int i = currField - 1; i >= 0; i--) {
-            if(currField % 8 == 0)
+            if (currField % 8 == 0)
                 break;
-            if(Chessboard.getSquares(currField - 1).getPiece() != null && Chessboard.getSquares(currField-1).getPiece().getColor() != this.getColor())
+            if (Chessboard.getSquares(currField - 1).getPiece() != null && Chessboard.getSquares(currField-1).getPiece().getColor() != this.getColor())
                 break;
-            if(Chessboard.getSquares(currField - 1).getPiece() != null && Chessboard.getSquares(currField-1).getPiece().getColor() == this.getColor()) {
+            if (Chessboard.getSquares(currField - 1).getPiece() != null && Chessboard.getSquares(currField-1).getPiece().getColor() == this.getColor()) {
                 toRemove.add(currField-1);
                 break;
             }
-            if(currField != 1 && Chessboard.getSquares(i-1).getPiece() != null && Chessboard.getSquares(i-1).getPiece().getColor() != this.getColor())
+            if (currField != 1 && Chessboard.getSquares(i-1).getPiece() != null && Chessboard.getSquares(i-1).getPiece().getColor() != this.getColor())
                 break;
-            if(currField != 1 && Chessboard.getSquares(i-1).getPiece() != null && Chessboard.getSquares(i-1).getPiece().getColor() == this.getColor()) {
+            if (currField != 1 && Chessboard.getSquares(i-1).getPiece() != null && Chessboard.getSquares(i-1).getPiece().getColor() == this.getColor()) {
                 toRemove.add(i-1);
                 break;
             }
-            if((currField - 1) % 8 == 0)
+            if ((currField - 1) % 8 == 0)
                 break;
-            if((i-1) % 8 == 0)
+            if ((i-1) % 8 == 0)
                 break;
         }
 
         for (int i = currField - 8; i >= 0 ; i = i - 8) {
-            if(Chessboard.getSquares(i).getPiece() != null && Chessboard.getSquares(i).getPiece().getColor() != this.getColor())
+            if (Chessboard.getSquares(i).getPiece() != null && Chessboard.getSquares(i).getPiece().getColor() != this.getColor())
                 break;
-            if(Chessboard.getSquares(i).getPiece() != null && Chessboard.getSquares(i).getPiece().getColor() == this.getColor()) {
+            if (Chessboard.getSquares(i).getPiece() != null && Chessboard.getSquares(i).getPiece().getColor() == this.getColor()) {
                 toRemove.add(i);
                 break;
             }
         }
 
         for (int i = currField + 8; i < 64 ; i = i + 8) {
-            if(Chessboard.getSquares(i).getPiece() != null && Chessboard.getSquares(i).getPiece().getColor() != this.getColor())
+            if (Chessboard.getSquares(i).getPiece() != null && Chessboard.getSquares(i).getPiece().getColor() != this.getColor())
                 break;
-            if(Chessboard.getSquares(i).getPiece() != null && Chessboard.getSquares(i).getPiece().getColor() == this.getColor()) {
+            if (Chessboard.getSquares(i).getPiece() != null && Chessboard.getSquares(i).getPiece().getColor() == this.getColor()) {
                 toRemove.add(Chessboard.getSquares(i).getId());
                 break;
             }
@@ -254,76 +252,75 @@ public class Queen extends Piece {
 
         currField = this.square.getId();
         do {
-            if(leftList.contains(currField))
+            if (leftList.contains(currField))
                 break;
             currField -= 9;
-            if(currField < 0 || currField > 63)
+            if (currField < 0 || currField > 63)
                 break;
-            if(Chessboard.getSquares(currField).getPiece() != null && this.color != Chessboard.getSquares(currField).getPiece().getColor())
+            if (Chessboard.getSquares(currField).getPiece() != null && this.color != Chessboard.getSquares(currField).getPiece().getColor())
                 break;
-            if(Chessboard.getSquares(currField).getPiece() != null && this.color == Chessboard.getSquares(currField).getPiece().getColor()) {
+            if (Chessboard.getSquares(currField).getPiece() != null && this.color == Chessboard.getSquares(currField).getPiece().getColor()) {
                 toRemove.add(currField);
                 break;
             }
-            if(list.contains(currField))
+            if (list.contains(currField))
                 break;
         } while (currField < 64);
 
         currField = this.square.getId();
 
         do {
-            if(rightList.contains(currField))
+            if (rightList.contains(currField))
                 break;
             currField += 9;
-            if(currField < 0 || currField > 63)
+            if (currField < 0 || currField > 63)
                 break;
-            if(Chessboard.getSquares(currField).getPiece() != null && this.color != Chessboard.getSquares(currField).getPiece().getColor())
+            if (Chessboard.getSquares(currField).getPiece() != null && this.color != Chessboard.getSquares(currField).getPiece().getColor())
                 break;
-            if(Chessboard.getSquares(currField).getPiece() != null && this.color == Chessboard.getSquares(currField).getPiece().getColor()) {
+            if (Chessboard.getSquares(currField).getPiece() != null && this.color == Chessboard.getSquares(currField).getPiece().getColor()) {
                 toRemove.add(currField);
                 break;
             }
-            if(list.contains(currField))
+            if (list.contains(currField))
                 break;
         } while (currField < 64);
 
         currField = this.square.getId();
 
         do {
-            if(rightList.contains(currField))
+            if (rightList.contains(currField))
                 break;
             currField -= 7;
-            if(currField < 0 || currField > 63)
+            if (currField < 0 || currField > 63)
                 break;
-            if(Chessboard.getSquares(currField).getPiece() != null && this.color != Chessboard.getSquares(currField).getPiece().getColor())
+            if (Chessboard.getSquares(currField).getPiece() != null && this.color != Chessboard.getSquares(currField).getPiece().getColor())
                 break;
-            if(Chessboard.getSquares(currField).getPiece() != null && this.color == Chessboard.getSquares(currField).getPiece().getColor()) {
+            if (Chessboard.getSquares(currField).getPiece() != null && this.color == Chessboard.getSquares(currField).getPiece().getColor()) {
                 toRemove.add(currField);
                 break;
             }
-            if(list.contains(currField))
+            if (list.contains(currField))
                 break;
         } while (currField < 64);
 
         currField = this.square.getId();
 
         do {
-            if(leftList.contains(currField))
+            if (leftList.contains(currField))
                 break;
             currField += 7;
-            if(currField < 0 || currField > 63)
+            if (currField < 0 || currField > 63)
                 break;
-            if(Chessboard.getSquares(currField).getPiece() != null && this.color != Chessboard.getSquares(currField).getPiece().getColor())
+            if (Chessboard.getSquares(currField).getPiece() != null && this.color != Chessboard.getSquares(currField).getPiece().getColor())
                 break;
-            if(Chessboard.getSquares(currField).getPiece() != null && this.color == Chessboard.getSquares(currField).getPiece().getColor()) {
+            if (Chessboard.getSquares(currField).getPiece() != null && this.color == Chessboard.getSquares(currField).getPiece().getColor()) {
                 toRemove.add(currField);
                 break;
             }
-            if(list.contains(currField))
+            if (list.contains(currField))
                 break;
         } while (currField < 64);
         Collections.sort(toRemove);
         return toRemove;
     }
-
 }

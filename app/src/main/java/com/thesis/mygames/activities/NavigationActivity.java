@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.thesis.mygames.R;
-import com.thesis.mygames.activities.MainActivity;
-import com.thesis.mygames.activities.MyGamesActivity;
 
 public class NavigationActivity extends AppCompatActivity {
 

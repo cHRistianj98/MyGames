@@ -1,7 +1,5 @@
 package com.thesis.mygames.pieces;
 
-import android.widget.ImageButton;
-
 import com.thesis.mygames.game.Chessboard;
 import com.thesis.mygames.game.Piece;
 import com.thesis.mygames.game.Square;
@@ -26,7 +24,7 @@ public class Knight extends Piece {
         List<Integer> validId = getValidId();
 
         for (Integer i : validId) {
-            if(Chessboard.getSquares(i).getPiece() != null && Chessboard.getSquares(i).getPiece().getColor() == this.getColor())
+            if (Chessboard.getSquares(i).getPiece() != null && Chessboard.getSquares(i).getPiece().getColor() == this.getColor())
                 toRemove.add(i);
         }
 
@@ -95,7 +93,7 @@ public class Knight extends Piece {
             default:
                 if (Arrays.asList(16, 24, 32, 40).contains(id)) {
                     for (Integer i : toCheck) {
-                        if(i >= 0 && i < 64) {
+                        if (i >= 0 && i < 64) {
                             validId.add(i);
                         }
                     }
@@ -104,7 +102,7 @@ public class Knight extends Piece {
 
                 else if (Arrays.asList(23, 31, 39, 47).contains(id)) {
                     for (Integer i : toCheck) {
-                        if(i >= 0 && i < 64) {
+                        if (i >= 0 && i < 64) {
                             validId.add(i);
                         }
                     }
@@ -113,7 +111,7 @@ public class Knight extends Piece {
 
                 else if (Arrays.asList(17, 25, 33, 41).contains(id)) {
                     for (Integer i : toCheck) {
-                        if(i >= 0 && i < 64) {
+                        if (i >= 0 && i < 64) {
                             validId.add(i);
                         }
                     }
@@ -122,7 +120,7 @@ public class Knight extends Piece {
 
                 else if (Arrays.asList(22, 30, 38, 46).contains(id)) {
                     for (Integer i : toCheck) {
-                        if(i >= 0 && i < 64) {
+                        if (i >= 0 && i < 64) {
                             validId.add(i);
                         }
                     }
@@ -131,7 +129,7 @@ public class Knight extends Piece {
 
                 else {
                     for (Integer i : toCheck) {
-                        if(i >= 0 && i < 64) {
+                        if (i >= 0 && i < 64) {
                             validId.add(i);
                         }
                     }
@@ -147,7 +145,7 @@ public class Knight extends Piece {
         List<Square> possibleSquares = new ArrayList<>();
         List<Integer> validId = getValidId();
         for (Integer i : validId) {
-            if(Chessboard.getSquares(i).getPiece() != null && Chessboard.getSquares(i).getPiece().getColor() == this.getColor())
+            if (Chessboard.getSquares(i).getPiece() != null && Chessboard.getSquares(i).getPiece().getColor() == this.getColor())
                 continue;
             possibleSquares.add(Chessboard.getSquares(i));
         }
@@ -165,16 +163,16 @@ public class Knight extends Piece {
         boolean wasPiece;
         int pieceId = 0;
 
-        for(Square s : possibleSquares) {
+        for (Square s : possibleSquares) {
             wasPiece = false;
             Chessboard.getSquares(square.getId()).setPiece(null);
             this.setSquare(s);
 
-            if(Chessboard.getSquares(s.getId()).getPiece() != null) {
+            if (Chessboard.getSquares(s.getId()).getPiece() != null) {
                 piece = Chessboard.getSquares(s.getId()).getPiece();
                 pieceId = Chessboard.getSquares(s.getId()).getPiece().getId();
                 wasPiece = true;
-                if(this.getColor()) {
+                if (this.getColor()) {
                     Chessboard.blackPieces.set(pieceId, null);
                 } else {
                     Chessboard.whitePieces.set(pieceId, null);
@@ -182,16 +180,16 @@ public class Knight extends Piece {
                 Chessboard.getSquares(s.getId()).setPiece(null);
             }
             Chessboard.getSquares(s.getId()).setPiece(this);
-            if(this.getColor()) {
-                if(!(((King)Chessboard.whitePieces.get(12)).isCheck()))
+            if (this.getColor()) {
+                if (!(((King)Chessboard.whitePieces.get(12)).isCheck()))
                     possibleSquareDuringCheck.add(s);
             } else {
-                if(!(((King)Chessboard.blackPieces.get(12)).isCheck()))
+                if (!(((King)Chessboard.blackPieces.get(12)).isCheck()))
                     possibleSquareDuringCheck.add(s);
             }
 
-            if(wasPiece) {
-                if(this.getColor()) {
+            if (wasPiece) {
+                if (this.getColor()) {
                     Chessboard.blackPieces.set(pieceId, piece);
                 } else {
                     Chessboard.whitePieces.set(pieceId, piece);
@@ -205,5 +203,4 @@ public class Knight extends Piece {
         }
         return possibleSquareDuringCheck;
     }
-
 }

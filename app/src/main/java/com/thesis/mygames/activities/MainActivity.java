@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity implements PromotionDialog.S
             for (int i = 0; i < moveList.size(); i++) {
                 pieces = i % 2 == 0 ? whitePieces : blackPieces;
                 try {
-                    Move.makeQuickMove(pieces.get(PGNFormat.getMovedPiece(moveList.get(i), i)), PGNFormat.getEndSquareName(moveList.get(i)));
+                    Move.makeQuickMove(pieces.get(PGNFormat.getMovedPiece(moveList.get(i), i)),
+                            PGNFormat.getEndSquareName(moveList.get(i)));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

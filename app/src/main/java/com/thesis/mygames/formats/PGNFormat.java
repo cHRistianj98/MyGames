@@ -1,12 +1,10 @@
 package com.thesis.mygames.formats;
 
 import android.os.Build;
-import android.widget.ImageButton;
 
 import androidx.annotation.RequiresApi;
 
 import com.thesis.mygames.R;
-import com.thesis.mygames.activities.MainActivity;
 import com.thesis.mygames.game.Chessboard;
 import com.thesis.mygames.game.Move;
 import com.thesis.mygames.game.Piece;
@@ -23,8 +21,14 @@ import java.util.regex.Pattern;
 import static com.thesis.mygames.game.Chessboard.*;
 
 public class PGNFormat {
-    public static void generatePgnTags(String event, String site, String date, int round, String whiteLastName,
-                                       String whiteFirstName, String blackLastName, String blackFirstName,
+    public static void generatePgnTags(String event,
+                                       String site,
+                                       String date,
+                                       int round,
+                                       String whiteLastName,
+                                       String whiteFirstName,
+                                       String blackLastName,
+                                       String blackFirstName,
                                        String result) {
         PGNTagGenerator.append(generateEventTag(event)).append("\n");
         PGNTagGenerator.append(generateSiteTag(site, "POL")).append("\n");
@@ -87,7 +91,7 @@ public class PGNFormat {
         if (result == null)
             return "[Result \"*\"]";
 
-        if(result.equals("1-0") || result.equals("1/2-1/2") || result.equals("0-1")) {
+        if (result.equals("1-0") || result.equals("1/2-1/2") || result.equals("0-1")) {
             return String.format("[Result \"%s\"]", result);
         } else {
             return "[Result \"*\"]";
@@ -95,7 +99,7 @@ public class PGNFormat {
     }
 
     public static void generatePgnMoves() {
-        if(moveList.size() % 2 == 1) {
+        if (moveList.size() % 2 == 1) {
             PGNMoveGenerator.append(moveList.size()/2 + 1).
                     append(". ").append(moveList.get(moveList.size() - 1).getNotation()).append(" ");
         } else {
@@ -107,7 +111,7 @@ public class PGNFormat {
     public static void loadGameFromPgn(String pgn) {
         clearChessboardForPgn();
         init();
-        if(!isPgnValid(pgn)) {
+        if (!isPgnValid(pgn)) {
             throw new IllegalArgumentException("Code in PGN format is wrong!");
         }
 
@@ -119,13 +123,13 @@ public class PGNFormat {
             line = line.trim();
             Pattern compiledTagPattern = Pattern.compile("\\[.*\\]");
 
-            if(compiledTagPattern.matcher(line).matches()) {
+            if (compiledTagPattern.matcher(line).matches()) {
                 continue;
             }
 
             Pattern compiledMoveSection = Pattern.compile("(.+ )+(1\\-0)?(1\\\\2\\-1\\\\2)?(0\\-1)?");
 
-            if(compiledMoveSection.matcher(line + " ").matches()) {
+            if (compiledMoveSection.matcher(line + " ").matches()) {
                 moveSection.append(line);
             }
         }
@@ -136,7 +140,7 @@ public class PGNFormat {
         String []movesArray = moves.split(" ");
         Pattern moveNumberPattern = Pattern.compile("[1-9][0-9]?[0-9]?[0-9]?\\.");
         for (int i = 0; i < movesArray.length; i++) {
-            if(moveNumberPattern.matcher(movesArray[i]).matches()) {
+            if (moveNumberPattern.matcher(movesArray[i]).matches()) {
                 movesArray[i] = null;
             }
         }
@@ -147,7 +151,8 @@ public class PGNFormat {
         }
 
         String[] results = Move.activity.getApplicationContext().getResources().getStringArray(R.array.pgn_results);
-        if(Arrays.asList(results[0], results[1], results[2], results[3]).contains(moveList.get(moveList.size() - 1)))
+        if (Arrays.asList(results[0], results[1], results[2], results[3])
+                .contains(moveList.get(moveList.size() - 1)))
             moveList.remove(moveList.size() - 1);
 
         List<Piece> pieces;
@@ -160,8 +165,9 @@ public class PGNFormat {
                 e.printStackTrace();
             }
             String selectedPieceFromPgn = "";
-            if(pieces.get(id) instanceof Pawn &&
-                    Arrays.asList("a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8", "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1")
+            if (pieces.get(id) instanceof Pawn &&
+                    Arrays.asList("a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8", "a1",
+                            "b1", "c1", "d1", "e1", "f1", "g1", "h1")
                             .contains(PGNFormat.getEndSquareName(moveList.get(i)))) {
                 selectedPieceFromPgn = getPieceName(moveList.get(i));
             }
@@ -175,8 +181,13 @@ public class PGNFormat {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static int getMovedPiece(String move, int index) throws Exception {
 
-        String []classes = { "com.thesis.mygames.pieces.Knight", "com.thesis.mygames.pieces.Rook", "com.thesis.mygames.pieces.Bishop",
-                             "com.thesis.mygames.pieces.Queen", "com.thesis.mygames.pieces.King", "com.thesis.mygames.pieces.Pawn" };
+        String []classes = {
+                "com.thesis.mygames.pieces.Knight",
+                "com.thesis.mygames.pieces.Rook",
+                "com.thesis.mygames.pieces.Bishop",
+                "com.thesis.mygames.pieces.Queen",
+                "com.thesis.mygames.pieces.King",
+                "com.thesis.mygames.pieces.Pawn" };
         String myClass;
         switch(move.charAt(0)) {
             case 'O': return 12;
@@ -190,15 +201,15 @@ public class PGNFormat {
 
         List<Piece> pieces = index % 2 == 0 ? whitePieces : blackPieces;
         List<Integer> possPieces = new ArrayList<>();
-        for ( Piece p : pieces) {
-            if(!isBelongToClass(p,myClass))
+        for (Piece p : pieces) {
+            if (!isBelongToClass(p,myClass))
                 continue;
-            if(!p.possibleSquaresToMoveIncludingCheck().contains(getSquares(getSquareId(getEndSquareName(move)))))
+            if (!p.possibleSquaresToMoveIncludingCheck().contains(getSquares(getSquareId(getEndSquareName(move)))))
                 continue;
             possPieces.add(p.getId());
         }
 
-        if(possPieces.size() == 1)
+        if (possPieces.size() == 1)
             return possPieces.get(0);
 
         else if (possPieces.size() > 1){
@@ -218,34 +229,37 @@ public class PGNFormat {
 
     public static String getEndSquareName(String move) {
         char lastSign = move.charAt(move.length() - 1);
-        if(lastSign == '+' || lastSign == '#') {
+        if (lastSign == '+' || lastSign == '#') {
             char sign = move.charAt(move.length() - 2);
-            if(sign == 'Q' || sign == 'N'|| sign == 'B' || sign == 'R') {
-                return Character.toString(move.charAt(move.length() - 5)) + move.charAt(move.length() - 4);
+            if (sign == 'Q' || sign == 'N'|| sign == 'B' || sign == 'R') {
+                return Character.toString(move.charAt(move.length() - 5))
+                        + move.charAt(move.length() - 4);
             }
-            else if(sign == 'O') {
-                if(move.length() == 4) {
-                    if(Chessboard.moveList.size() % 2 == 1) {
+            else if (sign == 'O') {
+                if (move.length() == 4) {
+                    if (Chessboard.moveList.size() % 2 == 1) {
                         return "g8";
                     } else {
                         return "g1";
                     }
                 } else {
-                    if(Chessboard.moveList.size() % 2 == 1) {
+                    if (Chessboard.moveList.size() % 2 == 1) {
                         return "c8";
                     } else {
                         return "c1";
                     }
                 }
             }
-            return Character.toString(move.charAt(move.length() - 3)) + move.charAt(move.length() - 2);
+            return Character.toString(move.charAt(move.length() - 3))
+                    + move.charAt(move.length() - 2);
         }
 
-        if(lastSign == 'Q' || lastSign == 'N'|| lastSign == 'B' || lastSign == 'R')
-            return Character.toString(move.charAt(move.length() - 4)) + move.charAt(move.length() - 3);
+        if (lastSign == 'Q' || lastSign == 'N'|| lastSign == 'B' || lastSign == 'R')
+            return Character.toString(move.charAt(move.length() - 4))
+                    + move.charAt(move.length() - 3);
 
-        else if(lastSign == 'O') {
-            if(move.length() == 3) {
+        else if (lastSign == 'O') {
+            if (move.length() == 3) {
                 if(Chessboard.moveList.size() % 2 == 1) {
                     return "g8";
                 } else {
@@ -268,12 +282,12 @@ public class PGNFormat {
 
         char keyCoordinate = move.charAt(1);
 
-        if(keyCoordinate == 'x') {
+        if (keyCoordinate == 'x') {
             keyCoordinate = move.charAt(0);
         }
 
         List<Character> coordinates = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h');
-        if(coordinates.contains(keyCoordinate)) {
+        if (coordinates.contains(keyCoordinate)) {
             for (int i = Character.getNumericValue(keyCoordinate) % 10; i < 64; i = i + 8)
                 possibilities.add(i);
             return possibilities;
@@ -295,7 +309,7 @@ public class PGNFormat {
         char lastSign = moveNotation.charAt(moveNotation.length() - 1);
         String[] piecesNames = Move.activity.getApplicationContext().getResources().getStringArray(R.array.pieces);
 
-        if(lastSign == '+' || lastSign =='#') {
+        if (lastSign == '+' || lastSign =='#') {
             lastSign = moveNotation.charAt(moveNotation.length() - 2);
         }
         switch (lastSign) {

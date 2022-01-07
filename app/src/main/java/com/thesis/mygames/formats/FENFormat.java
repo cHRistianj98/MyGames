@@ -1,6 +1,5 @@
 package com.thesis.mygames.formats;
 
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.thesis.mygames.R;
@@ -65,49 +64,49 @@ public class FENFormat {
     }
 
     private static String generateLetterBasedOnPiece(Piece p) {
-        if(p.getColor()) {
-            if(p instanceof Pawn) return "P";
-            else if(p instanceof Rook) return "R";
-            else if(p instanceof Knight) return "N";
-            else if(p instanceof Bishop) return "B";
-            else if(p instanceof Queen) return "Q";
-            else if(p instanceof King) return "K";
+        if (p.getColor()) {
+            if (p instanceof Pawn) return "P";
+            else if (p instanceof Rook) return "R";
+            else if (p instanceof Knight) return "N";
+            else if (p instanceof Bishop) return "B";
+            else if (p instanceof Queen) return "Q";
+            else if (p instanceof King) return "K";
         } else {
-            if(p instanceof Pawn) return "p";
-            else if(p instanceof Rook) return "r";
-            else if(p instanceof Knight) return "n";
-            else if(p instanceof Bishop) return "b";
-            else if(p instanceof Queen) return "q";
-            else if(p instanceof King) return "k";
+            if (p instanceof Pawn) return "p";
+            else if (p instanceof Rook) return "r";
+            else if (p instanceof Knight) return "n";
+            else if (p instanceof Bishop) return "b";
+            else if (p instanceof Queen) return "q";
+            else if (p instanceof King) return "k";
         }
         return "";
     }
 
     private static String whoseMove() {
-        if(Turn.whiteTurn) return "w";
+        if (Turn.whiteTurn) return "w";
         else return "b";
     }
 
     private static String getCastlingInformation() {
         StringBuilder fen = new StringBuilder();
 
-        if(!((King) whitePieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(15)).isWasMoved())
+        if (!((King) whitePieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(15)).isWasMoved())
             fen.append("K");
-        if(!((King) whitePieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(8)).isWasMoved())
+        if (!((King) whitePieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(8)).isWasMoved())
             fen.append("Q");
-        if(!((King) blackPieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(15)).isWasMoved())
+        if (!((King) blackPieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(15)).isWasMoved())
             fen.append("k");
-        if(!((King) blackPieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(8)).isWasMoved())
+        if (!((King) blackPieces.get(12)).isWasMoved() && !((Rook) whitePieces.get(8)).isWasMoved())
             fen.append("q");
 
-        if(fen.toString().equals(""))
+        if (fen.toString().equals(""))
             return "-";
         else
             return fen.toString();
     }
 
     private static String getEnPassantPossibility() {
-        if(enPassantPossible == null)
+        if (enPassantPossible == null)
             return "-";
         else
             return getSquareName(enPassantPossible.getId());
@@ -116,7 +115,7 @@ public class FENFormat {
     private static String getNumberOfHalfMoves() {
         int counter = 0;
         for (Move move : moveList) {
-            if(move.getNotation().startsWith("a") || move.getNotation().startsWith("b") || move.getNotation().startsWith("c") ||
+            if (move.getNotation().startsWith("a") || move.getNotation().startsWith("b") || move.getNotation().startsWith("c") ||
                     move.getNotation().startsWith("d") || move.getNotation().startsWith("e") || move.getNotation().startsWith("f")
                     || move.getNotation().startsWith("g") || move.getNotation().startsWith("h") || move.getNotation().contains("x")) {
                 counter = 0;
@@ -134,7 +133,7 @@ public class FENFormat {
     }
 
     public static void loadPositionFromFen(String fen) throws IllegalArgumentException {
-        if(!isFenValid(fen))
+        if (!isFenValid(fen))
             throw new IllegalArgumentException("Code in FEN format is wrong!");
 
         clearMoveList();
@@ -219,10 +218,10 @@ public class FENFormat {
         char sign;
         for (int i = 0; i < fen.length() ; i++) {
             sign = fen.charAt(i);
-            if(sign == ' ') {
+            if (sign == ' ') {
                 break;
             }
-            if(isPiece(sign)) {
+            if (isPiece(sign)) {
                 objectFactory(sign, fen, i);
             }
         }
@@ -327,11 +326,11 @@ public class FENFormat {
         int counter = 0;
         for (int i = 0; i < id ; i++) {
             sign = fen.charAt(i);
-            if(sign == ' ')
+            if (sign == ' ')
                 break;
-            if(sign == '/')
+            if (sign == '/')
                 continue;
-            if(isPiece(sign)) {
+            if (isPiece(sign)) {
                 counter++;
             } else {
                 counter += Character.getNumericValue(sign);
@@ -342,12 +341,12 @@ public class FENFormat {
 
     private static void setIcons() {
         for (Piece p : whitePieces) {
-            if(p == null)
+            if (p == null)
                 continue;
             b[p.getSquare().getId()].setImageResource(p.getIcon());
         }
         for (Piece p : blackPieces) {
-            if(p == null)
+            if (p == null)
                 continue;
             b[p.getSquare().getId()].setImageResource(p.getIcon());
         }
@@ -355,7 +354,7 @@ public class FENFormat {
 
     private static void setTurn(String fen) {
         int index = fen.indexOf(" ");
-        if(fen.charAt(index + 1) == 'w') {
+        if (fen.charAt(index + 1) == 'w') {
             Turn.enableWhitePieces();
             Turn.disableBlackPieces();
         } else {
@@ -365,40 +364,40 @@ public class FENFormat {
     }
 
     private static void setCastlingInformation(String fen) {
-        if((whitePieces.get(12)) != null)((King) whitePieces.get(12)).setWasMoved(true);
-        if((whitePieces.get(15)) != null)((Rook) whitePieces.get(15)).setWasMoved(true);
-        if((whitePieces.get(8)) != null)((Rook) whitePieces.get(8)).setWasMoved(true);
-        if((blackPieces.get(12)) != null)((King) blackPieces.get(12)).setWasMoved(true);
-        if((blackPieces.get(15)) != null)((Rook) blackPieces.get(15)).setWasMoved(true);
-        if((blackPieces.get(8)) != null)((Rook) blackPieces.get(8)).setWasMoved(true);
+        if ((whitePieces.get(12)) != null)((King) whitePieces.get(12)).setWasMoved(true);
+        if ((whitePieces.get(15)) != null)((Rook) whitePieces.get(15)).setWasMoved(true);
+        if ((whitePieces.get(8)) != null)((Rook) whitePieces.get(8)).setWasMoved(true);
+        if ((blackPieces.get(12)) != null)((King) blackPieces.get(12)).setWasMoved(true);
+        if ((blackPieces.get(15)) != null)((Rook) blackPieces.get(15)).setWasMoved(true);
+        if ((blackPieces.get(8)) != null)((Rook) blackPieces.get(8)).setWasMoved(true);
         char sign;
-        for(int i = fen.indexOf(" ") + 3; i < fen.length(); i++) {
+        for (int i = fen.indexOf(" ") + 3; i < fen.length(); i++) {
             sign = fen.charAt(i);
-            if(sign == ' ')
+            if (sign == ' ')
                 break;
-            if(sign == 'K') {
+            if (sign == 'K') {
                 ((King) whitePieces.get(12)).setWasMoved(false);
                 ((Rook) whitePieces.get(15)).setWasMoved(false);
             }
-            else if(sign == 'Q') {
+            else if (sign == 'Q') {
                 ((King) whitePieces.get(12)).setWasMoved(false);
                 ((Rook) whitePieces.get(8)).setWasMoved(false);
             }
-            else if(sign == 'k') {
+            else if (sign == 'k') {
                 ((King) blackPieces.get(12)).setWasMoved(false);
                 ((Rook) blackPieces.get(15)).setWasMoved(false);
             }
-            else if(sign == 'q') {
+            else if (sign == 'q') {
                 ((King) blackPieces.get(12)).setWasMoved(false);
                 ((Rook) blackPieces.get(8)).setWasMoved(false);
             }
-            else if(sign == '-') {
-                if((whitePieces.get(12)) != null)((King) whitePieces.get(12)).setWasMoved(true);
-                if((whitePieces.get(15)) != null)((Rook) whitePieces.get(15)).setWasMoved(true);
-                if((whitePieces.get(8)) != null)((Rook) whitePieces.get(8)).setWasMoved(true);
-                if((blackPieces.get(12)) != null)((King) blackPieces.get(12)).setWasMoved(true);
-                if((blackPieces.get(15)) != null)((Rook) blackPieces.get(15)).setWasMoved(true);
-                if((blackPieces.get(8)) != null)((Rook) blackPieces.get(8)).setWasMoved(true);
+            else if (sign == '-') {
+                if ((whitePieces.get(12)) != null)((King) whitePieces.get(12)).setWasMoved(true);
+                if ((whitePieces.get(15)) != null)((Rook) whitePieces.get(15)).setWasMoved(true);
+                if ((whitePieces.get(8)) != null)((Rook) whitePieces.get(8)).setWasMoved(true);
+                if ((blackPieces.get(12)) != null)((King) blackPieces.get(12)).setWasMoved(true);
+                if ((blackPieces.get(15)) != null)((Rook) blackPieces.get(15)).setWasMoved(true);
+                if ((blackPieces.get(8)) != null)((Rook) blackPieces.get(8)).setWasMoved(true);
             }
         }
     }
@@ -411,9 +410,9 @@ public class FENFormat {
         StringBuilder squareName = new StringBuilder();
         for (int i = lastIndex + 1; i < fen.length(); i++) {
             sign = fen.charAt(i);
-            if(sign == ' ')
+            if (sign == ' ')
                 break;
-            if(sign == '-') {
+            if (sign == '-') {
                 enPassantPossible = null;
                 return;
             }
@@ -429,7 +428,7 @@ public class FENFormat {
         char sign;
         for (int i = lastIndex + 1; i < fen.length(); i++) {
             sign = fen.charAt(i);
-            if(sign == ' ')
+            if (sign == ' ')
                 break;
             toConvert.append(sign);
         }
@@ -440,6 +439,5 @@ public class FENFormat {
         String []fenSplitted = fen.split(" ");
         moveList.clear();
         fullMoveNumber = Integer.parseInt(fenSplitted[5]);
-
     }
 }

@@ -73,8 +73,12 @@ public class Chessboard {
             squares[i].setName(getSquareName(i));
         }
 
+        ///////////////////WHITE PIECES/////////////////////
         for (int i = 48; i <= 55; i++)
-            whitePieces.add(new Pawn(Chessboard.getSquares(i), true, i - 48, whiteIcons[i - 48]));
+            whitePieces.add(new Pawn(Chessboard.getSquares(i),
+                    true,
+                    i - 48,
+                    whiteIcons[i - 48]));
 
         whitePieces.add(new Rook(Chessboard.getSquares(56), true, 8, whiteIcons[8]));
         whitePieces.add(new Knight(Chessboard.getSquares(57), true, 9, whiteIcons[9]));
